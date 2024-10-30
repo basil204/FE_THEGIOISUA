@@ -49,7 +49,7 @@
                                                     </li>
 
                                                         <h5 class="text-content d-inline-block">Giá :</h5>
-                                                        <span>{{ product.productDetails.price}} VNĐ</span>
+                                                        <span>{{ product.productDetails.price| number:''}} VNĐ</span>
                                                         
                                                     </li>
 
@@ -73,10 +73,10 @@
                                         <h5>{{(product.productDetails.price * product.quantity)| number:''}} VNĐ</h5>
                                     </td>
 
-                                    <td class="save-remove">
-                                        <h4 class="table-title text-content">Chức năng</h4>
-                                        <!-- <a class="save notifi-wishlist" href="javascript:void(0)">Save for later</a> -->
-                                        <a class="remove close_button" ng-click="removeProduct($index)">Xóa</a>
+                                    <td class="save-remove" style="text-align: center; vertical-align: middle;">
+                                        <a class="remove close_button text-danger" ng-click="removeProduct($index)">
+                                            <i class="fas fa-trash-alt" style="font-size: 1.4rem;"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -118,7 +118,7 @@
                     <ul class="summery-total">
                         <li class="list-total border-top-0">
                             <h4>Tổng cộng (VNĐ)</h4>
-                            <h4 class="price theme-color">{{calculateTotal() | number:''}}</h4>
+                            <h4 class="price theme-color">{{calculateTotal() | number:''}} VNĐ</h4>
                         </li>
                     </ul>
 

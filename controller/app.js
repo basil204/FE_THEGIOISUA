@@ -15,8 +15,16 @@ app.config(function ($routeProvider) {
       templateUrl: "Pages/login.html",
       controller: "",
     })
+    .when("/sign-up", {
+      templateUrl: "Pages/sign-up.html",
+      controller: "",
+    })
     .when("/cart", {
       templateUrl: "Pages/cart.html",
+      controller: "ShoppingCartController",
+    })
+    .when("/profile", {
+      templateUrl: "Pages/profile.html",
       controller: "ShoppingCartController",
     })
     .otherwise({
@@ -253,8 +261,10 @@ app.controller(
             icon: "error",
             title: "Đặt Hàng Thất Bại",
             text: "Vui lòng nhập đúng số lượng!",
-            footer: "Số Lượng Còn Lại: " + $scope.productDetails.stockquantity,
+            footer:
+              "Số Lượng Còn Lại: " + ($scope.productDetails.stockquantity || 0),
           });
+
           return;
         }
         // localStorage.removeItem("lstProductOder")
@@ -348,12 +358,36 @@ app.controller("ShoppingCartController", function ($scope, $location) {
   };
   // Xóa sản phẩm khỏi danh sách
   $scope.removeProduct = function (index) {
-    $scope.lstProductOder.splice(index, 1); // Xóa sản phẩm khỏi mảng
-    localStorage.setItem(
-      "lstProductOder",
-      JSON.stringify($scope.lstProductOder)
-    );
+    Swal.fire({
+      title: "Bạn có chắc chắn muốn xóa sản phẩm này?",
+      text: "Hành động này không thể hoàn tác!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Vâng, xóa nó!",
+      cancelButtonText: "Hủy bỏ",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Nếu người dùng xác nhận
+        $scope.lstProductOder.splice(index, 1); // Xóa sản phẩm khỏi mảng
+        localStorage.setItem(
+          "lstProductOder",
+          JSON.stringify($scope.lstProductOder)
+        );
 
-    $scope.countProductOrders(); // Cập nhật localStorage
+        // Thông báo khi đã xóa thành công
+        Swal.fire({
+          icon: "success",
+          title: "Đã xóa!",
+          text: "Sản phẩm đã được xóa thành công.",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          // Sau khi thông báo thành công, cập nhật lại view
+          $scope.$apply(); // Cập nhật lại view
+        });
+      }
+    });
   };
 });
