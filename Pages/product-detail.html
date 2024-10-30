@@ -162,11 +162,15 @@
                                 </style>
                                 
                                 <div class="note-box product-package">
-                                    <div class="cart_qty qty-box product-qty">    
-                                        <button onclick="location.href = 'cart.html';"
-                                            class="btn btn-md bg-dark cart-button text-white w-100">Add To Cart</button>
-                                    </div>
-    
+                                    <input type="number" class="form-control" ng-model="orderQuantity" ng-disabled="stockquantityMilkDetail < 1"
+        min="1" max="{{stockquantityMilkDetail}}" value="1" placeholder="Nhập số lượng">
+
+                                    <button class="btn btn-md bg-dark cart-button text-white w-100" ng-click="oderProduct(
+                                            productDetails.milkDetailID,
+                                             orderQuantity,
+                                             selectedFlavor,
+                                             selectedUsageCapacity,
+                                             selectedPackagingUnit)">Add To Cart</button>
                                 </div>
     
                                 <div class="payment-option">
