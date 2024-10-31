@@ -1,7 +1,7 @@
 var app = angular.module("myApp", ["ngRoute"]);
 
 // Configure routes
-app.config(function ($routeProvider,$locationProvider) {
+app.config(function ($routeProvider, $locationProvider) {
   $routeProvider
     .when("/home", {
       templateUrl: "Pages/home.html",
@@ -17,6 +17,14 @@ app.config(function ($routeProvider,$locationProvider) {
     })
     .when("/sign-up", {
       templateUrl: "Pages/sign-up.html",
+      controller: "",
+    })
+    .when("/forgot", {
+      templateUrl: "Pages/forgot.html",
+      controller: "",
+    })
+    .when("/newpass/:token", {
+      templateUrl: "Pages/newpass.html",
       controller: "",
     })
     .when("/cart", {
