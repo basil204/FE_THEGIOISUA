@@ -13,7 +13,7 @@ app.config(function ($routeProvider, $locationProvider) {
     })
     .when("/login", {
       templateUrl: "Pages/login.html",
-      controller: "",
+      controller: "LoginController",
     })
     .when("/sign-up", {
       templateUrl: "Pages/sign-up.html",
@@ -31,6 +31,11 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "Pages/cart.html",
       controller: "ShoppingCartController",
     })
+    .when("/login/:token", {
+      templateUrl: "Pages/login.html",
+      controller: "VerifyController",
+    })
+
     .when("/profile", {
       templateUrl: "Pages/profile.html",
       controller: "ShoppingCartController",
