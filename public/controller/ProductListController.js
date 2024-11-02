@@ -2,11 +2,19 @@ app.controller(
   "ProductListController",
   function ($scope, $http, $location, ProductService) {
     // Function to fetch products based on the provided URL
+    $scope.isLogin = false; // Giá trị mặc định
+    $scope.userName = "My Account";
+    $scope.checkLogin = function () {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      if (userInfo != null) {
+        $scope.isLogin = true;
+        $scope.userName = userInfo.sub;
+      }
+    };
     $scope.getdataproduct = function (url) {
       $http.get(url).then(
         function (response) {
           $scope.products = response.data.message.content;
-          console.log(response);
         },
         function (error) {
           console.error("Error fetching products:", error);
@@ -104,5 +112,19 @@ app.controller(
     // Call checkFilter when the controller is initialized
     $scope.checkFilter();
     $scope.countProductOrders();
+    $scope.logout = function () {
+      localStorage.removeItem("authToken"); // Xóa token khỏi localStorage
+      localStorage.removeItem("userInfo"); // Xóa thông tin người dùng
+
+      Swal.fire({
+        icon: "info",
+        title: "Đăng xuất thành công!",
+        text: "Bạn đã đăng xuất khỏi tài khoản.",
+        confirmButtonText: "OK",
+        timer: 3000,
+      }).then(() => {
+        window.location.href = "/login"; // Chuyển hướng về trang đăng nhập
+      });
+    };
   }
 );

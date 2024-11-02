@@ -121,6 +121,20 @@ app.controller(
 
         if (existingProductIndex !== -1) {
           // Nếu sản phẩm đã tồn tại, chỉ cập nhật số lượng
+          if (
+            lstProductOder[existingProductIndex].quantity +
+            stockquantityMilkDetail >
+            $scope.productDetails.stockquantity
+          ) {
+            Swal.fire({
+              icon: "error",
+              title: "Đặt Hàng Thất Bại",
+              text: "Vui lòng nhập đúng số lượng!",
+              footer:
+                "Số Lượng Trong Giỏ Hàng: " + lstProductOder[existingProductIndex].quantity,
+            });
+            return;
+          }
           lstProductOder[existingProductIndex].quantity +=
             stockquantityMilkDetail;
         } else {

@@ -4,7 +4,7 @@ app.controller(
     // Function to verify the token
     $scope.verifyToken = function () {
       const token = $routeParams.token;
-
+      let isLogin = false;
       if (!token) {
         Swal.fire({
           icon: "error",

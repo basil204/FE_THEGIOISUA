@@ -1,6 +1,5 @@
 app.controller("LoginController", function ($scope, $http) {
   // Kiểm tra trạng thái đăng nhập
-  $scope.isLoggedIn = !!localStorage.getItem("authToken");
 
   // Hàm để giải mã token JWT và lấy thông tin người dùng
   function parseJwt(token) {
@@ -33,10 +32,8 @@ app.controller("LoginController", function ($scope, $http) {
         if (response.status === 200) {
           const token = response.data.token;
           if (token) {
-            localStorage.setItem("authToken", token);
             const userInfo = parseJwt(token);
             localStorage.setItem("userInfo", JSON.stringify(userInfo));
-            $scope.isLoggedIn = true; // Cập nhật trạng thái đăng nhập
           }
 
           Swal.fire({
@@ -73,22 +70,5 @@ app.controller("LoginController", function ($scope, $http) {
         });
       }
     );
-  };
-
-  // Hàm đăng xuất
-  $scope.logout = function () {
-    localStorage.removeItem("authToken"); // Xóa token khỏi localStorage
-    localStorage.removeItem("userInfo"); // Xóa thông tin người dùng
-    $scope.isLoggedIn = false; // Cập nhật trạng thái đăng nhập
-
-    Swal.fire({
-      icon: "info",
-      title: "Đăng xuất thành công!",
-      text: "Bạn đã đăng xuất khỏi tài khoản.",
-      confirmButtonText: "OK",
-      timer: 3000,
-    }).then(() => {
-      window.location.href = "/login"; // Chuyển hướng về trang đăng nhập
-    });
   };
 });
