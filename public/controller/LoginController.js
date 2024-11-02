@@ -1,15 +1,15 @@
 app.controller("LoginController", function ($scope, $http) {
-  // Kiểm tra trạng thái đăng nhập
+  // Check login status
   $scope.isLoggedIn = !!localStorage.getItem("authToken");
 
-  // Hàm để giải mã token JWT và lấy thông tin người dùng
+  // Decode JWT token to retrieve user info
   function parseJwt(token) {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     return JSON.parse(atob(base64));
   }
 
-  // Hàm đăng nhập
+  // Login function
   $scope.login = function () {
     if (!$scope.user.username || !$scope.user.password) {
       Swal.fire({
@@ -23,7 +23,7 @@ app.controller("LoginController", function ($scope, $http) {
 
     $http({
       method: "POST",
-      url: "http://160.30.21.47:1234/api/user/authenticate",
+      url: "http://localhost:1234/api/user/authenticate",
       data: {
         username: $scope.user.username,
         password: $scope.user.password,
@@ -36,7 +36,7 @@ app.controller("LoginController", function ($scope, $http) {
             localStorage.setItem("authToken", token);
             const userInfo = parseJwt(token);
             localStorage.setItem("userInfo", JSON.stringify(userInfo));
-            $scope.isLoggedIn = true; // Cập nhật trạng thái đăng nhập
+            $scope.isLoggedIn = true; // Update login status
           }
 
           Swal.fire({
@@ -61,8 +61,10 @@ app.controller("LoginController", function ($scope, $http) {
         let errorMessage = "Đăng nhập thất bại. Vui lòng thử lại.";
         if (response.status === 401) {
           errorMessage =
-            response.data.error ||
+            response.data?.error ||
             "Sai tên đăng nhập hoặc mật khẩu. Vui lòng kiểm tra và thử lại.";
+        } else if (response.data && response.data.error) {
+          errorMessage = response.data.error;
         }
 
         Swal.fire({
@@ -75,11 +77,11 @@ app.controller("LoginController", function ($scope, $http) {
     );
   };
 
-  // Hàm đăng xuất
+  // Logout function
   $scope.logout = function () {
-    localStorage.removeItem("authToken"); // Xóa token khỏi localStorage
-    localStorage.removeItem("userInfo"); // Xóa thông tin người dùng
-    $scope.isLoggedIn = false; // Cập nhật trạng thái đăng nhập
+    localStorage.removeItem("authToken"); // Remove token from localStorage
+    localStorage.removeItem("userInfo"); // Remove user info
+    $scope.isLoggedIn = false; // Update login status
 
     Swal.fire({
       icon: "info",
@@ -88,7 +90,7 @@ app.controller("LoginController", function ($scope, $http) {
       confirmButtonText: "OK",
       timer: 3000,
     }).then(() => {
-      window.location.href = "/login"; // Chuyển hướng về trang đăng nhập
+      window.location.href = "/login"; // Redirect to login page
     });
   };
 });

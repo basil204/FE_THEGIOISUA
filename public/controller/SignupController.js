@@ -50,7 +50,7 @@ app.controller("SignupController", function ($scope, $http) {
     // Nếu trùng khớp, tiếp tục với việc gọi API đăng ký
     $http({
       method: "POST",
-      url: "http://160.30.21.47:1234/api/user/register",
+      url: "http://localhost:1234/api/user/register",
       data: {
         username: $scope.user.username,
         password: $scope.user.password,

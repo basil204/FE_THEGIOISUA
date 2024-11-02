@@ -18,7 +18,7 @@ app.controller(
       // Call the verification API
       $http({
         method: "GET",
-        url: `http://160.30.21.47:1234/api/user/verify?token=${token}`,
+        url: `http://localhost:1234/api/user/verify?token=${token}`,
       }).then(
         function success(response) {
           Swal.fire({
