@@ -1,8 +1,13 @@
-app.controller("ShoppingCartController", function ($scope, $location) {
+app.controller("ShoppingCartController", function ($scope, $location, $http) {
   // Tải danh sách đặt hàng từ localStorage
   $scope.lstProductOder =
     JSON.parse(localStorage.getItem("lstProductOder")) || [];
-  // console.log($scope.lstProductOder)
+  const authToken = localStorage.getItem("authToken");
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const urlInvoice = 'http://localhost:1234/api/Invoice/add';
+  const urlUserInvoice = 'http://localhost:1234/api/Userinvoice/add';
+  $scope.selectedPaymentMethod = "";
+  console.log($scope.lstProductOder)
   // Hàm tính tổng tiền
   $scope.calculateTotal = function () {
     let total = 0;
@@ -40,6 +45,92 @@ app.controller("ShoppingCartController", function ($scope, $location) {
   $scope.countProductOrders = function () {
     $scope.count = ProductService.countProductOrders();
   };
+  $scope.buttonThanhToan = function () {
+    if ($scope.lstProductOder.length < 1) {
+      window.location.href = "/home";
+    } else {
+      window.location.href = "/checkout";
+    }
+  }
+
+  $scope.createInvoice = function () {
+    // Khởi tạo hóa đơn
+    $scope.invoice = {
+      voucher: null,
+      discountamount: 0,
+      totalamount: $scope.calculateTotal()
+    };
+    console.log("Total Amount:", $scope.invoice.totalamount);
+    // Kiểm tra phương thức thanh toán
+    if (!$scope.selectedPaymentMethod) {
+      showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!", "error");
+      return;
+    }
+    if ($scope.selectedPaymentMethod === "COD") {
+      showAlert("Chức năng Hiện Chưa Khả Dụng!", "error");
+      return;
+    }
+
+    // Dữ liệu cần gửi cho API
+    const data = {
+      invoice: $scope.invoice,
+      paymentOption: $scope.selectedPaymentMethod
+    };
+
+    // Gọi API để thêm hóa đơn
+    $http.post(urlInvoice, data)
+      .then(function (response) {
+        $scope.idInvoice = response.data.message;
+        createUserInvoice($scope.idInvoice);
+      })
+      .catch(function (error) {
+        handleError(error);
+      });
+  };
+
+  // Hàm tạo đối tượng userinvoice và gọi API
+  function createUserInvoice(invoiceId) {
+    const userInvoiceData = {
+      user: {
+        id: userInfo.id
+      },
+      invoice: {
+        id: invoiceId
+      }
+    };
+
+    $http.post(urlUserInvoice, userInvoiceData)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        handleError(error);
+      });
+  }
+
+  // Hàm xử lý lỗi
+  function handleError(error) {
+    console.log("Lỗi khi thêm hóa đơn:", error);
+    if (error.data && error.data.errors) {
+      $scope.errors = error.data.errors; // Lỗi chi tiết từ server
+    } else {
+      $scope.errorMessage = error.data.error || "Lỗi không xác định"; // Lỗi tổng quát
+    }
+  }
+
+  // Hàm hiển thị thông báo
+  function showAlert(message, icon) {
+    Swal.fire({
+      icon: icon,
+      title: "Oops...",
+      text: message,
+    });
+  }
+
+  // Theo dõi biến này khi người dùng thay đổi lựa chọn
+  $scope.$watch('selectedPaymentMethod', function (newValue) {
+    $scope.selectedPaymentMethod = newValue
+  });
   // Xóa sản phẩm khỏi danh sách
   $scope.removeProduct = function (index) {
     Swal.fire({
