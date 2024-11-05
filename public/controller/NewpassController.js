@@ -28,7 +28,7 @@ app.controller(
       // Call the reset password API
       $http({
         method: "POST",
-        url: "http://localhost:1234/api/user/reset-password",
+        url: "http://160.30.21.47:1234/api/user/reset-password",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },

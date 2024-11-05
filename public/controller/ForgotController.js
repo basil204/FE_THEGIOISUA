@@ -14,7 +14,7 @@ app.controller("ForgotController", function ($scope, $http) {
     // Call the forgot password API
     $http({
       method: "POST",
-      url: "http://localhost:1234/api/user/forgot-password",
+      url: "http://160.30.21.47:1234/api/user/forgot-password",
       data: { email: $scope.email },
     }).then(
       function success(response) {
