@@ -29,49 +29,49 @@ app.controller("LoginController", function ($scope, $http) {
         password: $scope.user.password,
       },
     }).then(
-        function success(response) {
-          if (response.status === 200) {
-            const token = response.data.token;
-            if (token) {
-              localStorage.setItem("authToken", token);
-              const userInfo = parseJwt(token);
-              localStorage.setItem("userInfo", JSON.stringify(userInfo));
-              $scope.isLoggedIn = true; // Update login status
-            }
-
-            Swal.fire({
-              icon: "success",
-              title: "Thành công!",
-              text: response.data.message || "Đăng nhập thành công!",
-              confirmButtonText: "OK",
-              timer: 3000,
-            }).then(() => {
-              window.location.href = "/home";
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Lỗi!",
-              text: "Đăng nhập thất bại. Vui lòng thử lại.",
-              confirmButtonText: "OK",
-            });
+      function success(response) {
+        if (response.status === 200) {
+          const token = response.data.token;
+          if (token) {
+            localStorage.setItem("authToken", token);
+            const userInfo = parseJwt(token);
+            console.log(userInfo);
+            localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            $scope.isLoggedIn = true; // Update login status
           }
-        },
-        function error(response) {
-          let errorMessage = "Đăng nhập thất bại. Vui lòng thử lại.";
-          if (response.status === 401) {
-            errorMessage =
-                response.data.error ||
-                "Sai tên đăng nhập hoặc mật khẩu. Vui lòng kiểm tra và thử lại.";
-          }
-
+          Swal.fire({
+            icon: "success",
+            title: "Thành công!",
+            text: response.data.message || "Đăng nhập thành công!",
+            confirmButtonText: "OK",
+            timer: 3000,
+          }).then(() => {
+            window.location.href = "/home";
+          });
+        } else {
           Swal.fire({
             icon: "error",
             title: "Lỗi!",
-            text: errorMessage,
+            text: "Đăng nhập thất bại. Vui lòng thử lại.",
             confirmButtonText: "OK",
           });
         }
+      },
+      function error(response) {
+        let errorMessage = "Đăng nhập thất bại. Vui lòng thử lại.";
+        if (response.status === 401) {
+          errorMessage =
+            response.data.error ||
+            "Sai tên đăng nhập hoặc mật khẩu. Vui lòng kiểm tra và thử lại.";
+        }
+
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi!",
+          text: errorMessage,
+          confirmButtonText: "OK",
+        });
+      }
     );
   };
 

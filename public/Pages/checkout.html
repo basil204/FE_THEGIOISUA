@@ -32,9 +32,8 @@
                             <li>
                                 <div class="checkout-icon">
                                     <lord-icon target=".nav-item" src="https://cdn.lordicon.com/ggihhudh.json"
-                                               trigger="loop-on-hover"
-                                               colors="primary:#121331,secondary:#646e78,tertiary:#0baf9a"
-                                               class="lord-icon">
+                                        trigger="loop-on-hover"
+                                        colors="primary:#121331,secondary:#646e78,tertiary:#0baf9a" class="lord-icon">
                                     </lord-icon>
                                 </div>
                                 <div class="checkout-box">
@@ -49,7 +48,7 @@
                                                     <div>
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="radio" name="jack"
-                                                                   id="flexRadioDefault1">
+                                                                id="flexRadioDefault1">
                                                         </div>
 
                                                         <div class="label">
@@ -62,15 +61,14 @@
                                                             </li>
 
                                                             <li>
-                                                                <p class="text-content"><span
-                                                                        class="text-title">Address
+                                                                <p class="text-content"><span class="text-title">Address
                                                                         : </span>8424 James Lane South San
                                                                     Francisco, CA 94080</p>
                                                             </li>
 
                                                             <li>
-                                                                <h6 class="text-content"><span
-                                                                        class="text-title">Pin Code
+                                                                <h6 class="text-content"><span class="text-title">Pin
+                                                                        Code
                                                                         :</span> +380</h6>
                                                             </li>
 
@@ -93,8 +91,8 @@
                             <li>
                                 <div class="checkout-icon">
                                     <lord-icon target=".nav-item" src="https://cdn.lordicon.com/qmcsqnle.json"
-                                               trigger="loop-on-hover" colors="primary:#0baf9a,secondary:#0baf9a"
-                                               class="lord-icon">
+                                        trigger="loop-on-hover" colors="primary:#0baf9a,secondary:#0baf9a"
+                                        class="lord-icon">
                                     </lord-icon>
                                 </div>
                                 <div class="checkout-box">
@@ -104,59 +102,62 @@
 
                                     <div class="checkout-detail">
                                         <div class="accordion accordion-flush custom-accordion"
-                                             id="accordionFlushExample">
+                                            id="accordionFlushExample">
+
                                             <div class="accordion-item">
                                                 <div class="accordion-header" id="flush-headingFour">
-                                                    <div class="accordion-button collapsed"
-                                                         data-bs-toggle="collapse"
-                                                         data-bs-target="#flush-collapseFour">
+                                                    <div class="accordion-button collapsed" data-bs-toggle="collapse"
+                                                        data-bs-target="#flush-collapseFour">
                                                         <div class="custom-form-check form-check mb-0">
-                                                            <label class="form-check-label" for="cash"><input
-                                                                    class="form-check-input mt-0" type="radio"
-                                                                    name="flexRadioDefault" id="cash" checked> Cash
-                                                                On Delivery</label>
+                                                            <label class="form-check-label" for="cash">
+                                                                <input class="form-check-input mt-0" type="radio"
+                                                                    name="paymentMethod" id="cash"
+                                                                    ng-model="selectedPaymentMethod" value="COD"
+                                                                    checked> Thanh Toán Khi Nhận Hàng (COD)
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="flush-collapseFour"
-                                                     class="accordion-collapse collapse show"
-                                                     data-bs-parent="#accordionFlushExample">
+                                                <!-- <div id="flush-collapseFour" class="accordion-collapse collapse show"
+                                                    data-bs-parent="#accordionFlushExample">
                                                     <div class="accordion-body">
-                                                        <p class="cod-review">Pay digitally with SMS Pay
-                                                            Link. Cash may not be accepted in COVID restricted
-                                                            areas. <a href="javascript:void(0)">Know more.</a>
+                                                        <p class="cod-review">Thanh toán qua SMS Pay Link. Tiền mặt có
+                                                            thể không được chấp nhận ở các khu vực hạn chế COVID.
+                                                            <a href="javascript:void(0)">Tìm hiểu thêm.</a>
                                                         </p>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
 
                                             <div class="accordion-item">
                                                 <div class="accordion-header" id="flush-headingTwo">
-                                                    <div class="accordion-button collapsed"
-                                                         data-bs-toggle="collapse"
-                                                         data-bs-target="#flush-collapseTwo">
+                                                    <div class="accordion-button collapsed" data-bs-toggle="collapse"
+                                                        data-bs-target="#flush-collapseTwo">
                                                         <div class="custom-form-check form-check mb-0">
-                                                            <label class="form-check-label" for="banking"><input
-                                                                    class="form-check-input mt-0" type="radio"
-                                                                    name="flexRadioDefault" id="banking">Net
-                                                                Banking</label>
+                                                            <label class="form-check-label" for="banking">
+                                                                <input class="form-check-input mt-0" type="radio"
+                                                                    name="paymentMethod" id="banking"
+                                                                    ng-model="selectedPaymentMethod" value="NetBanking">
+                                                                Ngân Hàng Trực Tuyến
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                                                     data-bs-parent="#accordionFlushExample">
+                                                <!-- <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                                    data-bs-parent="#accordionFlushExample">
                                                     <div class="accordion-body">
-                                                        <p class="cod-review">Pay digitally with SMS Pay
-                                                            Link. Cash may not be accepted in COVID restricted
-                                                            areas. <a href="javascript:void(0)">Know more.</a>
+                                                        <p class="cod-review">Thanh toán qua SMS Pay Link. Tiền mặt có
+                                                            thể không được chấp nhận ở các khu vực hạn chế COVID.
+                                                            <a href="javascript:void(0)">Tìm hiểu thêm.</a>
                                                         </p>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
-
 
                                         </div>
                                     </div>
+
+
                                 </div>
                             </li>
                         </ul>
@@ -172,52 +173,48 @@
                         </div>
 
                         <ul class="summery-contain">
-                            <li>
-                                <img src="../assets/images/vegetable/product/1.png"
-                                     class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                <h4>Năn chuột <span>X 1</span></h4>
-                                <h4 class="price">$32.34</h4>
-                            </li>
-                            <li>
-                                <img src="../assets/images/vegetable/product/1.png"
-                                     class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                <h4>Năn chuột <span>X 1</span></h4>
-                                <h4 class="price">$32.34</h4>
-                            </li>
-                            <li>
-                                <img src="../assets/images/vegetable/product/1.png"
-                                     class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                <h4>Năn chuột <span>X 1</span></h4>
-                                <h4 class="price">$32.34</h4>
-                            </li>
-                            <li>
-                                <img src="../assets/images/vegetable/product/1.png"
-                                     class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                <h4>Năn chuột <span>X 1</span></h4>
-                                <h4 class="price">$32.34</h4>
-                            </li>
-                            <li>
-                                <img src="../assets/images/vegetable/product/1.png"
-                                     class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                <h4>Năn chuột <span>X 1</span></h4>
-                                <h4 class="price">$32.34</h4>
-                            </li>
-                            <li>
-                                <img src="../assets/images/vegetable/product/1.png"
-                                     class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                <h4>Năn chuột <span>X 1</span></h4>
-                                <h4 class="price">$32.34</h4>
+                            <li ng-repeat="product in lstProductOder">
+                                <img ng-src="{{product.productDetails.imgURL}}"
+                                    class="img-fluid blur-up lazyloaded checkout-image" alt="">
+                                <h4>{{product.productDetails.packagingunitname}}
+                                    {{product.productDetails.milktypename}}
+                                    {{product.productDetails.milkbrandname}}
+                                    {{product.productDetails.milktastename}}
+                                    {{product.productDetails.capacity}}
+                                    {{product.productDetails.unit}} <span>x {{product.quantity}}</span></h4>
+                                <h4 class="price">{{(product.productDetails.price * product.quantity)| number:''}} VNĐ
+                                </h4>
                             </li>
                         </ul>
                         <style>
                             .summery-contain {
-                                max-height: 300px; /* Giới hạn chiều cao để hiển thị khoảng 3 sản phẩm */
-                                overflow-y: auto; /* Thêm thanh cuộn dọc */
+                                max-height: 300px;
+                                /* Giới hạn chiều cao để hiển thị khoảng 3 sản phẩm */
+                                overflow-y: auto;
+                                /* Thêm thanh cuộn dọc */
                             }
-
                         </style>
-
-                        <ul class="summery-total">
+                        <div class="summery-contain">
+                            <div class="coupon-cart">
+                                <h6 class="text-content mb-2">Phiếu giảm giá</h6>
+                                <div class="mb-3 coupon-box input-group">
+                                    <input type="email" class="form-control" id="exampleFormControlInput1"
+                                        placeholder="Nhập mã giảm giá vào đây...">
+                                    <button class="btn-apply">Áp dụng</button>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>
+                                    <h4>Giảm</h4>
+                                    <h4 class="price">(-) 0.00</h4>
+                                </li>
+                                <li>
+                                    <h4>Số Tiên Phải Thanh Toán</h4>
+                                    <h4 class="price">{{calculateTotal() | number:''}} VNĐ</h4>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <ul class="summery-total">
                             <li>
                                 <h4>Subtotal</h4>
                                 <h4 class="price">$111.81</h4>
@@ -242,10 +239,10 @@
                                 <h4>Total (USD)</h4>
                                 <h4 class="price">$19.28</h4>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
 
-                    <div class="checkout-offer">
+                    <!-- <div class="checkout-offer">
                         <div class="offer-title">
                             <div class="offer-icon">
                                 <img src="../assets/images/inner-page/offer.svg" class="img-fluid" alt="">
@@ -263,9 +260,10 @@
                                 <p>combo: Royal Cashew Californian, Extra Bold 100 gm + BB Royal Honey 500 gm</p>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
 
-                    <button class="btn theme-bg-color text-white btn-md w-100 mt-4 fw-bold">Place Order</button>
+                    <button class="btn theme-bg-color text-white btn-md w-100 mt-4 fw-bold"
+                        ng-click="createInvoice()">Tạo Hoá Đơn</button>
                 </div>
             </div>
         </div>
