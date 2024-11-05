@@ -1,0 +1,24 @@
+<div ng-controller="PaymentController">
+    <style>
+        .image-contain {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* Adjust height to match the container */
+        }
+        
+    </style>
+    <!-- Payment Section Start -->
+    <section class="payment-section background-image-2 section-b-space">
+        <div class="container-fluid-lg w-100">
+            <div class="row">
+                <!-- <div class="col-xxl-6 col-xl-5 col-lg-6 d-lg-block d-none ms-auto"> -->
+                    <div class="image-contain">
+                        <img ng-src="{{paymentImage}}" class="img-fluid" alt="Payment Image" />
+                    </div>
+                <!-- </div> -->
+            </div>
+        </div>
+    </section>
+    <!-- Payment Section End -->
+</div>
