@@ -40,7 +40,7 @@
                         </div>
     
                         <div class="input-box">
-                            <form class="row g-4" ng-submit="register()">
+                            <form class="row g-4">
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating">
                                         <input type="text" class="form-control" id="fullname" ng-model="user.fullname" placeholder="Full Name" required>
@@ -74,7 +74,8 @@
                                 </div>
                             
                                 <div class="col-12">
-                                    <button class="btn btn-animation w-100" type="submit">Sign Up</button>
+                                    <button class="btn btn-animation w-100" ng-click="register()" ng-disabled="isSubmitting" type="submit">Sign Up</button>
+
                                 </div>
                             </form>
                             

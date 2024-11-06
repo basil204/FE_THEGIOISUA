@@ -7,6 +7,8 @@ app.controller("SignupController", function ($scope, $http) {
     email: "",
   };
 
+  $scope.isSubmitting = false; // Biến theo dõi trạng thái gửi
+
   $scope.register = function () {
     // Kiểm tra các trường không được để trống
     if (
@@ -47,6 +49,9 @@ app.controller("SignupController", function ($scope, $http) {
       return; // Dừng việc gửi form nếu mật khẩu quá ngắn
     }
 
+    // Bắt đầu quy trình đăng ký
+    $scope.isSubmitting = true; // Đặt trạng thái gửi là true
+
     // Nếu trùng khớp, tiếp tục với việc gọi API đăng ký
     $http({
       method: "POST",
@@ -57,30 +62,34 @@ app.controller("SignupController", function ($scope, $http) {
         fullname: $scope.user.fullname,
         email: $scope.user.email,
       },
-    }).then(
-      function success(response) {
-        const successMessage = response.data.message || "Đăng ký thành công!";
+    })
+      .then(
+        function success(response) {
+          const successMessage = response.data.message || "Đăng ký thành công!";
 
-        Swal.fire({
-          icon: "success",
-          title: "Thành công!",
-          text: successMessage,
-          confirmButtonText: "OK",
-          timer: 3000,
-        }).then(() => {
-          window.location.href = "/login";
-        });
-      },
-      function error(response) {
-        const errorMessage = response.data.error || "Vui lòng thử lại.";
+          Swal.fire({
+            icon: "success",
+            title: "Thành công!",
+            text: successMessage,
+            confirmButtonText: "OK",
+            timer: 3000,
+          }).then(() => {
+            window.location.href = "/login";
+          });
+        },
+        function error(response) {
+          const errorMessage = response.data.error || "Vui lòng thử lại.";
 
-        Swal.fire({
-          icon: "error",
-          title: "Đăng ký thất bại!",
-          text: errorMessage,
-          confirmButtonText: "OK",
-        });
-      }
-    );
+          Swal.fire({
+            icon: "error",
+            title: "Đăng ký thất bại!",
+            text: errorMessage,
+            confirmButtonText: "OK",
+          });
+        }
+      )
+      .finally(() => {
+        $scope.isSubmitting = false; // Đặt trạng thái gửi lại là false khi hoàn thành
+      });
   };
 });
