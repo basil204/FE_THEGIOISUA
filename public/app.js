@@ -1,7 +1,7 @@
 var app = angular.module("myApp", ["ngRoute"]);
 
 // Configure routes
-app.config(function ($routeProvider, $locationProvider) {
+app.config(function ($routeProvider, $locationProvider, $httpProvider) {
   $routeProvider
     .when("/home", {
       templateUrl: "Pages/home.html",
@@ -34,26 +34,23 @@ app.config(function ($routeProvider, $locationProvider) {
     .when("/checkout", {
       templateUrl: "Pages/checkout.html",
       controller: "ShoppingCartController",
-      resolve: { auth: requireAuth },
+      resolve: { auth: requireAuth }, // Require authentication
     })
     .when("/login/:token", {
       templateUrl: "Pages/login.html",
       controller: "VerifyController",
     })
-    .when("/thanhtoan", {
-      templateUrl: "Pages/thanhtoan.html",
-      controller: "PaymentController",
-    })
     .when("/profile", {
       templateUrl: "Pages/profile.html",
       controller: "ShoppingCartController",
-      resolve: { auth: requireAuth },
+      resolve: { auth: requireAuth }, // Require authentication
     })
     .otherwise({
       redirectTo: "/home",
     });
 
-  $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(true); // Enable HTML5 mode
+  $httpProvider.interceptors.push("AuthInterceptor");
 });
 
 // Auth Guard Function
@@ -69,6 +66,25 @@ function requireAuth($q, $location) {
 
 // Inject the dependencies for requireAuth
 requireAuth.$inject = ["$q", "$location"];
+
+// HTTP Interceptor for Authorization
+app.factory("AuthInterceptor", function ($q, $window) {
+  return {
+    request: function (config) {
+      const token = $window.localStorage.getItem("authToken");
+      const protectedUrls = [
+        "http://160.30.21.47:1234/api/Invoice/add",
+        "http://160.30.21.47:1234/api/Userinvoice/add",
+        "http://160.30.21.47:1234/api/Invoicedetail/add",
+      ];
+
+      if (token && protectedUrls.some((url) => config.url.includes(url))) {
+        config.headers["Authorization"] = "Bearer " + token;
+      }
+      return config;
+    },
+  };
+});
 
 // Product Service
 app.service("ProductService", function () {
@@ -89,14 +105,4 @@ app.service("ProductService", function () {
       return orderList.filter((order) => order.id).length;
     },
   };
-});
-app.controller("PaymentController", function ($scope, $timeout, $location) {
-  // Initialize image URL from API
-  $scope.paymentImage =
-    "https://api.vietqr.io/image/970436-9338739954-3kXSs3C.jpg?accountName=NGUYEN%20LIEN%20MANH&amount=0&addInfo=demo";
-
-  // Redirect to home after 15 seconds
-  $timeout(function () {
-    $location.path("/home"); // Update path to your homepage URL
-  }, 15000); // 15000 milliseconds = 15 seconds
 });
