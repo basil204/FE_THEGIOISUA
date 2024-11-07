@@ -1062,36 +1062,51 @@
           </button>
         </div>
         <div class="modal-body">
-          <select
-            class="css_select"
-            ng-model="selectedTinh"
-            ng-change="loadQuan(); getTinhName()"
-            ng-options="tinh.id as tinh.full_name for tinh in tinhs"
-          >
-            <option value="">Tỉnh Thành</option>
-          </select>
-          <span ng-if="tinhName">Tên Tỉnh: {{ tinhName }}</span>
-  
+          <!-- Dropdown for Tỉnh -->
+          <div class="form-group mb-3">
+            <label for="tinhSelect">Tỉnh Thành</label>
+            <select
+              id="tinhSelect"
+              class="form-control css_select"
+              ng-model="selectedTinh"
+              ng-change="loadQuan(); getTinhName()"
+              ng-options="tinh.id as tinh.full_name for tinh in tinhs"
+            >
+              <option value="">Chọn Tỉnh Thành</option>
+            </select>
+            <span ng-if="tinhName" class="d-block mt-1 text-secondary">Tên Tỉnh: {{ tinhName }}</span>
+          </div>
+        
           <!-- Dropdown for Quận -->
-          <select
-            class="css_select"
-            ng-model="selectedQuan"
-            ng-change="loadPhuong(); getQuanName()"
-            ng-options="quan.id as quan.full_name for quan in quans"
-          >
-            <option value="">Quận Huyện</option>
-          </select>
-          <span ng-if="quanName">Tên Quận: {{ quanName }}</span>
-  
+          <div class="form-group mb-3">
+            <label for="quanSelect">Quận Huyện</label>
+            <select
+              id="quanSelect"
+              class="form-control css_select"
+              ng-model="selectedQuan"
+              ng-change="loadPhuong(); getQuanName()"
+              ng-options="quan.id as quan.full_name for quan in quans"
+            >
+              <option value="">Chọn Quận Huyện</option>
+            </select>
+            <span ng-if="quanName" class="d-block mt-1 text-secondary">Tên Quận: {{ quanName }}</span>
+          </div>
+        
           <!-- Dropdown for Phường -->
-          <select
-            class="css_select"
-            ng-model="selectedPhuong"
-            ng-change="getPhuongName()"
-            ng-options="phuong.id as phuong.full_name for phuong in phuongs"
-          >
-            <option value="">Phường Xã</option>
-          </select>
+          <div class="form-group mb-3">
+            <label for="phuongSelect">Phường Xã</label>
+            <select
+              id="phuongSelect"
+              class="form-control css_select"
+              ng-model="selectedPhuong"
+              ng-change="getPhuongName()"
+              ng-options="phuong.id as phuong.full_name for phuong in phuongs"
+            >
+              <option value="">Chọn Phường Xã</option>
+            </select>
+          </div>
+        
+          <!-- Địa Chỉ Chi Tiết -->
           <form>
             <div class="form-floating mb-4 theme-form-floating">
               <input
@@ -1099,10 +1114,13 @@
                 class="form-control"
                 id="detailAddress"
                 ng-model="detailAddress"
+                placeholder=" "
               />
               <label for="detailAddress">Địa Chỉ Chi Tiết</label>
             </div>
           </form>
+        
+          <!-- Số Điện Thoại Nhận Hàng -->
           <form>
             <div class="form-floating mb-4 theme-form-floating">
               <input
@@ -1110,11 +1128,13 @@
                 class="form-control"
                 id="phonenumber"
                 ng-model="phonenumber"
+                placeholder=" "
               />
               <label for="phonenumber">Số Điện Thoại Nhận Hàng</label>
             </div>
           </form>
         </div>
+        
         <div class="modal-footer">
           <button
             type="button"
