@@ -6,6 +6,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
   const urlUserInvoice = "http://160.30.21.47:1234/api/Userinvoice/add";
   const urlInvoiceDetail = "http://160.30.21.47:1234/api/Invoicedetail/add";
+  let remainingTime = 15 * 60;
   $scope.deliveryAddress =
     JSON.parse(localStorage.getItem("deliveryAddress")) || [];
   $scope.selectedPaymentMethod = "";
@@ -15,6 +16,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   $scope.phuongs = [];
   $scope.detailAddress = "";
   $scope.selectedAddressId = 1; // Chọn mặc định địa chỉ đầu tiên
+
   // Hàm khởi tạo
   $scope.loadTinh = function () {
     $http
@@ -55,6 +57,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
         });
     }
   };
+
   $scope.getAddressById = function (id) {
     return $scope.deliveryAddress.find(function (address) {
       return address.id === id;
@@ -103,6 +106,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       }
     });
   };
+
   $scope.addAdress = async function () {
     if (
       !$scope.getTinhName() ||
@@ -156,6 +160,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       console.error("Lỗi khi lấy thông tin người dùng:", error);
     }
   };
+
   // Hàm lấy tên địa chỉ
   $scope.getTinhName = function () {
     return $scope.tinhs.find((tinh) => tinh.id === $scope.selectedTinh);
@@ -167,6 +172,26 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
 
   $scope.getPhuongName = function () {
     return $scope.phuongs.find((phuong) => phuong.id === $scope.selectedPhuong);
+  };
+
+  // Hàm tạo mã hóa đơn ngẫu nhiên
+  $scope.generateInvoiceCode = function () {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let invoiceCode = "HD"; // Start with "HD"
+    let usedCharacters = new Set(); // To keep track of used characters
+
+    while (invoiceCode.length < 10) {
+      // 2 (for "HD") + 8 random characters
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      const randomChar = characters.charAt(randomIndex);
+
+      // Check if the character is already used
+      if (!usedCharacters.has(randomChar)) {
+        usedCharacters.add(randomChar); // Mark character as used
+        invoiceCode += randomChar; // Append to invoice code
+      }
+    }
+    return invoiceCode;
   };
 
   // Hàm tính toán tổng tiền
@@ -214,6 +239,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
         console.error("Lỗi khi lấy thông tin người dùng:", error);
       });
   };
+
   $scope.AddInvoiceDetail = function (invoiceDetail) {
     // Gọi API để thêm InvoiceDetail vào hệ thống
     return $http
@@ -227,13 +253,84 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       });
   };
 
+  $scope.checkInvoicePaymentStatus = function (totalAmount, invoicecode) {
+    // Tạo dữ liệu cần gửi
+    const data = {
+      creditAmount: totalAmount,
+      description: invoicecode,
+    };
+
+    // Thiết lập thời gian đếm ngược (15 phút)
+    let remainingTime = 900; // 15 phút = 900 giây
+
+    // Cập nhật đồng hồ đếm ngược mỗi giây
+    const countdownId = setInterval(function () {
+      remainingTime--;
+
+      // Chuyển đổi thời gian còn lại thành phút và giây
+      const minutes = Math.floor(remainingTime / 60);
+      const seconds = remainingTime % 60;
+
+      // Hiển thị đồng hồ đếm ngược trong console
+      console.log(`Thời gian còn lại: ${minutes} phút ${seconds} giây`);
+
+      // Nếu hết thời gian thì dừng đồng hồ
+      if (remainingTime <= 0) {
+        clearInterval(countdownId); // Dừng đồng hồ đếm ngược
+        clearInterval(intervalId); // Dừng kiểm tra thanh toán
+        console.log("Đã hết thời gian kiểm tra sau 15 phút");
+      }
+    }, 1000); // Cập nhật mỗi giây
+
+    // Hàm kiểm tra thanh toán, được gọi mỗi 10 giây
+    const intervalId = setInterval(function () {
+      $http
+        .post(`http://160.30.21.47:1234/api/payment/transactionHistory`, data)
+        .then(function (response) {
+          console.log(response); // In ra phản hồi trong console
+          if (response.status === 200) {
+            // Nếu phản hồi cũng cần kiểm tra nội dung
+            clearInterval(intervalId); // Dừng kiểm tra khi đã thanh toán
+            clearInterval(countdownId); // Dừng đồng hồ đếm ngược khi thanh toán thành công
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Hóa đơn đã được thanh toán thành công!",
+              showConfirmButton: true,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // Khi nhấn OK, tải lại trang
+                location.reload();
+              }
+            });
+          }
+        })
+        .catch(function (error) {
+          if (error.status === 404) {
+            console.log(error.data);
+          }
+          console.error("Lỗi khi kiểm tra trạng thái thanh toán:");
+        });
+    }, 10000); // Kiểm tra mỗi 10 giây
+  };
+
   $scope.createInvoice = function () {
     const address = $scope.getAddressById($scope.selectedAddressId);
+    if (!address) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Vui Lòng Thêm Địa Chỉ Giao Hàng",
+        showConfirmButton: true,
+      });
+      return;
+    }
 
     // Tạo đối tượng hóa đơn
     $scope.invoice = {
       voucher: null,
       discountamount: 0,
+      invoicecode: $scope.generateInvoiceCode(), // Generate random invoice code
       totalamount: $scope.calculateTotal(),
       phonenumber: address.phonenumber,
       deliveryaddress: address.address,
@@ -258,6 +355,10 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
         return createUserInvoice($scope.idInvoice); // Trả về promise từ createUserInvoice
       })
       .then(function () {
+        if (!$scope.lstProductOder || $scope.lstProductOder.length === 0) {
+          throw new Error("Không có sản phẩm nào để tạo chi tiết hóa đơn.");
+        }
+
         // Tạo tất cả các chi tiết hóa đơn
         const invoiceDetailsPromises = $scope.lstProductOder.map(function (x) {
           var invoiceDetail = {
@@ -283,8 +384,18 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
           position: "center",
           icon: "success",
           title: "Hóa đơn đã được tạo thành công",
-          showConfirmButton: false,
-          timer: 1500,
+          html: `
+                    <p>Quý khách có thể thanh toán qua mã QR bên dưới:</p>
+                    <img src="https://api.vietqr.io/image/970422-0338739954-PmsPdTu.jpg?accountName=NGUYEN%20LIEN%20MANH&amount=${$scope.invoice.totalamount}&addInfo=${$scope.invoice.invoicecode}" 
+                         alt="QR Code" 
+                         style="width: 200px; height: 200px; margin-top: 10px;">`,
+          showConfirmButton: true,
+        }).then(() => {
+          // Bắt đầu kiểm tra trạng thái thanh toán
+          $scope.checkInvoicePaymentStatus(
+            $scope.invoice.totalamount,
+            $scope.invoice.invoicecode
+          );
         });
       })
       .catch(function (error) {
@@ -294,10 +405,10 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
           icon: "error",
           title:
             "Yêu cầu không hợp lệ: " +
-            (error.data ? error.data.error : "Không có thông tin chi tiết"),
+            (error.data ? error.data.error : error.message),
           showConfirmButton: true,
         });
-        // Không tiếp tục các bước sau nếu có lỗi
+        console.log(error.data || error);
       });
   };
 
