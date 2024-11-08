@@ -115,6 +115,24 @@
             }
             document.readyState === 'complete' ? init() : window.addEventListener('load', init);
         })();
+        function checkLoginUrl() {
+            // Check if the current URL is '/login'
+            if (window.location.pathname === '/login') {
+                // Perform logout actions
+                localStorage.removeItem("authToken"); // Remove token from localStorage
+                localStorage.removeItem("userInfo");   // Remove user info
+        
+                // Update login status
+                $scope.isLoggedIn = false;
+        
+                // Redirect to the login page or show the login form as needed
+                window.location.href = '/login'; // Optional redirect to enforce login page
+            }
+        }
+        
+        // Call the function on page load
+        window.onload = checkLoginUrl;
+        
     </script>
 </body>
 </html>

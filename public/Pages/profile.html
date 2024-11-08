@@ -3,7 +3,7 @@
       <div class="row">
         <div class="col-12">
           <div class="breadcrumb-contain">
-            <h2>User Dashboard</h2>
+            <h2>Trang tổng quan người dùng</h2>
             <nav>
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
@@ -11,7 +11,7 @@
                     <i class="fa-solid fa-house"></i>
                   </a>
                 </li>
-                <li class="breadcrumb-item active">User Dashboard</li>
+                <li class="breadcrumb-item active">Trang tổng quan người dùng</li>
               </ol>
             </nav>
           </div>
@@ -77,7 +77,7 @@
                   data-bs-target="#pills-dashboard"
                   type="button"
                 >
-                  <i data-feather="home"></i> DashBoard
+                  <i data-feather="home"></i> Bảng điều khiển
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -88,7 +88,7 @@
                   data-bs-target="#pills-order"
                   type="button"
                 >
-                  <i data-feather="shopping-bag"></i>Order
+                  <i data-feather="shopping-bag"></i>Đơn Hàng
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -100,7 +100,7 @@
                   type="button"
                   role="tab"
                 >
-                  <i data-feather="map-pin"></i>Address
+                  <i data-feather="map-pin"></i>Địa chỉ
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -112,21 +112,18 @@
                   type="button"
                   role="tab"
                 >
-                  <i data-feather="user"></i> Profile
+                  <i data-feather="user"></i> Hồ sơ
                 </button>
               </li>
-              <li class="nav-item" role="presentation">
+              <li class="nav-item" role="presentation" ng-controller="LoginController">
                 <button
                   class="nav-link"
-                  id="pills-security-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#pills-security"
-                  type="button"
-                  role="tab"
+                  ng-click="logout()"
                 >
-                  <i data-feather="shield"></i> Privacy
+                  <i data-feather="shield"></i> Đăng xuất
                 </button>
-              </li>
+            </li>
+            
             </ul>
           </div>
         </div>
@@ -146,7 +143,7 @@
               >
                 <div class="dashboard-home">
                   <div class="title">
-                    <h2>My Dashboard</h2>
+                    <h2>Trang tổng quan của tôi</h2>
                     <span class="title-leaf">
                       <svg class="icon-width bg-gray">
                         <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
@@ -159,10 +156,7 @@
                       Hello, <b class="text-title">Vicki E. Pope</b>
                     </h6>
                     <p class="text-content">
-                      From your My Account Dashboard you have the ability to view
-                      a snapshot of your recent account activity and update your
-                      account information. Select a link below to view or edit
-                      information.
+                      Bảng điều khiển tài khoản của tôi
                     </p>
                   </div>
   
@@ -181,7 +175,7 @@
                             alt=""
                           />
                           <div class="total-detail">
-                            <h5>Total Order</h5>
+                            <h5>Tổng số đơn hàng</h5>
                             <h3>3658</h3>
                           </div>
                         </div>
@@ -200,42 +194,25 @@
                             alt=""
                           />
                           <div class="total-detail">
-                            <h5>Total Pending Order</h5>
+                            <h5>Tổng số lệnh chờ xử lý</h5>
                             <h3>254</h3>
                           </div>
                         </div>
                       </div>
   
-                      <div class="col-xxl-4 col-lg-6 col-md-4 col-sm-6">
-                        <div class="total-contain">
-                          <img
-                            src="../assets/images/svg/wishlist.svg"
-                            class="img-1 blur-up lazyload"
-                            alt=""
-                          />
-                          <img
-                            src="../assets/images/svg/wishlist.svg"
-                            class="blur-up lazyload"
-                            alt=""
-                          />
-                          <div class="total-detail">
-                            <h5>Total Wishlist</h5>
-                            <h3>32158</h3>
-                          </div>
-                        </div>
-                      </div>
+                
                     </div>
                   </div>
   
                   <div class="dashboard-title">
-                    <h3>Account Information</h3>
+                    <h3>Thông tin tài khoản</h3>
                   </div>
   
                   <div class="row g-4">
                     <div class="col-xxl-6">
                       <div class="dashboard-content-title">
                         <h4>
-                          Contact Information
+                          Thông tin liên hệ
                           <a
                             href="javascript:void(0)"
                             data-bs-toggle="modal"
@@ -247,74 +224,13 @@
                       <div class="dashboard-detail">
                         <h6 class="text-content">MARK JECNO</h6>
                         <h6 class="text-content">vicki.pope@gmail.com</h6>
-                        <a href="javascript:void(0)">Change Password</a>
+                        <a 
+                        data-bs-toggle="modal"
+                        data-bs-target="#changePassword" href="javascript:void(0)">Change Password</a>
                       </div>
                     </div>
   
-                    <div class="col-xxl-6">
-                      <div class="dashboard-content-title">
-                        <h4>
-                          Newsletters
-                          <a
-                            href="javascript:void(0)"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editProfile"
-                            >Edit</a
-                          >
-                        </h4>
-                      </div>
-                      <div class="dashboard-detail">
-                        <h6 class="text-content">
-                          You are currently not subscribed to any newsletter
-                        </h6>
-                      </div>
-                    </div>
-  
-                    <div class="col-12">
-                      <div class="dashboard-content-title">
-                        <h4>
-                          Address Book
-                          <a
-                            href="javascript:void(0)"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editProfile"
-                            >Edit</a
-                          >
-                        </h4>
-                      </div>
-  
-                      <div class="row g-4">
-                        <div class="col-xxl-6">
-                          <div class="dashboard-detail">
-                            <h6 class="text-content">Default Billing Address</h6>
-                            <h6 class="text-content">
-                              You have not set a default billing address.
-                            </h6>
-                            <a
-                              href="javascript:void(0)"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editProfile"
-                              >Edit Address</a
-                            >
-                          </div>
-                        </div>
-  
-                        <div class="col-xxl-6">
-                          <div class="dashboard-detail">
-                            <h6 class="text-content">Default Shipping Address</h6>
-                            <h6 class="text-content">
-                              You have not set a default shipping address.
-                            </h6>
-                            <a
-                              href="javascript:void(0)"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editProfile"
-                              >Edit Address</a
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+               
                   </div>
                 </div>
               </div>
@@ -928,113 +844,7 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="pills-security" role="tabpanel">
-                <div class="dashboard-privacy">
-                  <div class="dashboard-bg-box">
-                    <div class="dashboard-title mb-4">
-                      <h3>Privacy</h3>
-                    </div>
-  
-                    <div class="privacy-box">
-                      <div class="d-flex align-items-start">
-                        <h6>Allows others to see my profile</h6>
-                        <div class="form-check form-switch switch-radio ms-auto">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="redio"
-                          />
-                          <label class="form-check-label" for="redio"></label>
-                        </div>
-                      </div>
-  
-                      <p class="text-content">
-                        all peoples will be able to see my profile
-                      </p>
-                    </div>
-  
-                    <div class="privacy-box">
-                      <div class="d-flex align-items-start">
-                        <h6>
-                          who has save this profile only that people see my
-                          profile
-                        </h6>
-                        <div class="form-check form-switch switch-radio ms-auto">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="redio2"
-                          />
-                          <label class="form-check-label" for="redio2"></label>
-                        </div>
-                      </div>
-  
-                      <p class="text-content">
-                        all peoples will not be able to see my profile
-                      </p>
-                    </div>
-  
-                    <button
-                      class="btn theme-bg-color btn-md fw-bold mt-4 text-white"
-                    >
-                      Save Changes
-                    </button>
-                  </div>
-  
-                  <div class="dashboard-bg-box mt-4">
-                    <div class="dashboard-title mb-4">
-                      <h3>Account settings</h3>
-                    </div>
-  
-                    <div class="privacy-box">
-                      <div class="d-flex align-items-start">
-                        <h6>Deleting Your Account Will Permanently</h6>
-                        <div class="form-check form-switch switch-radio ms-auto">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="redio3"
-                          />
-                          <label class="form-check-label" for="redio3"></label>
-                        </div>
-                      </div>
-                      <p class="text-content">
-                        Once your account is deleted, you will be logged out and
-                        will be unable to log in back.
-                      </p>
-                    </div>
-  
-                    <div class="privacy-box">
-                      <div class="d-flex align-items-start">
-                        <h6>Deleting Your Account Will Temporary</h6>
-                        <div class="form-check form-switch switch-radio ms-auto">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="redio4"
-                          />
-                          <label class="form-check-label" for="redio4"></label>
-                        </div>
-                      </div>
-  
-                      <p class="text-content">
-                        Once your account is deleted, you will be logged out and
-                        you will be create new account
-                      </p>
-                    </div>
-  
-                    <button
-                      class="btn theme-bg-color btn-md fw-bold mt-4 text-white"
-                    >
-                      Delete My Account
-                    </button>
-                  </div>
-                </div>
-              </div>
+            
             </div>
           </div>
         </div>
@@ -1296,122 +1106,29 @@
                 </div>
               </form>
             </div>
-  
-            <div class="col-xxl-6">
-              <form>
-                <div class="form-floating theme-form-floating">
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email1"
-                    value="vicki.pope@gmail.com"
-                  />
-                  <label for="email1">Email address</label>
-                </div>
-              </form>
-            </div>
-  
-            <div class="col-xxl-6">
-              <form>
-                <div class="form-floating theme-form-floating">
-                  <input
-                    class="form-control"
-                    type="tel"
-                    value="4567891234"
-                    name="mobile"
-                    id="mobile"
-                    maxlength="10"
-                    oninput="javascript: if (this.value.length > this.maxLength) this.value =
-                                              this.value.slice(0, this.maxLength);"
-                  />
-                  <label for="mobile">Email address</label>
-                </div>
-              </form>
-            </div>
-  
-            <div class="col-12">
+            <div class="col-xxl-12">
               <form>
                 <div class="form-floating theme-form-floating">
                   <input
                     type="text"
                     class="form-control"
-                    id="address1"
-                    value="8424 James Lane South San Francisco"
+                    id="pname"
+                    value="Jack Jennas"
                   />
-                  <label for="address1">Add Address</label>
+                  <label for="pname">Full Name</label>
                 </div>
               </form>
             </div>
-  
-            <div class="col-12">
+            <div class="col-xxl-12">
               <form>
                 <div class="form-floating theme-form-floating">
                   <input
                     type="text"
                     class="form-control"
-                    id="address2"
-                    value="CA 94080"
+                    id="pname"
+                    value="Jack Jennas"
                   />
-                  <label for="address2">Add Address 2</label>
-                </div>
-              </form>
-            </div>
-  
-            <div class="col-xxl-4">
-              <form>
-                <div class="form-floating theme-form-floating">
-                  <select class="form-select" id="floatingSelect1">
-                    <option selected>Choose Your Country</option>
-                    <option value="kingdom">United Kingdom</option>
-                    <option value="states">United States</option>
-                    <option value="fra">France</option>
-                    <option value="china">China</option>
-                    <option value="spain">Spain</option>
-                    <option value="italy">Italy</option>
-                    <option value="turkey">Turkey</option>
-                    <option value="germany">Germany</option>
-                    <option value="russian">Russian Federation</option>
-                    <option value="malay">Malaysia</option>
-                    <option value="mexico">Mexico</option>
-                    <option value="austria">Austria</option>
-                    <option value="hong">Hong Kong SAR, China</option>
-                    <option value="ukraine">Ukraine</option>
-                    <option value="thailand">Thailand</option>
-                    <option value="saudi">Saudi Arabia</option>
-                    <option value="canada">Canada</option>
-                    <option value="singa">Singapore</option>
-                  </select>
-                  <label for="floatingSelect">Country</label>
-                </div>
-              </form>
-            </div>
-  
-            <div class="col-xxl-4">
-              <form>
-                <div class="form-floating theme-form-floating">
-                  <select class="form-select" id="floatingSelect">
-                    <option selected>Choose Your City</option>
-                    <option value="kingdom">India</option>
-                    <option value="states">Canada</option>
-                    <option value="fra">Dubai</option>
-                    <option value="china">Los Angeles</option>
-                    <option value="spain">Thailand</option>
-                  </select>
-                  <label for="floatingSelect">City</label>
-                </div>
-              </form>
-            </div>
-  
-            <div class="col-xxl-4">
-              <form>
-                <div class="form-floating theme-form-floating">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="address3"
-                    value="94080"
-                  />
-                  <label for="address3">Pin Code</label>
+                  <label for="pname">Full Name</label>
                 </div>
               </form>
             </div>
@@ -1436,6 +1153,73 @@
       </div>
     </div>
   </div>
+  <div class="modal fade theme-modal" id="changePassword" tabindex="-1" ng-controller="LoginController">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel2">Thay đổi mật khẩu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-4">
+            <div class="col-xxl-12">
+              <div class="form-floating theme-form-floating">
+                <input
+                  type="password"
+                  class="form-control"
+                  ng-model="currentPassword"
+                  placeholder="Current Password"
+                />
+                <label for="currentPassword">Mật khẩu hiện tại</label>
+              </div>
+            </div>
+            <div class="col-xxl-12">
+              <div class="form-floating theme-form-floating">
+                <input
+                  type="password"
+                  class="form-control"
+                  ng-model="newPassword"
+                  placeholder="New Password"
+                />
+                <label for="newPassword">Mật khẩu mới</label>
+              </div>
+            </div>
+            <div class="col-xxl-12">
+              <div class="form-floating theme-form-floating">
+                <input
+                  type="password"
+                  class="form-control"
+                  ng-model="confirmNewPassword"
+                  placeholder="Confirm New Password"
+                />
+                <label for="confirmNewPassword">Xác nhận mật khẩu mới</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-animation btn-md fw-bold"
+            data-bs-dismiss="modal"
+          >
+            Đóng
+          </button>
+          <button
+            type="button"
+            class="btn theme-bg-color btn-md fw-bold text-light"
+            ng-click="changePassword()"
+          >
+            Lưu thay đổi
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
   <!-- Edit Profile End -->
   
   <!-- Edit Card Start -->
