@@ -76,6 +76,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
         "http://160.30.21.47:1234/api/Invoice/add",
         "http://160.30.21.47:1234/api/Userinvoice/add",
         "http://160.30.21.47:1234/api/Invoicedetail/add",
+        "http://160.30.21.47:1234/api/payment/transactionHistory",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {
@@ -85,7 +86,25 @@ app.factory("AuthInterceptor", function ($q, $window) {
     },
   };
 });
-
+app.factory('httpInterceptor', function ($q) {
+  return {
+    request: function (config) {
+      console.log('Request:', config);
+      return config;
+    },
+    response: function (response) {
+      console.log('Response:', response);
+      return response;
+    },
+    responseError: function (rejection) {
+      console.error('Response Error:', rejection);
+      return $q.reject(rejection);
+    }
+  };
+})
+  .config(function ($httpProvider) {
+    $httpProvider.interceptors.push('httpInterceptor');
+  });
 // Product Service
 app.service("ProductService", function () {
   return {

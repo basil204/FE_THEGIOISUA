@@ -253,66 +253,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       });
   };
 
-  $scope.checkInvoicePaymentStatus = function (totalAmount, invoicecode) {
-    // Tạo dữ liệu cần gửi
-    const data = {
-      creditAmount: totalAmount,
-      description: invoicecode,
-    };
 
-    // Thiết lập thời gian đếm ngược (15 phút)
-    let remainingTime = 900; // 15 phút = 900 giây
-
-    // Cập nhật đồng hồ đếm ngược mỗi giây
-    const countdownId = setInterval(function () {
-      remainingTime--;
-
-      // Chuyển đổi thời gian còn lại thành phút và giây
-      const minutes = Math.floor(remainingTime / 60);
-      const seconds = remainingTime % 60;
-
-      // Hiển thị đồng hồ đếm ngược trong console
-      console.log(`Thời gian còn lại: ${minutes} phút ${seconds} giây`);
-
-      // Nếu hết thời gian thì dừng đồng hồ
-      if (remainingTime <= 0) {
-        clearInterval(countdownId); // Dừng đồng hồ đếm ngược
-        clearInterval(intervalId); // Dừng kiểm tra thanh toán
-        console.log("Đã hết thời gian kiểm tra sau 15 phút");
-      }
-    }, 1000); // Cập nhật mỗi giây
-
-    // Hàm kiểm tra thanh toán, được gọi mỗi 10 giây
-    const intervalId = setInterval(function () {
-      $http
-        .post(`http://160.30.21.47:1234/api/payment/transactionHistory`, data)
-        .then(function (response) {
-          console.log(response); // In ra phản hồi trong console
-          if (response.status === 200) {
-            // Nếu phản hồi cũng cần kiểm tra nội dung
-            clearInterval(intervalId); // Dừng kiểm tra khi đã thanh toán
-            clearInterval(countdownId); // Dừng đồng hồ đếm ngược khi thanh toán thành công
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Hóa đơn đã được thanh toán thành công!",
-              showConfirmButton: true,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                // Khi nhấn OK, tải lại trang
-                location.reload();
-              }
-            });
-          }
-        })
-        .catch(function (error) {
-          if (error.status === 404) {
-            console.log(error.data);
-          }
-          console.error("Lỗi khi kiểm tra trạng thái thanh toán:");
-        });
-    }, 10000); // Kiểm tra mỗi 10 giây
-  };
 
   $scope.createInvoice = function () {
     const address = $scope.getAddressById($scope.selectedAddressId);
@@ -379,23 +320,62 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
         return Promise.all(invoiceDetailsPromises);
       })
       .then(function () {
-        // Nếu không có lỗi, hiển thị thông báo thành công
+        let remainingTime = 600; // 10 phút = 600 giây
+
         Swal.fire({
           position: "center",
           icon: "success",
           title: "Hóa đơn đã được tạo thành công",
           html: `
-                    <p>Quý khách có thể thanh toán qua mã QR bên dưới:</p>
-                    <img src="https://api.vietqr.io/image/970422-0338739954-PmsPdTu.jpg?accountName=NGUYEN%20LIEN%20MANH&amount=${$scope.invoice.totalamount}&addInfo=${$scope.invoice.invoicecode}" 
-                         alt="QR Code" 
-                         style="width: 200px; height: 200px; margin-top: 10px;">`,
+                <p>Quý khách có thể thanh toán qua mã QR bên dưới:</p>
+                <img src="https://api.vietqr.io/image/970422-0338739954-PmsPdTu.jpg?accountName=NGUYEN%20LIEN%20MANH&amount=${$scope.invoice.totalamount}&addInfo=${$scope.invoice.invoicecode}" 
+                     alt="QR Code" 
+                     style="width: 200px; height: 200px; margin-top: 10px;">`,
           showConfirmButton: true,
-        }).then(() => {
-          // Bắt đầu kiểm tra trạng thái thanh toán
-          $scope.checkInvoicePaymentStatus(
-            $scope.invoice.totalamount,
-            $scope.invoice.invoicecode
-          );
+          footer: `<p>Thời gian chờ: <span id="countdown">${Math.floor(remainingTime / 60)} phút ${remainingTime % 60} giây</span></p>`,
+          didOpen: () => {
+            const countdownElement = document.getElementById("countdown");
+
+            const countdownInterval = setInterval(() => {
+              remainingTime--;
+              countdownElement.textContent = `${Math.floor(remainingTime / 60)} phút ${remainingTime % 60} giây`;
+
+              if (remainingTime <= 0) {
+                clearInterval(countdownInterval);
+                clearInterval(paymentCheckInterval);
+                Swal.close();
+                console.log("Đã hết thời gian kiểm tra sau 10 phút");
+              }
+            }, 1000);
+
+            const paymentCheckInterval = setInterval(() => {
+              $http.post(`http://160.30.21.47:1234/api/payment/transactionHistory`, {
+                creditAmount: $scope.invoice.totalamount,
+                description: $scope.invoice.invoicecode,
+              })
+                .then(response => {
+                  if (response.status === 200) {
+                    clearInterval(countdownInterval);
+                    clearInterval(paymentCheckInterval);
+                    Swal.fire({
+                      position: "center",
+                      icon: "success",
+                      title: "Hóa đơn đã được thanh toán thành công!",
+                      showConfirmButton: true,
+                    }).then(result => {
+                      if (result.isConfirmed) location.reload();
+                    });
+                  }
+                })
+                .catch(error => {
+                  if (error.status === 404) {
+                    console.log("Không tìm thấy giao dịch, thử lại sau.");
+                  } else {
+                    console.error("Lỗi khác khi kiểm tra trạng thái thanh toán:", error);
+                  }
+                });
+            }, 5000);
+          },
         });
       })
       .catch(function (error) {
