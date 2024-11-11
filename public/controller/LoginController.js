@@ -91,19 +91,31 @@ app.controller("LoginController", function ($scope, $http) {
 
   // Logout function
   $scope.logout = function () {
-    localStorage.removeItem("authToken"); // Remove token from localStorage
-    localStorage.removeItem("userInfo"); // Remove user info
-    $scope.isLoggedIn = false; // Update login status
-
     Swal.fire({
-      icon: "info",
-      title: "Đăng xuất thành công!",
-      text: "Bạn đã đăng xuất khỏi tài khoản.",
-      confirmButtonText: "OK",
-      timer: 3000,
-    }).then(() => {
-      window.location.href = "/login"; // Redirect to login page
+      title: 'Are you sure?',
+      text: "Bạn Có Muốn Đăng Xuất Không?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("authToken"); // Remove token from localStorage
+        localStorage.removeItem("userInfo"); // Remove user info
+        $scope.isLoggedIn = false; // Update login status
+
+        Swal.fire({
+          icon: "info",
+          title: "Đăng xuất thành công!",
+          text: "Bạn đã đăng xuất khỏi tài khoản.",
+          confirmButtonText: "OK",
+          timer: 3000,
+        }).then(() => {
+          window.location.href = "/login"; // Redirect to login page
+        });
+      }
     });
+
   };
   $scope.changePassword = function () {
     const currentPassword = $scope.currentPassword;

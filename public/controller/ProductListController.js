@@ -112,19 +112,5 @@ app.controller(
     // Call checkFilter when the controller is initialized
     $scope.checkFilter();
     $scope.countProductOrders();
-    $scope.logout = function () {
-      localStorage.removeItem("authToken"); // Xóa token khỏi localStorage
-      localStorage.removeItem("userInfo"); // Xóa thông tin người dùng
-
-      Swal.fire({
-        icon: "info",
-        title: "Đăng xuất thành công!",
-        text: "Bạn đã đăng xuất khỏi tài khoản.",
-        confirmButtonText: "OK",
-        timer: 3000,
-      }).then(() => {
-        window.location.href = "/login"; // Chuyển hướng về trang đăng nhập
-      });
-    };
   }
 );

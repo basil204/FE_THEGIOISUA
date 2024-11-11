@@ -50,8 +50,8 @@
               </div>
 
               <div class="profile-name">
-                <h3>Vicki E. Pope</h3>
-                <h6 class="text-content">vicki.pope@gmail.com</h6>
+                <h3>{{userData.fullName}}</h3>
+                <h6 class="text-content">{{userData.email}}</h6>
               </div>
             </div>
           </div>
@@ -69,12 +69,12 @@
                 <i data-feather="shopping-bag"></i>Đơn Hàng
               </button>
             </li>
-            <li class="nav-item" role="presentation">
+            <!-- <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-address-tab" data-bs-toggle="pill" data-bs-target="#pills-address"
                 type="button" role="tab">
                 <i data-feather="map-pin"></i>Địa chỉ
               </button>
-            </li>
+            </li> -->
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
                 type="button" role="tab">
@@ -110,11 +110,11 @@
 
                 <div class="dashboard-user-name">
                   <h6 class="text-content">
-                    Hello, <b class="text-title">Vicki E. Pope</b>
+                    Xin Chào, <b class="text-title">{{userData.fullName}}</b>
                   </h6>
-                  <p class="text-content">
+                  <!-- <p class="text-content">
                     Bảng điều khiển tài khoản của tôi
-                  </p>
+                  </p> -->
                 </div>
 
                 <div class="total-box">
@@ -144,7 +144,7 @@
 
                   </div>
                 </div>
-
+                <!-- 
                 <div class="dashboard-title">
                   <h3>Thông tin tài khoản</h3>
                 </div>
@@ -159,14 +159,14 @@
                     </div>
                     <div class="dashboard-detail">
                       <h6 class="text-content">MARK JECNO</h6>
-                      <h6 class="text-content">vicki.pope@gmail.com</h6>
+                      <h6 class="text-content">{{userData.email}}</h6>
                       <a data-bs-toggle="modal" data-bs-target="#changePassword" href="javascript:void(0)">Change
                         Password</a>
                     </div>
                   </div>
 
 
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="tab-pane fade" id="pills-order" role="tabpanel">
@@ -265,11 +265,11 @@
               </div>
             </div>
 
-            <div class="tab-pane fade" id="pills-address" role="tabpanel">
+            <!-- <div class="tab-pane fade" id="pills-address" role="tabpanel">
               <div class="dashboard-address">
                 <div class="title title-flex">
                   <div>
-                    <h2>My Address Book</h2>
+                    <h2>Địa Chỉ Của Tôi</h2>
                     <span class="title-leaf">
                       <svg class="icon-width bg-gray">
                         <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
@@ -284,7 +284,7 @@
                 </div>
 
                 <div class="row g-sm-4 g-3">
-                  <div class="col-xxl-4 col-xl-6 col-lg-12 col-md-6" ng-repeat="x in deliveryAddress track by x.id">
+                  <div ng-repeat="x in deliveryAddress track by x.id">
                     <div class="address-box">
                       <div>
                         <div class="form-check">
@@ -330,7 +330,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="tab-pane fade" id="pills-profile" role="tabpanel">
               <div class="dashboard-profile">
                 <div class="title">
@@ -343,12 +343,12 @@
                 </div>
 
                 <div class="profile-detail dashboard-bg-box">
-                  <div class="dashboard-title">
+                  <!-- <div class="dashboard-title">
                     <h3>Profile Name</h3>
-                  </div>
-                  <div class="profile-name-detail">
+                  </div> -->
+                  <!-- <div class="profile-name-detail">
                     <div class="d-sm-flex align-items-center d-block">
-                      <h3>Vicki E. Pope</h3>
+                      <h3>{{userData.fullName}}</h3>
                       <div class="product-rating profile-rating">
                         <ul class="rating">
                           <li>
@@ -371,9 +371,9 @@
                     </div>
 
                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editProfile">Edit</a>
-                  </div>
+                  </div> -->
 
-                  <div class="location-profile">
+                  <!-- <div class="location-profile">
                     <ul>
                       <li>
                         <div class="location-box">
@@ -385,7 +385,7 @@
                       <li>
                         <div class="location-box">
                           <i data-feather="mail"></i>
-                          <h6>vicki.pope@gmail.com</h6>
+                          <h6>{{userData.email}}</h6>
                         </div>
                       </li>
 
@@ -404,7 +404,7 @@
                       to neighbouring residences and land. Different types of
                       housing tenure can be used for the same physical type.
                     </p>
-                  </div>
+                  </div> -->
                 </div>
 
                 <div class="profile-about dashboard-bg-box">
@@ -418,23 +418,48 @@
                         <table class="table">
                           <tbody>
                             <tr>
-                              <td>Gender :</td>
-                              <td>Female</td>
+                              <td>Full Name :</td>
+                              <td>
+                                <a href="javascript:void(0)">{{userData.fullName}}
+                              </td>
                             </tr>
                             <tr>
-                              <td>Birthday :</td>
-                              <td>21/05/1997</td>
+                              <td>Email :</td>
+                              <td>
+                                <a href="javascript:void(0)">{{userData.email}}
+                                  <span data-bs-toggle="modal" data-bs-target="#editProfile">Edit</span></a>
+                              </td>
                             </tr>
                             <tr>
                               <td>Phone Number :</td>
                               <td>
                                 <a href="javascript:void(0)">
-                                  +91 846 - 547 - 210</a>
+                                  {{userData.phoneNumber ? userData.phoneNumber : 'No phone number'}}
+                                  <span data-bs-toggle="modal" data-bs-target="#add-phoneNumber"
+                                    ng-click="userData.phoneNumber ? editPhoneNumber() : addPhoneNumber()">
+                                    {{userData.phoneNumber ? 'Edit' : 'Add'}}
+                                  </span>
+                                </a>
                               </td>
+
                             </tr>
                             <tr>
                               <td>Address :</td>
-                              <td>549 Sulphur Springs Road, Downers, IL</td>
+                              <td>
+                                <a href="javascript:void(0)">
+                                  {{userData.address ? userData.address : 'No address'}}
+                                  <span data-bs-toggle="modal" data-bs-target="#add-address"
+                                    ng-click="userData.address ? editAddress() : addAddress()">
+                                    {{userData.address ? 'Edit' : 'Add'}}
+                                  </span>
+                                </a>
+                              </td>
+
+                            </tr>
+                            <tr>
+                              <td>registrationDate :</td>
+                              <td><a href="javascript:void(0)">{{userData.registrationDate}}</a>
+                              <td>
                             </tr>
                           </tbody>
                         </table>
@@ -448,18 +473,9 @@
                         <table class="table">
                           <tbody>
                             <tr>
-                              <td>Email :</td>
-                              <td>
-                                <a href="javascript:void(0)">vicki.pope@gmail.com
-                                  <span data-bs-toggle="modal" data-bs-target="#editProfile">Edit</span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Password :</td>
-                              <td>
-                                <a href="javascript:void(0)">●●●●●●
-                                  <span data-bs-toggle="modal" data-bs-target="#editProfile">Edit</span></a>
-                              </td>
+                              <a data-bs-toggle="modal" data-bs-target="#changePassword"
+                                href="javascript:void(0)">Change
+                                Password</a>
                             </tr>
                           </tbody>
                         </table>
@@ -563,6 +579,38 @@
   </div>
 </div>
 <!-- Add address modal box end -->
+<div class="modal fade theme-modal" id="add-phoneNumber" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Phone Number</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Nhập Số Điện Thoại -->
+        <form>
+          <div class="form-floating mb-4 theme-form-floating">
+            <input type="text" class="form-control" id="phonenumber" ng-model="phonenumber" placeholder=" " />
+            <label for="phonenumber">Add Phone Number</label>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal"
+          ng-click="addPhoneNumber()">
+          Save changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Location Modal Start -->
 <div class="modal location-modal fade theme-modal" id="locationModal" tabindex="-1">

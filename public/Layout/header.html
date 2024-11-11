@@ -139,7 +139,8 @@
                                                         <li class="product-box-contain" ng-hide="isLogin">
                                                             <a href="/forgot">Forgot Password</a>
                                                         </li>
-                                                        <li class="product-box-contain" ng-hide="!isLogin">
+                                                        <li class="product-box-contain" ng-hide="!isLogin"
+                                                            ng-controller="LoginController">
                                                             <p ng-click="logout()">Đăng Xuất</p>
                                                         </li>
                                                     </ul>

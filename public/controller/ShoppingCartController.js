@@ -6,7 +6,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
   const urlUserInvoice = "http://160.30.21.47:1234/api/Userinvoice/add";
   const urlInvoiceDetail = "http://160.30.21.47:1234/api/Invoicedetail/add";
-  let remainingTime = 15 * 60;
+  const apiUser = "http://localhost:1234/api/user/";
   $scope.deliveryAddress =
     JSON.parse(localStorage.getItem("deliveryAddress")) || [];
   $scope.selectedPaymentMethod = "";
@@ -16,7 +16,22 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   $scope.phuongs = [];
   $scope.detailAddress = "";
   $scope.selectedAddressId = 1; // Chọn mặc định địa chỉ đầu tiên
+  $scope.userData = null; // Khởi tạo biến để lưu dữ liệu người dùng
 
+  $scope.user = function () {
+    return $http
+      .get(apiUser + userInfo.id)
+      .then(function (response) {
+        $scope.userData = response.data; // Lưu dữ liệu vào $scope.userData
+        return $scope.userData; // Trả về dữ liệu sau khi tải xong
+      })
+      .catch(function (error) {
+        console.error("Error fetching user data:", error);
+      });
+  };
+
+  // Gọi hàm để lấy dữ liệu khi ứng dụng khởi động
+  $scope.user();
   // Hàm khởi tạo
   $scope.loadTinh = function () {
     $http
@@ -480,4 +495,5 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
 
   // Gọi hàm loadTinh khi khởi tạo controller
   $scope.loadTinh();
+  $scope.user();
 });
