@@ -7,32 +7,77 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   const urlUserInvoice = "http://160.30.21.47:1234/api/Userinvoice/add";
   const urlInvoiceDetail = "http://160.30.21.47:1234/api/Invoicedetail/add";
   const apiUser = "http://localhost:1234/api/user/";
-  $scope.deliveryAddress =
-    JSON.parse(localStorage.getItem("deliveryAddress")) || [];
+  const apiVoucher = "http://localhost:1234/api/Voucher/";
   $scope.selectedPaymentMethod = "";
   $scope.newAddress = null;
   $scope.tinhs = [];
   $scope.quans = [];
   $scope.phuongs = [];
   $scope.detailAddress = "";
-  $scope.selectedAddressId = 1; // Chọn mặc định địa chỉ đầu tiên
   $scope.userData = null; // Khởi tạo biến để lưu dữ liệu người dùng
+  $scope.discountmoney = 0;
+  // Hàm tính toán tổng tiền
 
-  $scope.user = function () {
-    return $http
-      .get(apiUser + userInfo.id)
-      .then(function (response) {
-        $scope.userData = response.data; // Lưu dữ liệu vào $scope.userData
-        return $scope.userData; // Trả về dữ liệu sau khi tải xong
-      })
-      .catch(function (error) {
-        console.error("Error fetching user data:", error);
-      });
+  $scope.calculateTotal = function () {
+    let total = 0;
+    $scope.lstProductOder.forEach(function (item) {
+      const price = Number(item.productDetails.price);
+      const quantity = Number(item.quantity);
+      if (!isNaN(price) && !isNaN(quantity)) {
+        total += price * quantity;
+      } else {
+        console.error("Giá hoặc số lượng không hợp lệ:", item);
+      }
+    });
+    return total;
+  };
+  $scope.totalamount = $scope.calculateTotal() - $scope.discountmoney;
+  $scope.voucher = function () {
+    if ($scope.vouchercode) {
+      const params = {
+        vouchercode: $scope.vouchercode,
+        total: $scope.calculateTotal(),
+      };
+
+      console.log(params);
+
+      $http
+        .get(apiVoucher + "voucercode", { params: params })
+        .then(function (response) {
+          if (response.status === 200) {
+            $scope.discountmoney = response.data; // Lưu dữ liệu voucher vào biến
+            $scope.totalamount = $scope.calculateTotal() - $scope.discountmoney;
+          }
+        })
+        .catch(function (error) {
+          console.error("Error fetching voucher code:", error.message);
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi",
+            text: "Không thể lấy mã voucher, vui lòng thử lại sau.",
+          });
+        });
+    }
   };
 
-  // Gọi hàm để lấy dữ liệu khi ứng dụng khởi động
-  $scope.user();
-  // Hàm khởi tạo
+  $scope.user = function () {
+    if (userInfo && userInfo.id) {
+      // Kiểm tra userInfo và userInfo.id tồn tại
+      return $http
+        .get(apiUser + userInfo.id)
+        .then(function (response) {
+          $scope.userData = response.data; // Lưu dữ liệu vào $scope.userData
+          return $scope.userData; // Trả về dữ liệu sau khi tải xong
+        })
+        .catch(function (error) {
+          console.error("Error fetching user data:", error);
+        });
+    } else {
+      console.warn("User info is not available."); // Thông báo khi userInfo chưa có
+      return null;
+    }
+  };
+
   $scope.loadTinh = function () {
     $http
       .get("https://esgoo.net/api-tinhthanh/1/0.htm")
@@ -72,57 +117,45 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
         });
     }
   };
+  $scope.addPhoneNumber = function () {
+    const user = {
+      id: $scope.userData.id,
+      phonenumber: $scope.phonenumber,
+    };
 
-  $scope.getAddressById = function (id) {
-    return $scope.deliveryAddress.find(function (address) {
-      return address.id === id;
-    });
+    $http
+      .put(apiUser + "updatePhonerNumber", user)
+      .then(function (response) {
+        if (response.status === 200) {
+          $scope.user(); // Cập nhật lại thông tin người dùng
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Cập nhật số điện thoại thành công",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      })
+      .catch(function (error) {
+        if (error.data && error.data.status === "error") {
+          // Nếu có lỗi và trả về status là "error", hiển thị thông báo lỗi cụ thể
+          const errorMessage = error.data.errors
+            .map((err) => `${err.field}: ${err.message}`)
+            .join("\n");
+
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi cập nhật",
+            text: errorMessage,
+          });
+        } else {
+          console.error("Error updating user:", error.message);
+        }
+      });
   };
 
-  $scope.removeAddress = function (id) {
-    // Kiểm tra xem id có được truyền vào không
-    if (id === undefined) {
-      console.error("Không tìm thấy id để xóa.");
-      return;
-    }
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Xóa phần tử với id khớp trong mảng deliveryAddress
-        $scope.deliveryAddress = $scope.deliveryAddress.filter(function (
-          address
-        ) {
-          return address.id !== id;
-        });
-
-        // Cập nhật lại localStorage với mảng đã được xóa phần tử
-        localStorage.setItem(
-          "deliveryAddress",
-          JSON.stringify($scope.deliveryAddress)
-        );
-
-        // Thông báo xóa thành công
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your address has been deleted.",
-          icon: "success",
-        });
-
-        // Cập nhật giao diện
-        $scope.$apply();
-      }
-    });
-  };
-
-  $scope.addAdress = async function () {
+  $scope.addAdress = function () {
     if (
       !$scope.getTinhName() ||
       !$scope.getQuanName() ||
@@ -144,36 +177,42 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
     if ($scope.detailAddress !== "") {
       $scope.newAddress = $scope.newAddress + ", " + $scope.detailAddress;
     }
-    try {
-      const user = await $scope.getUserById(userInfo.id);
-      const lastAddress =
-        $scope.deliveryAddress[$scope.deliveryAddress.length - 1];
-      const newId = lastAddress ? lastAddress.id + 1 : 1; // Nếu không có phần tử nào, khởi tạo ID bằng 1
-      const newData = {
-        id: newId,
-        address: $scope.newAddress,
-        phonenumber: $scope.phonenumber,
-        userName: user.fullName,
-      };
-      $scope.deliveryAddress.push(newData);
-      $scope.$applyAsync();
-      localStorage.setItem(
-        "deliveryAddress",
-        JSON.stringify($scope.deliveryAddress)
-      );
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Thêm Địa Chỉ Thành Công",
-        showConfirmButton: false,
-        timer: 1500,
+    const user = {
+      id: $scope.userData.id,
+      address: $scope.newAddress,
+    };
+    $http
+      .put(apiUser + "updateAddress", user)
+      .then(function (response) {
+        if (response.status === 200) {
+          $scope.user(); // Cập nhật lại thông tin người dùng
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Cập nhật địa chỉ thành công",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      })
+      .catch(function (error) {
+        if (error.data && error.data.status === "error") {
+          // Nếu có lỗi và trả về status là "error", hiển thị thông báo lỗi cụ thể
+          const errorMessage = error.data.errors
+            .map((err) => `${err.field}: ${err.message}`)
+            .join("\n");
+
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi cập nhật",
+            text: errorMessage,
+          });
+        } else {
+          console.error("Error updating user:", error.message);
+        }
       });
-      $scope.detailAddress = ""; // Xóa ô nhập địa chỉ
-      $scope.phonenumber = ""; // Xóa ô nhập số điện thoại
-      $scope.$applyAsync();
-    } catch (error) {
-      console.error("Lỗi khi lấy thông tin người dùng:", error);
-    }
+    $scope.detailAddress = ""; // Xóa ô nhập địa chỉ
+    $scope.phonenumber = ""; // Xóa ô nhập số điện thoại
   };
 
   // Hàm lấy tên địa chỉ
@@ -209,21 +248,6 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
     return invoiceCode;
   };
 
-  // Hàm tính toán tổng tiền
-  $scope.calculateTotal = function () {
-    let total = 0;
-    $scope.lstProductOder.forEach(function (item) {
-      const price = Number(item.productDetails.price);
-      const quantity = Number(item.quantity);
-      if (!isNaN(price) && !isNaN(quantity)) {
-        total += price * quantity;
-      } else {
-        console.error("Giá hoặc số lượng không hợp lệ:", item);
-      }
-    });
-    return total;
-  };
-
   // Cập nhật tổng tiền khi số lượng thay đổi
   $scope.updateTotal = function (product) {
     if (product.quantity > product.productDetails.stockquantity) {
@@ -241,20 +265,6 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
     );
   };
 
-  // Hàm xử lý người dùng
-  $scope.getUserById = function (userId) {
-    const apiUrl = `http://160.30.21.47:1234/api/user/${userId}`;
-    return $http
-      .get(apiUrl)
-      .then(function (response) {
-        $scope.user = response.data;
-        return $scope.user;
-      })
-      .catch(function (error) {
-        console.error("Lỗi khi lấy thông tin người dùng:", error);
-      });
-  };
-
   $scope.AddInvoiceDetail = function (invoiceDetail) {
     // Gọi API để thêm InvoiceDetail vào hệ thống
     return $http
@@ -268,10 +278,8 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       });
   };
 
-
-
   $scope.createInvoice = function () {
-    const address = $scope.getAddressById($scope.selectedAddressId);
+    const address = $scope.userData.address;
     if (!address) {
       Swal.fire({
         position: "center",
@@ -288,8 +296,8 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       discountamount: 0,
       invoicecode: $scope.generateInvoiceCode(), // Generate random invoice code
       totalamount: $scope.calculateTotal(),
-      phonenumber: address.phonenumber,
-      deliveryaddress: address.address,
+      phonenumber: $scope.userData.phoneNumber,
+      deliveryaddress: $scope.userData.address,
       paymentmethod: $scope.selectedPaymentMethod,
     };
 
@@ -347,13 +355,17 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
                      alt="QR Code" 
                      style="width: 200px; height: 200px; margin-top: 10px;">`,
           showConfirmButton: true,
-          footer: `<p>Thời gian chờ: <span id="countdown">${Math.floor(remainingTime / 60)} phút ${remainingTime % 60} giây</span></p>`,
+          footer: `<p>Thời gian chờ: <span id="countdown">${Math.floor(
+            remainingTime / 60
+          )} phút ${remainingTime % 60} giây</span></p>`,
           didOpen: () => {
             const countdownElement = document.getElementById("countdown");
 
             const countdownInterval = setInterval(() => {
               remainingTime--;
-              countdownElement.textContent = `${Math.floor(remainingTime / 60)} phút ${remainingTime % 60} giây`;
+              countdownElement.textContent = `${Math.floor(
+                remainingTime / 60
+              )} phút ${remainingTime % 60} giây`;
 
               if (remainingTime <= 0) {
                 clearInterval(countdownInterval);
@@ -364,11 +376,15 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
             }, 1000);
 
             const paymentCheckInterval = setInterval(() => {
-              $http.post(`http://160.30.21.47:1234/api/payment/transactionHistory`, {
-                creditAmount: $scope.invoice.totalamount,
-                description: $scope.invoice.invoicecode,
-              })
-                .then(response => {
+              $http
+                .post(
+                  `http://160.30.21.47:1234/api/payment/transactionHistory`,
+                  {
+                    creditAmount: $scope.invoice.totalamount,
+                    description: $scope.invoice.invoicecode,
+                  }
+                )
+                .then((response) => {
                   if (response.status === 200) {
                     clearInterval(countdownInterval);
                     clearInterval(paymentCheckInterval);
@@ -377,16 +393,19 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
                       icon: "success",
                       title: "Hóa đơn đã được thanh toán thành công!",
                       showConfirmButton: true,
-                    }).then(result => {
+                    }).then((result) => {
                       if (result.isConfirmed) location.reload();
                     });
                   }
                 })
-                .catch(error => {
+                .catch((error) => {
                   if (error.status === 404) {
                     console.log("Không tìm thấy giao dịch, thử lại sau.");
                   } else {
-                    console.error("Lỗi khác khi kiểm tra trạng thái thanh toán:", error);
+                    console.error(
+                      "Lỗi khác khi kiểm tra trạng thái thanh toán:",
+                      error
+                    );
                   }
                 });
             }, 5000);

@@ -427,7 +427,7 @@
                               <td>Email :</td>
                               <td>
                                 <a href="javascript:void(0)">{{userData.email}}
-                                  <span data-bs-toggle="modal" data-bs-target="#editProfile">Edit</span></a>
+                                  </a>
                               </td>
                             </tr>
                             <tr>
@@ -435,8 +435,7 @@
                               <td>
                                 <a href="javascript:void(0)">
                                   {{userData.phoneNumber ? userData.phoneNumber : 'No phone number'}}
-                                  <span data-bs-toggle="modal" data-bs-target="#add-phoneNumber"
-                                    ng-click="userData.phoneNumber ? editPhoneNumber() : addPhoneNumber()">
+                                  <span data-bs-toggle="modal" data-bs-target="#add-phoneNumber">
                                     {{userData.phoneNumber ? 'Edit' : 'Add'}}
                                   </span>
                                 </a>
@@ -448,8 +447,7 @@
                               <td>
                                 <a href="javascript:void(0)">
                                   {{userData.address ? userData.address : 'No address'}}
-                                  <span data-bs-toggle="modal" data-bs-target="#add-address"
-                                    ng-click="userData.address ? editAddress() : addAddress()">
+                                  <span data-bs-toggle="modal" data-bs-target="#add-address">
                                     {{userData.address ? 'Edit' : 'Add'}}
                                   </span>
                                 </a>
@@ -554,14 +552,6 @@
           <div class="form-floating mb-4 theme-form-floating">
             <input type="text" class="form-control" id="detailAddress" ng-model="detailAddress" placeholder=" " />
             <label for="detailAddress">Địa Chỉ Chi Tiết</label>
-          </div>
-        </form>
-
-        <!-- Số Điện Thoại Nhận Hàng -->
-        <form>
-          <div class="form-floating mb-4 theme-form-floating">
-            <input type="text" class="form-control" id="phonenumber" ng-model="phonenumber" placeholder=" " />
-            <label for="phonenumber">Số Điện Thoại Nhận Hàng</label>
           </div>
         </form>
       </div>
