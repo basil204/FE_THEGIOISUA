@@ -81,9 +81,9 @@ app.factory("AuthInterceptor", function ($q, $window) {
         "http://160.30.21.47:1234/api/Userinvoice/add",
         "http://160.30.21.47:1234/api/Invoicedetail/add",
         "http://160.30.21.47:1234/api/payment/transactionHistory",
-        "http://localhost:1234/api/Voucher/voucercode",
-        "http://localhost:1234/api/Invoice/getInvoices/",
-        "http://localhost:1234/api/Invoicedetail/getInvoiceDetailByUser/",
+        "http://160.30.21.47:1234/api/Voucher/voucercode",
+        "http://160.30.21.47:1234/api/Invoice/getInvoices/",
+        "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {

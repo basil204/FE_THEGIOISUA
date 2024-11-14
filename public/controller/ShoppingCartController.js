@@ -6,11 +6,11 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
   const urlUserInvoice = "http://160.30.21.47:1234/api/Userinvoice/add";
   const urlInvoiceDetail = "http://160.30.21.47:1234/api/Invoicedetail/add";
-  const apiUser = "http://localhost:1234/api/user/";
-  const apiVoucher = "http://localhost:1234/api/Voucher/";
-  const apitGetInvoiceByUser = "http://localhost:1234/api/Invoice/getInvoices/";
+  const apiUser = "http://160.30.21.47:1234/api/user/";
+  const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
+  const apitGetInvoiceByUser = "http://160.30.21.47:1234/api/Invoice/getInvoices/";
   const apiInvoiceDetail =
-    "http://localhost:1234/api/Invoicedetail/getInvoiceDetailByUser/";
+    "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
   $scope.selectedPaymentMethod = "";
   $scope.newAddress = null;
   $scope.tinhs = [];
