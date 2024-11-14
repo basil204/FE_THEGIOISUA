@@ -54,18 +54,22 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
 });
 
 // Auth Guard Function
-function requireAuth($q, $location) {
+// Auth Guard Function with redirect
+function requireAuth($q, $location, $route) {
   const authToken = localStorage.getItem("authToken");
   if (authToken) {
     return $q.resolve();
   } else {
+    // Save the path user tried to access
+    localStorage.setItem("redirectAfterLogin", $location.path());
     $location.path("/login");
     return $q.reject("Not Authenticated");
   }
 }
 
 // Inject the dependencies for requireAuth
-requireAuth.$inject = ["$q", "$location"];
+requireAuth.$inject = ["$q", "$location", "$route"];
+
 
 // HTTP Interceptor for Authorization
 app.factory("AuthInterceptor", function ($q, $window) {

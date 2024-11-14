@@ -21,7 +21,31 @@ app.controller(
         }
       );
     };
+    $scope.cartProducts =
+      JSON.parse(localStorage.getItem("lstProductOder")) || [];
 
+    // Calculate total price
+    $scope.totalPrice = $scope.cartProducts.reduce(function (sum, product) {
+      return sum + product.quantity * product.productDetails.price;
+    }, 0);
+
+    // Function to remove a product from the cart
+    $scope.removeProduct = function (product) {
+      const index = $scope.cartProducts.indexOf(product);
+      if (index > -1) {
+        $scope.cartProducts.splice(index, 1);
+        // Update localStorage after removing the product
+        localStorage.setItem(
+          "lstProductOder",
+          JSON.stringify($scope.cartProducts)
+        );
+
+        // Recalculate total price
+        $scope.totalPrice = $scope.cartProducts.reduce(function (sum, product) {
+          return sum + product.quantity * product.productDetails.price;
+        }, 0);
+      }
+    };
     // Fetch list of milk types
     $scope.getMilktaste = function () {
       $http.get("http://160.30.21.47:1234/api/Milktype/lst").then(

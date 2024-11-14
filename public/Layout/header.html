@@ -107,9 +107,42 @@
 
                                             <li class="onhover-dropdown">
                                                 <a href="/cart" class="header-icon bag-icon">
-                                                    <!-- <small class="badge-number">{{count}}</small> -->
+                                                    <small class="badge-number">{{count}}</small>
                                                     <i class="iconly-Bag-2 icli"></i>
                                                 </a>
+                                                <div class="onhover-div">
+                                                    <ul class="cart-list">
+                                                        <!-- Loop through the cart products using ng-repeat -->
+                                                        <li ng-repeat="product in cartProducts">
+                                                            <div class="drop-cart">
+                                                                <a href="product-left-thumbnail.html" class="drop-image">
+                                                                    <img ng-src="{{product.productDetails.imgURL}}" class="blur-up lazyload" alt="">
+                                                                </a>
+                                                
+                                                                <div class="drop-contain">
+                                                                    <a href="product-left-thumbnail.html">
+                                                                        <h5>{{product.productDetails.milkbrandname}} - {{product.productDetails.milktypename}} ({{product.productDetails.milktastename}})</h5>
+                                                                    </a>
+                                                                    <h6><span>{{product.quantity}} x</span> {{product.productDetails.price| number:''}} VNĐ</h6>
+                                                                    <button class="close-button" ng-click="removeProduct(product)">
+                                                                        <i class="fa-solid fa-xmark"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                
+                                                    <div class="price-box">
+                                                        <h5>Price :</h5>
+                                                        <h4 class="theme-color fw-bold">{{totalPrice| number:''}} VNĐ</h4>
+                                                    </div>
+                                                
+                                                    <div class="button-group">
+                                                        <a href="/cart" class="btn btn-sm cart-button">View Cart</a>
+                                                        <a href="/checkout" class="btn btn-sm cart-button theme-bg-color text-white">Checkout</a>
+                                                    </div>
+                                                </div>
+                                                
                                             </li>
                                             <li class="onhover-dropdown right-side" id="user-icon-dropdown">
                                                 <div class="delivery-login-box d-flex align-items-center">
