@@ -65,8 +65,8 @@
             </li>
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-order-tab" data-bs-toggle="pill" data-bs-target="#pills-order"
-                type="button">
-                <i data-feather="shopping-bag"></i>Đơn Hàng
+                type="button" ng-click="getInvoicesByUser()">
+                <i data-feather="shopping-bag"></i>Hóa Đơn Của Tôi
               </button>
             </li>
             <!-- <li class="nav-item" role="presentation">
@@ -116,7 +116,6 @@
                     Bảng điều khiển tài khoản của tôi
                   </p> -->
                 </div>
-
                 <div class="total-box">
                   <div class="row g-sm-4 g-3">
                     <div class="col-xxl-4 col-lg-6 col-md-4 col-sm-6">
@@ -124,19 +123,18 @@
                         <img src="../assets/images/svg/order.svg" class="img-1 blur-up lazyload" alt="" />
                         <img src="../assets/images/svg/order.svg" class="blur-up lazyload" alt="" />
                         <div class="total-detail">
-                          <h5>Tổng số đơn hàng</h5>
+                          <h5>Hóa Đơn Đã Mua</h5>
                           <h3>3658</h3>
                         </div>
                       </div>
                     </div>
-
                     <div class="col-xxl-4 col-lg-6 col-md-4 col-sm-6">
                       <div class="total-contain">
                         <img src="../assets/images/svg/pending.svg" class="img-1 blur-up lazyload" alt="" />
                         <img src="../assets/images/svg/pending.svg" class="blur-up lazyload" alt="" />
                         <div class="total-detail">
-                          <h5>Tổng số lệnh chờ xử lý</h5>
-                          <h3>254</h3>
+                          <h5>Hóa Đơn Đang Chờ Thanh Toán</h5>
+                          <h3>{{isPayment ? 1 : 0}}</h3>
                         </div>
                       </div>
                     </div>
@@ -179,89 +177,48 @@
                     </svg>
                   </span>
                 </div>
-
-                <div class="order-contain">
-                  <!-- danh sách -->
-                  <div class="order-box dashboard-bg-box">
-                    <div class="order-container">
-                      <div class="order-icon">
-                        <i data-feather="box"></i>
-                      </div>
-
-                      <div class="order-detail">
-                        <h4>Delivers <span>Pending</span></h4>
-                        <h6 class="text-content">
-                          Gouda parmesan caerphilly mozzarella cottage cheese
-                          cauliflower cheese taleggio gouda.
-                        </h6>
-                      </div>
-                    </div>
-
-                    <div class="product-order-detail">
-                      <a href="product-left-thumbnail.html" class="order-image">
-                        <img src="../assets/images/vegetable/product/1.png" class="blur-up lazyload" alt="" />
-                      </a>
-
-                      <div class="order-wrap">
-                        <a href="product-left-thumbnail.html">
-                          <h3>Fantasy Crunchy Choco Chip Cookies</h3>
-                        </a>
-                        <p class="text-content">
-                          Cheddar dolcelatte gouda. Macaroni cheese cheese
-                          strings feta halloumi cottage cheese jarlsberg cheese
-                          triangles say cheese.
-                        </p>
-                        <ul class="product-size">
-                          <li>
-                            <div class="size-box">
-                              <h6 class="text-content">Price :</h6>
-                              <h5>$20.68</h5>
-                            </div>
-                          </li>
-
-                          <li>
-                            <div class="size-box">
-                              <h6 class="text-content">Rate :</h6>
-                              <div class="product-rating ms-2">
-                                <ul class="rating">
-                                  <li>
-                                    <i data-feather="star" class="fill"></i>
-                                  </li>
-                                  <li>
-                                    <i data-feather="star" class="fill"></i>
-                                  </li>
-                                  <li>
-                                    <i data-feather="star" class="fill"></i>
-                                  </li>
-                                  <li>
-                                    <i data-feather="star" class="fill"></i>
-                                  </li>
-                                  <li>
-                                    <i data-feather="star"></i>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </li>
-
-                          <li>
-                            <div class="size-box">
-                              <h6 class="text-content">Sold By :</h6>
-                              <h5>Fresho</h5>
-                            </div>
-                          </li>
-
-                          <li>
-                            <div class="size-box">
-                              <h6 class="text-content">Quantity :</h6>
-                              <h5>250 G</h5>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              </div>
+              <div class="table-container">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Mã Hóa Đơn</th>
+                            <th>Tên Khách Hàng</th>
+                            <th>Tên Người Bán</th>
+                            <th>Ngày Tạo</th>
+                            <th>Địa Chỉ</th>
+                            <th>Số Điện Thoại</th>
+                            <th>Phương Thức Thanh Toán</th>
+                            <th>Voucher</th>
+                            <th>Số Tiền Được Giảm</th>
+                            <th>Số Tiền Phải Thanh Toán</th>
+                            <th>Trạng Thái</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="invoice in userInvoices">
+                          <td data-label="Mã Hóa Đơn">{{invoice.invoiceCode}}</td>
+                          <td data-label="Tên Khách Hàng">{{invoice.nguoiMua}}</td>
+                          <td data-label="Tên Người Bán">{{invoice.nguoiBan}}</td>
+                          <td data-label="Ngày Tạo">{{invoice.ngayTao}}</td>
+                          <td data-label="Địa Chỉ">{{invoice.deliveryaddress}}</td>
+                          <td data-label="Số Điện Thoại">{{invoice.phonenumber}}</td>
+                          <td data-label="Phương Thức Thanh Toán">{{invoice.paymentmethod}}</td>
+                          <td data-label="Voucher">{{invoice.voucherCode}}</td>
+                          <td data-label="Số Tiền Được Giảm">{{invoice.sotienGiamGia | number:''}} VNĐ</td>
+                          <td data-label="Số Tiền Phải Thanh Toán">{{invoice.tongTien | number:''}} VNĐ</td>
+                          <td data-label="Trạng Thái">
+                              <!-- Hiển thị trạng thái, kiểm tra giá trị của trangThai -->
+                              {{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh Toán"}}
+                          </td>
+                          <td data-label="Thao Tác">
+                              <!-- Thêm sự kiện để mở chi tiết hóa đơn -->
+                              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#optimized-invoice" ng-click="getInvoiceDetailByUser(invoice)">Xem Chi Tiết</button>
+                          </td>
+                      </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -603,7 +560,7 @@
 </div>
 
 <!-- Location Modal Start -->
-<div class="modal location-modal fade theme-modal" id="locationModal" tabindex="-1">
+<!-- <div class="modal location-modal fade theme-modal" id="locationModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
@@ -703,11 +660,11 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- Location Modal End -->
 
 <!-- Edit Profile Start -->
-<div class="modal fade theme-modal" id="editProfile" tabindex="-1">
+<!-- <div class="modal fade theme-modal" id="editProfile" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
@@ -754,7 +711,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <div class="modal fade theme-modal" id="changePassword" tabindex="-1" ng-controller="LoginController">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
@@ -863,7 +820,9 @@
 <!-- Edit Card End -->
 
 <!-- Remove Profile Modal Start -->
-<div class="modal fade theme-modal remove-profile" id="removeProfile" tabindex="-1">
+<!-- <div class="modal fade theme-modal remove-profile" id="removeProfile" tabindex="-1">
+
+  
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header d-block text-center">
@@ -912,6 +871,63 @@
         <button type="button" class="btn theme-bg-color btn-md fw-bold text-light" data-bs-dismiss="modal">
           Close
         </button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="modal fade theme-modal" id="optimized-invoice" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Chi Tiết Hóa Đơn</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-3">
+          <strong>Số Hóa Đơn:</strong> <span id="invoiceNumber">{{invoice.invoiceCode}}</span><br>
+          <strong>Ngày Tạo Hóa Đơn:</strong> <span id="invoiceDate">{{invoice.ngayTao}}</span><br>     
+          <strong>Tổng Số Tiền:</strong> <span id="amount">{{invoice.tongTien+invoice.sotienGiamGia | number:''}} VNĐ</span><br>
+          <strong>Số Tiền Được Giảm:</strong> <span id="invoiceDate">{{invoice.sotienGiamGia | number:''}} VNĐ</span><br>
+          <strong>Số Tiền Phải Thanh Toán:</strong> <span id="invoiceDate">{{invoice.tongTien | number:''}} VNĐ</span><br>
+          <strong>Phương Thức Thanh Toán:</strong> <span id="description">{{invoice.paymentmethod}}</span><br>
+          <strong>Trạng Thái:</strong> <span id="status">{{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh Toán"}}</span>
+        </div>
+
+        <h6>Chi Tiết Sản Phẩm:</h6>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Tên Sản Phẩm</th>
+              <th>Số Lượng</th>
+              <th>Giá</th>
+              <th>Tổng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="x in invoiceDetails">
+              <td>
+                {{x.packagingunitname}}
+                {{x.milkTypename}}
+                {{x.milkbrandname}}
+                {{x.milktastename}}
+                {{x.capacity}}
+                {{x.unit}}
+              </td>
+              <td>{{x.quantity}}</td>
+              <td>{{x.price | number:''}} VNĐ</td>
+              <td>{{x.totalprice | number:''}} VNĐ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-hide="invoice.trangThai != 335" ng-click="payment(invoice.tongTien,invoice.invoiceCode)">Thanh Toán</button>
       </div>
     </div>
   </div>

@@ -8,6 +8,9 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   const urlInvoiceDetail = "http://160.30.21.47:1234/api/Invoicedetail/add";
   const apiUser = "http://localhost:1234/api/user/";
   const apiVoucher = "http://localhost:1234/api/Voucher/";
+  const apitGetInvoiceByUser = "http://localhost:1234/api/Invoice/getInvoices/";
+  const apiInvoiceDetail =
+    "http://localhost:1234/api/Invoicedetail/getInvoiceDetailByUser/";
   $scope.selectedPaymentMethod = "";
   $scope.newAddress = null;
   $scope.tinhs = [];
@@ -16,8 +19,107 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   $scope.detailAddress = "";
   $scope.userData = null; // Khởi tạo biến để lưu dữ liệu người dùng
   $scope.discountmoney = 0;
+  $scope.voucher = null;
+  $scope.userInvoices = null;
+  $scope.invoiceDetails = [];
+  $scope.invoice = null;
   // Hàm tính toán tổng tiền
+  $scope.payment = function (totalamount, invoicecode) {
+    let remainingTime = 600; // 10 phút
 
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      html: `
+            <p>Quý khách có thể thanh toán qua mã QR bên dưới:</p>
+            <img src="https://api.vietqr.io/image/970422-0338739954-PmsPdTu.jpg?accountName=NGUYEN%20LIEN%20MANH&amount=${totalamount}&addInfo=${invoicecode}" 
+                 alt="QR Code" style="width: 200px; height: 200px; margin-top: 10px;">
+          `,
+      showConfirmButton: false,
+      footer: `<p>Thời gian chờ: <span id="countdown">${Math.floor(
+        remainingTime / 60
+      )} phút ${remainingTime % 60} giây</span></p>`,
+      didOpen: () => {
+        const countdownElement = document.getElementById("countdown");
+        const countdownInterval = setInterval(() => {
+          remainingTime--;
+          countdownElement.textContent = `${Math.floor(
+            remainingTime / 60
+          )} phút ${remainingTime % 60} giây`;
+          if (remainingTime <= 0) {
+            clearInterval(countdownInterval);
+            clearInterval(paymentCheckInterval);
+            Swal.close();
+            console.log("Đã hết thời gian kiểm tra sau 10 phút");
+          }
+        }, 1000);
+
+        const paymentCheckInterval = setInterval(() => {
+          $http
+            .post("http://160.30.21.47:1234/api/payment/transactionHistory", {
+              creditAmount: $scope.invoice.totalamount,
+              description: $scope.invoice.invoicecode,
+            })
+            .then((response) => {
+              if (response.status === 200) {
+                clearInterval(countdownInterval);
+                clearInterval(paymentCheckInterval);
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Hóa đơn đã được thanh toán thành công!",
+                  showConfirmButton: true,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = "/profile";
+                  }
+                });
+              }
+            })
+            .catch((error) => {
+              if (error.status === 404) {
+                console.log("Không tìm thấy giao dịch, thử lại sau.");
+              } else {
+                console.error(
+                  "Lỗi khác khi kiểm tra trạng thái thanh toán:",
+                  error
+                );
+              }
+            });
+        }, 5000);
+      },
+    });
+  };
+  $scope.getInvoiceDetailByUser = function (invoice) {
+    $scope.invoice = invoice;
+    $http
+      .get(apiInvoiceDetail + invoice.invoiceID)
+      .then(function (response) {
+        $scope.invoiceDetails = response.data.message;
+      })
+      .catch(function (error) {
+        console.error("Error fetching invoice details:", error);
+      });
+  };
+  $scope.getInvoicesByUser = function () {
+    if (userInfo && userInfo.id) {
+      $http
+        .get(`${apitGetInvoiceByUser}${userInfo.id}`)
+        .then((response) => {
+          if (response.status === 200) {
+            $scope.userInvoices = response.data.message; // Lưu danh sách hóa đơn vào scope để hiển thị
+          } else {
+            console.error("Không thể lấy danh sách hóa đơn.");
+          }
+        })
+        .catch((error) => {
+          console.error("Lỗi khi lấy hóa đơn:", error);
+        });
+    } else {
+      console.warn("User info is not available."); // Thông báo khi userInfo chưa có
+      return null;
+    }
+  };
   $scope.calculateTotal = function () {
     let total = 0;
     $scope.lstProductOder.forEach(function (item) {
@@ -32,29 +134,29 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
     return total;
   };
   $scope.totalamount = $scope.calculateTotal() - $scope.discountmoney;
-  $scope.voucher = function () {
+  $scope.checkvoucher = function () {
     if ($scope.vouchercode) {
       const params = {
         vouchercode: $scope.vouchercode,
         total: $scope.calculateTotal(),
       };
 
-      console.log(params);
-
       $http
         .get(apiVoucher + "voucercode", { params: params })
         .then(function (response) {
           if (response.status === 200) {
-            $scope.discountmoney = response.data; // Lưu dữ liệu voucher vào biến
+            $scope.voucher = response.data;
+            $scope.discountmoney = response.data.discountAmount; // Lưu dữ liệu voucher vào biến
             $scope.totalamount = $scope.calculateTotal() - $scope.discountmoney;
           }
         })
         .catch(function (error) {
-          console.error("Error fetching voucher code:", error.message);
+          console.error("Error fetching voucher code:", error.data);
           Swal.fire({
             icon: "error",
             title: "Lỗi",
             text: "Không thể lấy mã voucher, vui lòng thử lại sau.",
+            footer: error.data.error,
           });
         });
     }
@@ -290,130 +392,66 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       return;
     }
 
-    // Tạo đối tượng hóa đơn
     $scope.invoice = {
-      voucher: null,
-      discountamount: 0,
-      invoicecode: $scope.generateInvoiceCode(), // Generate random invoice code
-      totalamount: $scope.calculateTotal(),
+      voucher: $scope.voucher ? { id: $scope.voucher.id } : null,
+      discountamount: $scope.discountmoney,
+      invoicecode: $scope.generateInvoiceCode(),
+      totalamount: $scope.totalamount,
       phonenumber: $scope.userData.phoneNumber,
       deliveryaddress: $scope.userData.address,
       paymentmethod: $scope.selectedPaymentMethod,
     };
 
     if (!$scope.selectedPaymentMethod) {
-      showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!", "error");
+      showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!");
       return;
     }
 
     if ($scope.selectedPaymentMethod === "COD") {
-      showAlert("Chức năng Hiện Chưa Khả Dụng!", "error");
+      showAlert("Chức năng Hiện Chưa Khả Dụng!");
       return;
     }
 
-    // Gửi yêu cầu POST để tạo hóa đơn
     $http
       .post(urlInvoice, $scope.invoice)
-      .then(function (response) {
+      .then((response) => {
         $scope.idInvoice = response.data.message;
-        return createUserInvoice($scope.idInvoice); // Trả về promise từ createUserInvoice
+        return createUserInvoice($scope.idInvoice);
       })
-      .then(function () {
+      .then(() => {
         if (!$scope.lstProductOder || $scope.lstProductOder.length === 0) {
           throw new Error("Không có sản phẩm nào để tạo chi tiết hóa đơn.");
         }
 
-        // Tạo tất cả các chi tiết hóa đơn
-        const invoiceDetailsPromises = $scope.lstProductOder.map(function (x) {
-          var invoiceDetail = {
+        const invoiceDetailsPromises = $scope.lstProductOder.map((x) => {
+          const invoiceDetail = {
             quantity: x.quantity,
             price: x.productDetails.price,
             totalprice: x.quantity * x.productDetails.price,
-            invoice: {
-              id: $scope.idInvoice,
-            },
-            milkDetail: {
-              id: x.id,
-            },
+            invoice: { id: $scope.idInvoice },
+            milkDetail: { id: x.id },
           };
-          return $scope.AddInvoiceDetail(invoiceDetail); // Trả về promise
+          return $scope.AddInvoiceDetail(invoiceDetail);
         });
 
-        // Thực hiện tất cả các yêu cầu đồng thời
         return Promise.all(invoiceDetailsPromises);
       })
-      .then(function () {
-        let remainingTime = 600; // 10 phút = 600 giây
-
+      .then(() => {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Hóa đơn đã được tạo thành công",
-          html: `
-                <p>Quý khách có thể thanh toán qua mã QR bên dưới:</p>
-                <img src="https://api.vietqr.io/image/970422-0338739954-PmsPdTu.jpg?accountName=NGUYEN%20LIEN%20MANH&amount=${$scope.invoice.totalamount}&addInfo=${$scope.invoice.invoicecode}" 
-                     alt="QR Code" 
-                     style="width: 200px; height: 200px; margin-top: 10px;">`,
-          showConfirmButton: true,
-          footer: `<p>Thời gian chờ: <span id="countdown">${Math.floor(
-            remainingTime / 60
-          )} phút ${remainingTime % 60} giây</span></p>`,
-          didOpen: () => {
-            const countdownElement = document.getElementById("countdown");
-
-            const countdownInterval = setInterval(() => {
-              remainingTime--;
-              countdownElement.textContent = `${Math.floor(
-                remainingTime / 60
-              )} phút ${remainingTime % 60} giây`;
-
-              if (remainingTime <= 0) {
-                clearInterval(countdownInterval);
-                clearInterval(paymentCheckInterval);
-                Swal.close();
-                console.log("Đã hết thời gian kiểm tra sau 10 phút");
-              }
-            }, 1000);
-
-            const paymentCheckInterval = setInterval(() => {
-              $http
-                .post(
-                  `http://160.30.21.47:1234/api/payment/transactionHistory`,
-                  {
-                    creditAmount: $scope.invoice.totalamount,
-                    description: $scope.invoice.invoicecode,
-                  }
-                )
-                .then((response) => {
-                  if (response.status === 200) {
-                    clearInterval(countdownInterval);
-                    clearInterval(paymentCheckInterval);
-                    Swal.fire({
-                      position: "center",
-                      icon: "success",
-                      title: "Hóa đơn đã được thanh toán thành công!",
-                      showConfirmButton: true,
-                    }).then((result) => {
-                      if (result.isConfirmed) location.reload();
-                    });
-                  }
-                })
-                .catch((error) => {
-                  if (error.status === 404) {
-                    console.log("Không tìm thấy giao dịch, thử lại sau.");
-                  } else {
-                    console.error(
-                      "Lỗi khác khi kiểm tra trạng thái thanh toán:",
-                      error
-                    );
-                  }
-                });
-            }, 5000);
-          },
+          title: "Hóa đơn được Tạo Thành Công",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          // Chờ Swal kết thúc rồi mới gọi hàm này
+          $scope.payment(
+            $scope.invoice.totalamount,
+            $scope.invoice.invoicecode
+          );
         });
       })
-      .catch(function (error) {
-        // Nếu có lỗi, dừng quá trình tạo hóa đơn
+      .catch((error) => {
         Swal.fire({
           position: "center",
           icon: "error",
