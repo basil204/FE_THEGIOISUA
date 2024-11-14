@@ -57,8 +57,8 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
         const paymentCheckInterval = setInterval(() => {
           $http
             .post("http://160.30.21.47:1234/api/payment/transactionHistory", {
-              creditAmount: $scope.invoice.totalamount,
-              description: $scope.invoice.invoicecode,
+              creditAmount: totalamount,
+              description: invoicecode,
             })
             .then((response) => {
               if (response.status === 200) {

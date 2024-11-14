@@ -179,44 +179,45 @@
                 </div>
               </div>
               <div class="table-container">
-                <table class="table table-bordered">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Mã Hóa Đơn</th>
-                            <th>Tên Khách Hàng</th>
-                            <th>Tên Người Bán</th>
-                            <th>Ngày Tạo</th>
-                            <th>Địa Chỉ</th>
-                            <th>Số Điện Thoại</th>
-                            <th>Phương Thức Thanh Toán</th>
-                            <th>Voucher</th>
-                            <th>Số Tiền Được Giảm</th>
-                            <th>Số Tiền Phải Thanh Toán</th>
-                            <th>Trạng Thái</th>
-                            <th>Thao Tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="invoice in userInvoices">
-                          <td data-label="Mã Hóa Đơn">{{invoice.invoiceCode}}</td>
-                          <td data-label="Tên Khách Hàng">{{invoice.nguoiMua}}</td>
-                          <td data-label="Tên Người Bán">{{invoice.nguoiBan}}</td>
-                          <td data-label="Ngày Tạo">{{invoice.ngayTao}}</td>
-                          <td data-label="Địa Chỉ">{{invoice.deliveryaddress}}</td>
-                          <td data-label="Số Điện Thoại">{{invoice.phonenumber}}</td>
-                          <td data-label="Phương Thức Thanh Toán">{{invoice.paymentmethod}}</td>
-                          <td data-label="Voucher">{{invoice.voucherCode}}</td>
-                          <td data-label="Số Tiền Được Giảm">{{invoice.sotienGiamGia | number:''}} VNĐ</td>
-                          <td data-label="Số Tiền Phải Thanh Toán">{{invoice.tongTien | number:''}} VNĐ</td>
-                          <td data-label="Trạng Thái">
-                              <!-- Hiển thị trạng thái, kiểm tra giá trị của trangThai -->
-                              {{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh Toán"}}
-                          </td>
-                          <td data-label="Thao Tác">
-                              <!-- Thêm sự kiện để mở chi tiết hóa đơn -->
-                              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#optimized-invoice" ng-click="getInvoiceDetailByUser(invoice)">Xem Chi Tiết</button>
-                          </td>
-                      </tr>
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Mã Hóa Đơn</th>
+                      <th>Tên Khách Hàng</th>
+                      <th>Tên Người Bán</th>
+                      <th>Ngày Tạo</th>
+                      <th>Địa Chỉ</th>
+                      <th>Số Điện Thoại</th>
+                      <th>Phương Thức Thanh Toán</th>
+                      <th>Voucher</th>
+                      <th>Số Tiền Được Giảm</th>
+                      <th>Số Tiền Phải Thanh Toán</th>
+                      <th>Trạng Thái</th>
+                      <th>Thao Tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="invoice in userInvoices">
+                      <td data-label="Mã Hóa Đơn">{{invoice.invoiceCode}}</td>
+                      <td data-label="Tên Khách Hàng">{{invoice.nguoiMua}}</td>
+                      <td data-label="Tên Người Bán">{{invoice.nguoiBan}}</td>
+                      <td data-label="Ngày Tạo">{{invoice.ngayTao}}</td>
+                      <td data-label="Địa Chỉ">{{invoice.deliveryaddress}}</td>
+                      <td data-label="Số Điện Thoại">{{invoice.phonenumber}}</td>
+                      <td data-label="Phương Thức Thanh Toán">{{invoice.paymentmethod}}</td>
+                      <td data-label="Voucher">{{invoice.voucherCode}}</td>
+                      <td data-label="Số Tiền Được Giảm">{{invoice.sotienGiamGia | number:''}} VNĐ</td>
+                      <td data-label="Số Tiền Phải Thanh Toán">{{invoice.tongTien | number:''}} VNĐ</td>
+                      <td data-label="Trạng Thái">
+                        <!-- Hiển thị trạng thái, kiểm tra giá trị của trangThai -->
+                        {{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh Toán"}}
+                      </td>
+                      <td data-label="Thao Tác">
+                        <!-- Thêm sự kiện để mở chi tiết hóa đơn -->
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#optimized-invoice"
+                          ng-click="getInvoiceDetailByUser(invoice)">Xem Chi Tiết</button>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -371,54 +372,60 @@
                         <h3>Profile About</h3>
                       </div>
 
-                      <div class="table-responsive">
+                      <div>
                         <table class="table">
                           <tbody>
                             <tr>
                               <td>Full Name :</td>
                               <td>
-                                <a href="javascript:void(0)">{{userData.fullName}}
+                                <a>{{userData.fullName}}</a>
                               </td>
+                              <td></td>
                             </tr>
                             <tr>
                               <td>Email :</td>
                               <td>
-                                <a href="javascript:void(0)">{{userData.email}}
-                                  </a>
+                                <a>{{userData.email}}</a>
                               </td>
+                              <td></td>
                             </tr>
                             <tr>
                               <td>Phone Number :</td>
                               <td>
-                                <a href="javascript:void(0)">
+                                <a>
                                   {{userData.phoneNumber ? userData.phoneNumber : 'No phone number'}}
-                                  <span data-bs-toggle="modal" data-bs-target="#add-phoneNumber">
-                                    {{userData.phoneNumber ? 'Edit' : 'Add'}}
-                                  </span>
                                 </a>
                               </td>
-
+                              <td>
+                                <span data-bs-toggle="modal" data-bs-target="#add-phoneNumber">
+                                  {{userData.phoneNumber ? 'Edit' : 'Add'}}
+                                </span>
+                              </td>
                             </tr>
                             <tr>
                               <td>Address :</td>
                               <td>
-                                <a href="javascript:void(0)">
+                                <a class="address">
                                   {{userData.address ? userData.address : 'No address'}}
-                                  <span data-bs-toggle="modal" data-bs-target="#add-address">
-                                    {{userData.address ? 'Edit' : 'Add'}}
-                                  </span>
                                 </a>
                               </td>
-
+                              <td>
+                                <span data-bs-toggle="modal" data-bs-target="#add-address">
+                                  {{userData.address ? 'Edit' : 'Add'}}
+                                </span>
+                              </td>
                             </tr>
                             <tr>
-                              <td>registrationDate :</td>
-                              <td><a href="javascript:void(0)">{{userData.registrationDate}}</a>
+                              <td>Registration Date :</td>
                               <td>
+                                <a>{{userData.registrationDate}}</a>
+                              </td>
+                              <td></td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
+
 
                       <div class="dashboard-title mb-3">
                         <h3>Login Details</h3>
@@ -889,16 +896,20 @@
       <div class="modal-body">
         <div class="mb-3">
           <strong>Số Hóa Đơn:</strong> <span id="invoiceNumber">{{invoice.invoiceCode}}</span><br>
-          <strong>Ngày Tạo Hóa Đơn:</strong> <span id="invoiceDate">{{invoice.ngayTao}}</span><br>     
-          <strong>Tổng Số Tiền:</strong> <span id="amount">{{invoice.tongTien+invoice.sotienGiamGia | number:''}} VNĐ</span><br>
-          <strong>Số Tiền Được Giảm:</strong> <span id="invoiceDate">{{invoice.sotienGiamGia | number:''}} VNĐ</span><br>
-          <strong>Số Tiền Phải Thanh Toán:</strong> <span id="invoiceDate">{{invoice.tongTien | number:''}} VNĐ</span><br>
+          <strong>Ngày Tạo Hóa Đơn:</strong> <span id="invoiceDate">{{invoice.ngayTao}}</span><br>
+          <strong>Tổng Số Tiền:</strong> <span id="amount">{{invoice.tongTien+invoice.sotienGiamGia | number:''}}
+            VNĐ</span><br>
+          <strong>Số Tiền Được Giảm:</strong> <span id="invoiceDate">{{invoice.sotienGiamGia | number:''}}
+            VNĐ</span><br>
+          <strong>Số Tiền Phải Thanh Toán:</strong> <span id="invoiceDate">{{invoice.tongTien | number:''}}
+            VNĐ</span><br>
           <strong>Phương Thức Thanh Toán:</strong> <span id="description">{{invoice.paymentmethod}}</span><br>
-          <strong>Trạng Thái:</strong> <span id="status">{{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh Toán"}}</span>
+          <strong>Trạng Thái:</strong> <span id="status">{{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh
+            Toán"}}</span>
         </div>
 
         <h6>Chi Tiết Sản Phẩm:</h6>
-        <table class="table table-bordered">
+        <table class="table">
           <thead>
             <tr>
               <th>Tên Sản Phẩm</th>
@@ -909,7 +920,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="x in invoiceDetails">
-              <td>
+              <td data-label="Tên Sản Phẩm">
                 {{x.packagingunitname}}
                 {{x.milkTypename}}
                 {{x.milkbrandname}}
@@ -917,17 +928,19 @@
                 {{x.capacity}}
                 {{x.unit}}
               </td>
-              <td>{{x.quantity}}</td>
-              <td>{{x.price | number:''}} VNĐ</td>
-              <td>{{x.totalprice | number:''}} VNĐ</td>
+              <td data-label="Số Lượng">{{x.quantity}}</td>
+              <td data-label="Giá">{{x.price | number:''}} VNĐ</td>
+              <td data-label="Tổng">{{x.totalprice | number:''}} VNĐ</td>
             </tr>
           </tbody>
         </table>
+
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-hide="invoice.trangThai != 335" ng-click="payment(invoice.tongTien,invoice.invoiceCode)">Thanh Toán</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-hide="invoice.trangThai != 335"
+          ng-click="payment(invoice.tongTien,invoice.invoiceCode)">Thanh Toán</button>
       </div>
     </div>
   </div>
