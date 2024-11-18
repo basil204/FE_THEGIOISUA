@@ -3,12 +3,12 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   $scope.lstProductOder =
     JSON.parse(localStorage.getItem("lstProductOder")) || [];
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
-  const urlUserInvoice = "http://160.30.21.47:1234/api/Userinvoice/add";
-  const urlInvoiceDetail = "http://160.30.21.47:1234/api/Invoicedetail/add";
+  // const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
+  const urlInvoice = "http://localhost:1234/api/Invoicedetail/add";
   const apiUser = "http://160.30.21.47:1234/api/user/";
   const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
-  const apitGetInvoiceByUser = "http://160.30.21.47:1234/api/Invoice/getInvoices/";
+  const apitGetInvoiceByUser =
+    "http://160.30.21.47:1234/api/Invoice/getInvoices/";
   const apiInvoiceDetail =
     "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
   $scope.selectedPaymentMethod = "";
@@ -367,19 +367,6 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
     );
   };
 
-  $scope.AddInvoiceDetail = function (invoiceDetail) {
-    // Gọi API để thêm InvoiceDetail vào hệ thống
-    return $http
-      .post(urlInvoiceDetail, invoiceDetail) // Trả về promise để có thể tiếp tục xử lý
-      .then(function (response) {
-        return response.data; // Trả lại dữ liệu nếu cần
-      })
-      .catch(function (error) {
-        console.error(error);
-        throw error; // Ném lỗi nếu có
-      });
-  };
-
   $scope.createInvoice = function () {
     const address = $scope.userData.address;
     if (!address) {
@@ -388,55 +375,76 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
         icon: "error",
         title: "Vui Lòng Thêm Địa Chỉ Giao Hàng",
         showConfirmButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/profile";
+        }
       });
       return;
     }
 
-    $scope.invoice = {
-      voucher: $scope.voucher ? { id: $scope.voucher.id } : null,
-      discountamount: $scope.discountmoney,
-      invoicecode: $scope.generateInvoiceCode(),
-      totalamount: $scope.totalamount,
-      phonenumber: $scope.userData.phoneNumber,
-      deliveryaddress: $scope.userData.address,
-      paymentmethod: $scope.selectedPaymentMethod,
-    };
+    const phoneNumber = $scope.userData.phoneNumber;
+    if (!phoneNumber) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Vui Lòng Thêm Số Điện Thoại",
+        showConfirmButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/profile";
+        }
+      });
+      return;
+    }
 
     if (!$scope.selectedPaymentMethod) {
-      showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!");
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Vui Lòng Chọn Phương Thức Thanh Toán!",
+        showConfirmButton: true,
+      });
       return;
     }
 
     if ($scope.selectedPaymentMethod === "COD") {
-      showAlert("Chức năng Hiện Chưa Khả Dụng!");
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: "Chức năng Hiện Chưa Khả Dụng!",
+        showConfirmButton: true,
+      });
       return;
     }
 
+    // Chuẩn bị dữ liệu hóa đơn
+    const invoiceData = {
+      invoicecode: $scope.generateInvoiceCode(),
+      deliveryaddress: address,
+      phonenumber: phoneNumber,
+      paymentmethod: $scope.selectedPaymentMethod,
+      discountamount: $scope.discountmoney || 0,
+      totalamount: $scope.totalamount,
+      status: 1, // Mặc định trạng thái hóa đơn
+      voucher: $scope.voucher ? { id: $scope.voucher.id } : null,
+      userInvoices: [
+        {
+          userid: userInfo.id,
+        },
+      ],
+      invoicedetails: $scope.lstProductOder.map((product) => ({
+        quantity: product.quantity,
+        price: product.productDetails.price,
+        totalprice: product.quantity * product.productDetails.price,
+        milkDetail: { id: product.id },
+      })),
+    };
+    console.log(invoiceData);
+    // Gửi dữ liệu lên API
     $http
-      .post(urlInvoice, $scope.invoice)
+      .post(urlInvoice, invoiceData)
       .then((response) => {
-        $scope.idInvoice = response.data.message;
-        return createUserInvoice($scope.idInvoice);
-      })
-      .then(() => {
-        if (!$scope.lstProductOder || $scope.lstProductOder.length === 0) {
-          throw new Error("Không có sản phẩm nào để tạo chi tiết hóa đơn.");
-        }
-
-        const invoiceDetailsPromises = $scope.lstProductOder.map((x) => {
-          const invoiceDetail = {
-            quantity: x.quantity,
-            price: x.productDetails.price,
-            totalprice: x.quantity * x.productDetails.price,
-            invoice: { id: $scope.idInvoice },
-            milkDetail: { id: x.id },
-          };
-          return $scope.AddInvoiceDetail(invoiceDetail);
-        });
-
-        return Promise.all(invoiceDetailsPromises);
-      })
-      .then(() => {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -444,11 +452,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          // Chờ Swal kết thúc rồi mới gọi hàm này
-          $scope.payment(
-            $scope.invoice.totalamount,
-            $scope.invoice.invoicecode
-          );
+          $scope.payment(invoiceData.totalamount, invoiceData.invoicecode);
         });
       })
       .catch((error) => {
@@ -463,28 +467,6 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
         console.log(error.data || error);
       });
   };
-
-  // Hàm tạo UserInvoice
-  function createUserInvoice(invoiceId) {
-    const userInvoiceData = {
-      user: {
-        id: userInfo.id,
-      },
-      invoice: {
-        id: invoiceId,
-      },
-    };
-
-    return $http
-      .post(urlUserInvoice, userInvoiceData)
-      .then(function (response) {
-        return response.data; // Trả lại dữ liệu nếu cần
-      })
-      .catch(function (error) {
-        console.error("Error when creating user invoice:", error);
-        throw error; // Ném lỗi nếu có
-      });
-  }
 
   // Hàm xử lý lỗi
   function handleError(error) {
