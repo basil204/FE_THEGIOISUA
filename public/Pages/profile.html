@@ -34,13 +34,21 @@
           </div>
           <div class="profile-box">
             <div class="cover-image">
-              <img src="../assets/images/inner-page/cover-img.jpg" class="img-fluid blur-up lazyload" alt="" />
+              <img
+                src="../assets/images/inner-page/cover-img.jpg"
+                class="img-fluid blur-up lazyload"
+                alt=""
+              />
             </div>
 
             <div class="profile-contain">
               <div class="profile-image">
                 <div class="position-relative">
-                  <img src="../assets/images/inner-page/user/1.jpg" class="blur-up lazyload update_img" alt="" />
+                  <img
+                    src="../assets/images/inner-page/user/1.jpg"
+                    class="blur-up lazyload update_img"
+                    alt=""
+                  />
                   <div class="cover-icon">
                     <i class="fa-solid fa-pen">
                       <input type="file" onchange="readURL(this,0)" />
@@ -56,16 +64,31 @@
             </div>
           </div>
 
-          <ul class="nav nav-pills user-nav-pills" id="pills-tab" role="tablist">
+          <ul
+            class="nav nav-pills user-nav-pills"
+            id="pills-tab"
+            role="tablist"
+          >
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-dashboard-tab" data-bs-toggle="pill"
-                data-bs-target="#pills-dashboard" type="button">
+              <button
+                class="nav-link active"
+                id="pills-dashboard-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-dashboard"
+                type="button"
+              >
                 <i data-feather="home"></i> Bảng điều khiển
               </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-order-tab" data-bs-toggle="pill" data-bs-target="#pills-order"
-                type="button" ng-click="getInvoicesByUser()">
+              <button
+                class="nav-link"
+                id="pills-order-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-order"
+                type="button"
+                ng-click="getInvoicesByUser()"
+              >
                 <i data-feather="shopping-bag"></i>Hóa Đơn Của Tôi
               </button>
             </li>
@@ -76,28 +99,43 @@
               </button>
             </li> -->
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
-                type="button" role="tab">
+              <button
+                class="nav-link"
+                id="pills-profile-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-profile"
+                type="button"
+                role="tab"
+              >
                 <i data-feather="user"></i> Hồ sơ
               </button>
             </li>
-            <li class="nav-item" role="presentation" ng-controller="LoginController">
+            <li
+              class="nav-item"
+              role="presentation"
+              ng-controller="LoginController"
+            >
               <button class="nav-link" ng-click="logout()">
                 <i data-feather="shield"></i> Đăng xuất
               </button>
             </li>
-
           </ul>
         </div>
       </div>
 
       <div class="col-xxl-9 col-lg-8">
-        <button class="btn left-dashboard-show btn-animation btn-md fw-bold d-block mb-4 d-lg-none">
+        <button
+          class="btn left-dashboard-show btn-animation btn-md fw-bold d-block mb-4 d-lg-none"
+        >
           Show Menu
         </button>
         <div class="dashboard-right-sidebar">
           <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-dashboard" role="tabpanel">
+            <div
+              class="tab-pane fade show active"
+              id="pills-dashboard"
+              role="tabpanel"
+            >
               <div class="dashboard-home">
                 <div class="title">
                   <h2>Trang tổng quan của tôi</h2>
@@ -120,8 +158,16 @@
                   <div class="row g-sm-4 g-3">
                     <div class="col-xxl-4 col-lg-6 col-md-4 col-sm-6">
                       <div class="total-contain">
-                        <img src="../assets/images/svg/order.svg" class="img-1 blur-up lazyload" alt="" />
-                        <img src="../assets/images/svg/order.svg" class="blur-up lazyload" alt="" />
+                        <img
+                          src="../assets/images/svg/order.svg"
+                          class="img-1 blur-up lazyload"
+                          alt=""
+                        />
+                        <img
+                          src="../assets/images/svg/order.svg"
+                          class="blur-up lazyload"
+                          alt=""
+                        />
                         <div class="total-detail">
                           <h5>Hóa Đơn Đã Mua</h5>
                           <h3>3658</h3>
@@ -130,16 +176,22 @@
                     </div>
                     <div class="col-xxl-4 col-lg-6 col-md-4 col-sm-6">
                       <div class="total-contain">
-                        <img src="../assets/images/svg/pending.svg" class="img-1 blur-up lazyload" alt="" />
-                        <img src="../assets/images/svg/pending.svg" class="blur-up lazyload" alt="" />
+                        <img
+                          src="../assets/images/svg/pending.svg"
+                          class="img-1 blur-up lazyload"
+                          alt=""
+                        />
+                        <img
+                          src="../assets/images/svg/pending.svg"
+                          class="blur-up lazyload"
+                          alt=""
+                        />
                         <div class="total-detail">
                           <h5>Hóa Đơn Đang Chờ Thanh Toán</h5>
                           <h3>{{isPayment ? 1 : 0}}</h3>
                         </div>
                       </div>
                     </div>
-
-
                   </div>
                 </div>
                 <!-- 
@@ -178,20 +230,16 @@
                   </span>
                 </div>
               </div>
-              <div class="table-container">
-                <table class="table">
+              <div class="table-container table-responsive">
+                <table class="table table-striped table-hover custom-table">
                   <thead class="thead-dark">
                     <tr>
                       <th>Mã Hóa Đơn</th>
                       <th>Tên Khách Hàng</th>
                       <th>Tên Người Bán</th>
                       <th>Ngày Tạo</th>
-                      <th>Địa Chỉ</th>
-                      <th>Số Điện Thoại</th>
                       <th>Phương Thức Thanh Toán</th>
                       <th>Voucher</th>
-                      <th>Số Tiền Được Giảm</th>
-                      <th>Số Tiền Phải Thanh Toán</th>
                       <th>Trạng Thái</th>
                       <th>Thao Tác</th>
                     </tr>
@@ -202,20 +250,38 @@
                       <td data-label="Tên Khách Hàng">{{invoice.nguoiMua}}</td>
                       <td data-label="Tên Người Bán">{{invoice.nguoiBan}}</td>
                       <td data-label="Ngày Tạo">{{invoice.ngayTao}}</td>
-                      <td data-label="Địa Chỉ">{{invoice.deliveryaddress}}</td>
-                      <td data-label="Số Điện Thoại">{{invoice.phonenumber}}</td>
-                      <td data-label="Phương Thức Thanh Toán">{{invoice.paymentmethod}}</td>
+                      <td data-label="Phương Thức Thanh Toán">
+                        {{invoice.paymentmethod}}
+                      </td>
                       <td data-label="Voucher">{{invoice.voucherCode}}</td>
-                      <td data-label="Số Tiền Được Giảm">{{invoice.sotienGiamGia | number:''}} VNĐ</td>
-                      <td data-label="Số Tiền Phải Thanh Toán">{{invoice.tongTien | number:''}} VNĐ</td>
                       <td data-label="Trạng Thái">
-                        <!-- Hiển thị trạng thái, kiểm tra giá trị của trangThai -->
-                        {{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh Toán"}}
+                        <span
+                          class="badge"
+                          ng-class="{
+                                'badge-warning': invoice.trangThai == 335,
+                                'badge-primary': invoice.trangThai == 334,
+                                'badge-danger': invoice.trangThai == 336,
+                                'badge-info': invoice.trangThai == 337,
+                                'badge-success': invoice.trangThai == 338
+                              }"
+                        >
+                          {{ invoice.trangThai == 335 ? "Chờ Thanh Toán" :
+                          invoice.trangThai == 334 ? "Chờ Giao Hàng" :
+                          invoice.trangThai == 336 ? "Đã Hủy" :
+                          invoice.trangThai == 337 ? "Hoàn Tiền" :
+                          invoice.trangThai == 338 ? "Hoàn Thành" : "Trạng Thái
+                          Không Xác Định" }}
+                        </span>
                       </td>
                       <td data-label="Thao Tác">
-                        <!-- Thêm sự kiện để mở chi tiết hóa đơn -->
-                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#optimized-invoice"
-                          ng-click="getInvoiceDetailByUser(invoice)">Xem Chi Tiết</button>
+                        <button
+                          class="btn btn-secondary btn-sm view-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#optimized-invoice"
+                          ng-click="getInvoiceDetailByUser(invoice)"
+                        >
+                          Xem Chi Tiết
+                        </button>
                       </td>
                     </tr>
                   </tbody>
@@ -390,29 +456,41 @@
                               <td></td>
                             </tr>
                             <tr>
-                              <td>Phone Number :</td>
                               <td>
-                                <a>
-                                  {{userData.phoneNumber ? userData.phoneNumber : 'No phone number'}}
+                                Phone Number :
+                                <a href="javascript:void(0)">
+                                  <span
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#add-phoneNumber"
+                                  >
+                                    {{userData.phoneNumber ? 'Edit' : 'Add'}}
+                                  </span>
                                 </a>
                               </td>
                               <td>
-                                <span data-bs-toggle="modal" data-bs-target="#add-phoneNumber">
-                                  {{userData.phoneNumber ? 'Edit' : 'Add'}}
-                                </span>
+                                <a href="javascript:void(0)">
+                                  {{userData.phoneNumber ? userData.phoneNumber
+                                  : 'No phone number'}}
+                                </a>
                               </td>
                             </tr>
                             <tr>
-                              <td>Address :</td>
                               <td>
-                                <a class="address">
-                                  {{userData.address ? userData.address : 'No address'}}
+                                Address :
+                                <a class="address" href="javascript:void(0)">
+                                  <span
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#add-address"
+                                  >
+                                    {{userData.address ? 'Edit' : 'Add'}}
+                                  </span>
                                 </a>
                               </td>
                               <td>
-                                <span data-bs-toggle="modal" data-bs-target="#add-address">
-                                  {{userData.address ? 'Edit' : 'Add'}}
-                                </span>
+                                <a href="javascript:void(0)">
+                                  {{userData.address ? userData.address : 'No
+                                  address'}}
+                                </a>
                               </td>
                             </tr>
                             <tr>
@@ -426,7 +504,6 @@
                         </table>
                       </div>
 
-
                       <div class="dashboard-title mb-3">
                         <h3>Login Details</h3>
                       </div>
@@ -435,9 +512,12 @@
                         <table class="table">
                           <tbody>
                             <tr>
-                              <a data-bs-toggle="modal" data-bs-target="#changePassword"
-                                href="javascript:void(0)">Change
-                                Password</a>
+                              <a
+                                data-bs-toggle="modal"
+                                data-bs-target="#changePassword"
+                                href="javascript:void(0)"
+                                >Change Password</a
+                              >
                             </tr>
                           </tbody>
                         </table>
@@ -446,15 +526,17 @@
 
                     <div class="col-xxl-5">
                       <div class="profile-image">
-                        <img src="../assets/images/inner-page/dashboard-profile.png" class="img-fluid blur-up lazyload"
-                          alt="" />
+                        <img
+                          src="../assets/images/inner-page/dashboard-profile.png"
+                          class="img-fluid blur-up lazyload"
+                          alt=""
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -485,28 +567,47 @@
         <!-- Dropdown for Tỉnh -->
         <div class="form-group mb-3">
           <label for="tinhSelect">Tỉnh Thành</label>
-          <select id="tinhSelect" class="form-control css_select" ng-model="selectedTinh"
-            ng-change="loadQuan(); getTinhName()" ng-options="tinh.id as tinh.full_name for tinh in tinhs">
+          <select
+            id="tinhSelect"
+            class="form-control css_select"
+            ng-model="selectedTinh"
+            ng-change="loadQuan(); getTinhName()"
+            ng-options="tinh.id as tinh.full_name for tinh in tinhs"
+          >
             <option value="">Chọn Tỉnh Thành</option>
           </select>
-          <span ng-if="tinhName" class="d-block mt-1 text-secondary">Tên Tỉnh: {{ tinhName }}</span>
+          <span ng-if="tinhName" class="d-block mt-1 text-secondary"
+            >Tên Tỉnh: {{ tinhName }}</span
+          >
         </div>
 
         <!-- Dropdown for Quận -->
         <div class="form-group mb-3">
           <label for="quanSelect">Quận Huyện</label>
-          <select id="quanSelect" class="form-control css_select" ng-model="selectedQuan"
-            ng-change="loadPhuong(); getQuanName()" ng-options="quan.id as quan.full_name for quan in quans">
+          <select
+            id="quanSelect"
+            class="form-control css_select"
+            ng-model="selectedQuan"
+            ng-change="loadPhuong(); getQuanName()"
+            ng-options="quan.id as quan.full_name for quan in quans"
+          >
             <option value="">Chọn Quận Huyện</option>
           </select>
-          <span ng-if="quanName" class="d-block mt-1 text-secondary">Tên Quận: {{ quanName }}</span>
+          <span ng-if="quanName" class="d-block mt-1 text-secondary"
+            >Tên Quận: {{ quanName }}</span
+          >
         </div>
 
         <!-- Dropdown for Phường -->
         <div class="form-group mb-3">
           <label for="phuongSelect">Phường Xã</label>
-          <select id="phuongSelect" class="form-control css_select" ng-model="selectedPhuong"
-            ng-change="getPhuongName()" ng-options="phuong.id as phuong.full_name for phuong in phuongs">
+          <select
+            id="phuongSelect"
+            class="form-control css_select"
+            ng-model="selectedPhuong"
+            ng-change="getPhuongName()"
+            ng-options="phuong.id as phuong.full_name for phuong in phuongs"
+          >
             <option value="">Chọn Phường Xã</option>
           </select>
         </div>
@@ -514,18 +615,32 @@
         <!-- Địa Chỉ Chi Tiết -->
         <form>
           <div class="form-floating mb-4 theme-form-floating">
-            <input type="text" class="form-control" id="detailAddress" ng-model="detailAddress" placeholder=" " />
+            <input
+              type="text"
+              class="form-control"
+              id="detailAddress"
+              ng-model="detailAddress"
+              placeholder=" "
+            />
             <label for="detailAddress">Địa Chỉ Chi Tiết</label>
           </div>
         </form>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary btn-md"
+          data-bs-dismiss="modal"
+        >
           Close
         </button>
-        <button type="button" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal"
-          ng-click="addAdress()">
+        <button
+          type="button"
+          class="btn theme-bg-color btn-md text-white"
+          data-bs-dismiss="modal"
+          ng-click="addAdress()"
+        >
           Save changes
         </button>
       </div>
@@ -547,18 +662,32 @@
         <!-- Nhập Số Điện Thoại -->
         <form>
           <div class="form-floating mb-4 theme-form-floating">
-            <input type="text" class="form-control" id="phonenumber" ng-model="phonenumber" placeholder=" " />
+            <input
+              type="text"
+              class="form-control"
+              id="phonenumber"
+              ng-model="phonenumber"
+              placeholder=" "
+            />
             <label for="phonenumber">Add Phone Number</label>
           </div>
         </form>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary btn-md"
+          data-bs-dismiss="modal"
+        >
           Close
         </button>
-        <button type="button" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal"
-          ng-click="addPhoneNumber()">
+        <button
+          type="button"
+          class="btn theme-bg-color btn-md text-white"
+          data-bs-dismiss="modal"
+          ng-click="addPhoneNumber()"
+        >
           Save changes
         </button>
       </div>
@@ -719,8 +848,15 @@
     </div>
   </div>
 </div> -->
-<div class="modal fade theme-modal" id="changePassword" tabindex="-1" ng-controller="LoginController">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+<div
+  class="modal fade theme-modal"
+  id="changePassword"
+  tabindex="-1"
+  ng-controller="LoginController"
+>
+  <div
+    class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down"
+  >
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel2">Thay đổi mật khẩu</h5>
@@ -732,30 +868,52 @@
         <div class="row g-4">
           <div class="col-xxl-12">
             <div class="form-floating theme-form-floating">
-              <input type="password" class="form-control" ng-model="currentPassword" placeholder="Current Password" />
+              <input
+                type="password"
+                class="form-control"
+                ng-model="currentPassword"
+                placeholder="Current Password"
+              />
               <label for="currentPassword">Mật khẩu hiện tại</label>
             </div>
           </div>
           <div class="col-xxl-12">
             <div class="form-floating theme-form-floating">
-              <input type="password" class="form-control" ng-model="newPassword" placeholder="New Password" />
+              <input
+                type="password"
+                class="form-control"
+                ng-model="newPassword"
+                placeholder="New Password"
+              />
               <label for="newPassword">Mật khẩu mới</label>
             </div>
           </div>
           <div class="col-xxl-12">
             <div class="form-floating theme-form-floating">
-              <input type="password" class="form-control" ng-model="confirmNewPassword"
-                placeholder="Confirm New Password" />
+              <input
+                type="password"
+                class="form-control"
+                ng-model="confirmNewPassword"
+                placeholder="Confirm New Password"
+              />
               <label for="confirmNewPassword">Xác nhận mật khẩu mới</label>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-animation btn-md fw-bold"
+          data-bs-dismiss="modal"
+        >
           Đóng
         </button>
-        <button type="button" class="btn theme-bg-color btn-md fw-bold text-light" ng-click="changePassword()">
+        <button
+          type="button"
+          class="btn theme-bg-color btn-md fw-bold text-light"
+          ng-click="changePassword()"
+        >
           Lưu thay đổi
         </button>
       </div>
@@ -763,12 +921,13 @@
   </div>
 </div>
 
-
 <!-- Edit Profile End -->
 
 <!-- Edit Card Start -->
 <div class="modal fade theme-modal" id="editCard" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+  <div
+    class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down"
+  >
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel8">Edit Card</h5>
@@ -781,7 +940,12 @@
           <div class="col-xxl-6">
             <form>
               <div class="form-floating theme-form-floating">
-                <input type="text" class="form-control" id="finame" value="Mark" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="finame"
+                  value="Mark"
+                />
                 <label for="finame">First Name</label>
               </div>
             </form>
@@ -790,7 +954,12 @@
           <div class="col-xxl-6">
             <form>
               <div class="form-floating theme-form-floating">
-                <input type="text" class="form-control" id="laname" value="Jecno" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="laname"
+                  value="Jecno"
+                />
                 <label for="laname">Last Name</label>
               </div>
             </form>
@@ -814,10 +983,17 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-animation btn-md fw-bold"
+          data-bs-dismiss="modal"
+        >
           Cancel
         </button>
-        <button type="button" class="btn theme-bg-color btn-md fw-bold text-light">
+        <button
+          type="button"
+          class="btn theme-bg-color btn-md fw-bold text-light"
+        >
           Update Card
         </button>
       </div>
@@ -895,17 +1071,31 @@
 
       <div class="modal-body">
         <div class="mb-3">
-          <strong>Số Hóa Đơn:</strong> <span id="invoiceNumber">{{invoice.invoiceCode}}</span><br>
-          <strong>Ngày Tạo Hóa Đơn:</strong> <span id="invoiceDate">{{invoice.ngayTao}}</span><br>
-          <strong>Tổng Số Tiền:</strong> <span id="amount">{{invoice.tongTien+invoice.sotienGiamGia | number:''}}
-            VNĐ</span><br>
-          <strong>Số Tiền Được Giảm:</strong> <span id="invoiceDate">{{invoice.sotienGiamGia | number:''}}
-            VNĐ</span><br>
-          <strong>Số Tiền Phải Thanh Toán:</strong> <span id="invoiceDate">{{invoice.tongTien | number:''}}
-            VNĐ</span><br>
-          <strong>Phương Thức Thanh Toán:</strong> <span id="description">{{invoice.paymentmethod}}</span><br>
-          <strong>Trạng Thái:</strong> <span id="status">{{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh
-            Toán"}}</span>
+          <strong>Số Hóa Đơn:</strong>
+          <span id="invoiceNumber">{{invoice.invoiceCode}}</span><br />
+          <strong>Ngày Tạo Hóa Đơn:</strong>
+          <span id="invoiceDate">{{invoice.ngayTao}}</span><br />
+          <strong>Địa Chỉ Nhận Hàng:</strong>
+          <span id="">{{invoice.deliveryaddress}}</span><br />
+          <strong>Số Điện Thoại:</strong>
+          <span id="">{{invoice.phonenumber}}</span><br />
+          <strong>Tổng Số Tiền:</strong>
+          <span id="amount"
+            >{{invoice.tongTien+invoice.sotienGiamGia | number:''}} VNĐ</span
+          ><br />
+          <strong>Số Tiền Được Giảm:</strong>
+          <span id="invoiceDate">{{invoice.sotienGiamGia | number:''}} VNĐ</span
+          ><br />
+          <strong>Số Tiền Phải Thanh Toán:</strong>
+          <span id="invoiceDate">{{invoice.tongTien | number:''}} VNĐ</span
+          ><br />
+          <strong>Phương Thức Thanh Toán:</strong>
+          <span id="description">{{invoice.paymentmethod}}</span><br />
+          <strong>Trạng Thái:</strong>
+          <span id="status"
+            >{{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh
+            Toán"}}</span
+          >
         </div>
 
         <h6>Chi Tiết Sản Phẩm:</h6>
@@ -921,12 +1111,8 @@
           <tbody>
             <tr ng-repeat="x in invoiceDetails">
               <td data-label="Tên Sản Phẩm">
-                {{x.packagingunitname}}
-                {{x.milkTypename}}
-                {{x.milkbrandname}}
-                {{x.milktastename}}
-                {{x.capacity}}
-                {{x.unit}}
+                {{x.packagingunitname}} {{x.milkTypename}} {{x.milkbrandname}}
+                {{x.milktastename}} {{x.capacity}} {{x.unit}}
               </td>
               <td data-label="Số Lượng">{{x.quantity}}</td>
               <td data-label="Giá">{{x.price | number:''}} VNĐ</td>
@@ -934,13 +1120,30 @@
             </tr>
           </tbody>
         </table>
-
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-hide="invoice.trangThai != 335"
-          ng-click="payment(invoice.tongTien,invoice.invoiceCode)">Thanh Toán</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Đóng
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          ng-hide="invoice.trangThai != 335"
+          ng-click="payment(invoice.tongTien,invoice.invoiceCode)"
+        >
+          Thanh Toán
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          ng-hide="invoice.trangThai != 335"
+          ng-click="cancelInvoice(invoice.invoiceID)"
+        >
+          Hủy Đơn Hàng
+        </button>
       </div>
     </div>
   </div>

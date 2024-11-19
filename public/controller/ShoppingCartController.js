@@ -4,11 +4,13 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
     JSON.parse(localStorage.getItem("lstProductOder")) || [];
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
+  const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
   const urlUserInvoice = "http://160.30.21.47:1234/api/Userinvoice/add";
   const urlInvoiceDetail = "http://160.30.21.47:1234/api/Invoicedetail/add";
   const apiUser = "http://160.30.21.47:1234/api/user/";
   const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
-  const apitGetInvoiceByUser = "http://160.30.21.47:1234/api/Invoice/getInvoices/";
+  const apitGetInvoiceByUser =
+    "http://160.30.21.47:1234/api/Invoice/getInvoices/";
   const apiInvoiceDetail =
     "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
   $scope.selectedPaymentMethod = "";
@@ -24,6 +26,28 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   $scope.invoiceDetails = [];
   $scope.invoice = null;
   // Hàm tính toán tổng tiền
+  $scope.cancelInvoice = function (idinvoice) {
+    Swal.fire({
+      title: "Xác nhận!",
+      text: "Bạn có chắc muốn tiếp tục?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $http
+          .get(cancelInvoice + idinvoice)
+          .then(function (response) {
+            Swal.fire("Thành công!", "Hủy Thành Công", "success");
+            location.reload();
+          })
+          .catch(function (error) {
+            console.error("Error fetching invoice details:", error);
+          });
+      }
+    });
+  };
   $scope.payment = function (totalamount, invoicecode) {
     let remainingTime = 600; // 10 phút
 
@@ -100,6 +124,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       .catch(function (error) {
         console.error("Error fetching invoice details:", error);
       });
+    // console.log($scope.invoice);
   };
   $scope.getInvoicesByUser = function () {
     if (userInfo && userInfo.id) {

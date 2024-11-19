@@ -1,26 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fastkart">
-    <meta name="keywords" content="Fastkart">
-    <meta name="author" content="Fastkart">
-    <link rel="icon" href="../assets/images/favicon/4.png" type="image/x-icon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Fastkart" />
+    <meta name="keywords" content="Fastkart" />
+    <meta name="author" content="Fastkart" />
+    <link
+      rel="icon"
+      href="../assets/images/favicon/4.png"
+      type="image/x-icon"
+    />
     <title>On-demand last-mile delivery</title>
-    <base href="/">
+    <base href="/" />
     <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com/">
-    <link href="https://fonts.googleapis.com/css2?family=Russo+One&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Russo+One&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      rel="stylesheet"
+    />
 
     <!-- CSS styles -->
-    <link id="rtl-link" rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css">
-    <link rel="stylesheet" href="../assets/css/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/bulk-style.css">
-    <link id="color-link" rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <link
+      id="rtl-link"
+      rel="stylesheet"
+      type="text/css"
+      href="../assets/css/vendors/bootstrap.css"
+    />
+    <link rel="stylesheet" href="../assets/css/animate.min.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../assets/css/bulk-style.css"
+    />
+    <link
+      id="color-link"
+      rel="stylesheet"
+      type="text/css"
+      href="../assets/css/style.css"
+    />
 
     <!-- AngularJS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
@@ -28,17 +55,17 @@
 
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
+  </head>
 
-<body class="theme-color-6">
+  <body class="theme-color-6">
     <!-- Loader Start -->
     <div class="fullpage-loader">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
 
     <!-- Header and Footer -->
@@ -48,7 +75,6 @@
 
     <div class="bg-overlay"></div>
 
-   
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -64,7 +90,6 @@
     <script src="../assets/js/fly-cart.js"></script>
     <script src="../assets/js/wow.min.js"></script>
     <script src="../assets/js/custom-wow.js"></script>
-
 
     <script src="app.js"></script>
     <script src="controller/SignupController.js"></script>
@@ -83,28 +108,28 @@
 
     <!-- Check User Location -->
     <script>
-        $(document).ready(function() {
-            $.getJSON('https://api.ipify.org?format=json', function(ipData) {
-                const userIP = ipData.ip;
-                const apiUrl = `https://freeipapi.com/api/json/${userIP}`;
+      $(document).ready(function () {
+        $.getJSON("https://api.ipify.org?format=json", function (ipData) {
+          const userIP = ipData.ip;
+          const apiUrl = `https://freeipapi.com/api/json/${userIP}`;
 
-                $.getJSON(apiUrl, function(data) {
-                    if (data && data.cityName) {
-                        $('#city-name').text(data.cityName);
-                    } else {
-                        $('#city-name').text("Không xác định");
-                    }
-                }).fail(function() {
-                    $('#city-name').text("Không xác định");
-                });
-            }).fail(function() {
-                $('#city-name').text("Không xác định");
-            });
+          $.getJSON(apiUrl, function (data) {
+            if (data && data.cityName) {
+              $("#city-name").text(data.cityName);
+            } else {
+              $("#city-name").text("Không xác định");
+            }
+          }).fail(function () {
+            $("#city-name").text("Không xác định");
+          });
+        }).fail(function () {
+          $("#city-name").text("Không xác định");
         });
+      });
     </script>
 
     <!-- Chat Widget -->
-    <script defer src="https://cdn.customgpt.ai/js/chat.js"></script>
+    <!-- <script defer src="https://cdn.customgpt.ai/js/chat.js"></script>
     <script defer>
         (function() {
             function init() {
@@ -133,6 +158,6 @@
         // Call the function on page load
         window.onload = checkLoginUrl;
         
-    </script>
-</body>
+    </script> -->
+  </body>
 </html>

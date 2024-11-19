@@ -70,7 +70,6 @@ function requireAuth($q, $location, $route) {
 // Inject the dependencies for requireAuth
 requireAuth.$inject = ["$q", "$location", "$route"];
 
-
 // HTTP Interceptor for Authorization
 app.factory("AuthInterceptor", function ($q, $window) {
   return {
@@ -84,6 +83,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
         "http://160.30.21.47:1234/api/Voucher/voucercode",
         "http://160.30.21.47:1234/api/Invoice/getInvoices/",
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
+        "http://160.30.21.47:1234/api/Invoice/cancel/",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {
