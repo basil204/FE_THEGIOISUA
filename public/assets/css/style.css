@@ -47119,25 +47119,23 @@ body.rtl .theme-product-section .right-box-contain .license-list .accordion-item
 }
 
 .badge-warning {
-  background-color: #ffc107;
-}
-
-.badge-primary {
-  background-color: #007bff;
-}
-
-.badge-danger {
-  background-color: #dc3545;
-}
-
-.badge-info {
-  background-color: #17a2b8;
-}
-
-.badge-success {
-  background-color: #28a745;
-}
-
+    background-color: #ffc107 !important;
+  }
+  .badge-primary {
+    background-color: #007bff !important;
+  }
+  .badge-danger {
+    background-color: #dc3545 !important;
+  }
+  .badge-info {
+    background-color: #17a2b8 !important;
+  }
+  .badge-success {
+    background-color: #28a745 !important;
+  }
+  .badge-pink {
+    background-color: #ff69b4 !important;
+  }
 /* Nút xem chi tiết */
 .view-btn {
   font-size: 0.9rem;

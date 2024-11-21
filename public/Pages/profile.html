@@ -248,7 +248,10 @@
                     <tr ng-repeat="invoice in userInvoices">
                       <td data-label="Mã Hóa Đơn">{{invoice.invoiceCode}}</td>
                       <td data-label="Tên Khách Hàng">{{invoice.nguoiMua}}</td>
-                      <td data-label="Tên Người Bán">{{invoice.nguoiBan}}</td>
+                      <td data-label="Tên Người Bán">
+                        {{invoice.nguoiBan == null ? "Nhân Viên" :
+                        invoice.nguoiBan}}
+                      </td>
                       <td data-label="Ngày Tạo">{{invoice.ngayTao}}</td>
                       <td data-label="Phương Thức Thanh Toán">
                         {{invoice.paymentmethod}}
@@ -258,18 +261,20 @@
                         <span
                           class="badge"
                           ng-class="{
-                                'badge-warning': invoice.trangThai == 335,
-                                'badge-primary': invoice.trangThai == 334,
-                                'badge-danger': invoice.trangThai == 336,
-                                'badge-info': invoice.trangThai == 337,
-                                'badge-success': invoice.trangThai == 338
-                              }"
+                            'badge-warning': invoice.trangThai == 335,
+                            'badge-primary': invoice.trangThai == 334,
+                            'badge-danger': invoice.trangThai == 336,
+                            'badge-info': invoice.trangThai == 337,
+                            'badge-success': invoice.trangThai == 338,
+                            'badge-pink': invoice.trangThai == 301
+                          }"
                         >
                           {{ invoice.trangThai == 335 ? "Chờ Thanh Toán" :
                           invoice.trangThai == 334 ? "Chờ Giao Hàng" :
                           invoice.trangThai == 336 ? "Đã Hủy" :
                           invoice.trangThai == 337 ? "Hoàn Tiền" :
-                          invoice.trangThai == 338 ? "Hoàn Thành" : "Trạng Thái
+                          invoice.trangThai == 338 ? "Hoàn Thành" :
+                          invoice.trangThai == 301 ? "Chờ Duyệt Đơn":"Trạng Thái
                           Không Xác Định" }}
                         </span>
                       </td>
@@ -1091,11 +1096,6 @@
           ><br />
           <strong>Phương Thức Thanh Toán:</strong>
           <span id="description">{{invoice.paymentmethod}}</span><br />
-          <strong>Trạng Thái:</strong>
-          <span id="status"
-            >{{invoice.trangThai == 335 ? "Chờ Thanh Toán" : "Đã Thanh
-            Toán"}}</span
-          >
         </div>
 
         <h6>Chi Tiết Sản Phẩm:</h6>

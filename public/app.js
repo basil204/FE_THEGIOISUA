@@ -76,14 +76,14 @@ app.factory("AuthInterceptor", function ($q, $window) {
     request: function (config) {
       const token = $window.localStorage.getItem("authToken");
       const protectedUrls = [
-        "http://160.30.21.47:1234/api/Invoice/add",
+        "http://localhost:1234/api/Invoice/add",
         "http://160.30.21.47:1234/api/payment/transactionHistory",
         "http://160.30.21.47:1234/api/Userinvoice/add",
         "http://160.30.21.47:1234/api/Invoicedetail/add",
         "http://160.30.21.47:1234/api/payment/transactionHistory",
         "http://160.30.21.47:1234/api/Voucher/voucercode",
-        "http://160.30.21.47:1234/api/Invoice/getInvoices/",
-        "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
+        "http://localhost:1234/api/Invoice/getInvoices/",
+        "http://localhost:1234/api/Invoicedetail/getInvoiceDetailByUser/",
         "http://160.30.21.47:1234/api/Invoice/cancel/",
       ];
 

@@ -3,16 +3,13 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   $scope.lstProductOder =
     JSON.parse(localStorage.getItem("lstProductOder")) || [];
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
+  const urlInvoice = "http://localhost:1234/api/Invoice/add";
   const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
-  const urlUserInvoice = "http://160.30.21.47:1234/api/Userinvoice/add";
-  const urlInvoiceDetail = "http://160.30.21.47:1234/api/Invoicedetail/add";
   const apiUser = "http://160.30.21.47:1234/api/user/";
   const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
-  const apitGetInvoiceByUser =
-    "http://160.30.21.47:1234/api/Invoice/getInvoices/";
+  const apitGetInvoiceByUser = "http://localhost:1234/api/Invoice/getInvoices/";
   const apiInvoiceDetail =
-    "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
+    "http://localhost:1234/api/Invoicedetail/getInvoiceDetailByUser/";
   $scope.selectedPaymentMethod = "";
   $scope.newAddress = null;
   $scope.tinhs = [];
@@ -377,6 +374,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
 
   // Cập nhật tổng tiền khi số lượng thay đổi
   $scope.updateTotal = function (product) {
+    console.log(product);
     if (product.quantity > product.productDetails.stockquantity) {
       Swal.fire({
         icon: "error",
@@ -390,78 +388,50 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       "lstProductOder",
       JSON.stringify($scope.lstProductOder)
     );
+    $scope.lstProductOder = JSON.parse(localStorage.getItem("lstProductOder"));
+    window.location.reload();
   };
 
-  $scope.AddInvoiceDetail = function (invoiceDetail) {
-    // Gọi API để thêm InvoiceDetail vào hệ thống
-    return $http
-      .post(urlInvoiceDetail, invoiceDetail) // Trả về promise để có thể tiếp tục xử lý
-      .then(function (response) {
-        return response.data; // Trả lại dữ liệu nếu cần
-      })
-      .catch(function (error) {
-        console.error(error);
-        throw error; // Ném lỗi nếu có
-      });
-  };
-
-  $scope.createInvoice = function () {
+  $scope.createInvoiceAndDetails = function () {
     const address = $scope.userData.address;
-    if (!address) {
-      Swal.fire({
+    const phoneNumber = $scope.userData.phoneNumber;
+    if (!address || !phoneNumber) {
+      return Swal.fire({
         position: "center",
         icon: "error",
         title: "Vui Lòng Thêm Địa Chỉ Giao Hàng",
         showConfirmButton: true,
       });
-      return;
+    }
+    if (!$scope.selectedPaymentMethod) {
+      return showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!");
     }
 
-    $scope.invoice = {
-      voucher: $scope.voucher ? { id: $scope.voucher.id } : null,
-      discountamount: $scope.discountmoney,
-      invoicecode: $scope.generateInvoiceCode(),
-      totalamount: $scope.totalamount,
-      phonenumber: $scope.userData.phoneNumber,
-      deliveryaddress: $scope.userData.address,
+    // if ($scope.selectedPaymentMethod === "COD") {
+    //   return showAlert("Chức năng Hiện Chưa Khả Dụng!");
+    // }
+    const invoiceDto = {
+      invoiceCode: $scope.generateInvoiceCode(),
+      deliveryaddress: address,
+      phonenumber: phoneNumber,
       paymentmethod: $scope.selectedPaymentMethod,
+      voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
+      sotienGiamGia: $scope.discountmoney || 0,
+      tongTien: $scope.totalamount,
+      invoiceDetails: $scope.lstProductOder.map((x) => ({
+        quantity: x.quantity,
+        price: x.productDetails.price,
+        totalprice: x.quantity * x.productDetails.price,
+        milkDetail: { id: x.id },
+      })),
+      nguoiTao: {
+        id: $scope.userData.id,
+      },
     };
 
-    if (!$scope.selectedPaymentMethod) {
-      showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!");
-      return;
-    }
-
-    if ($scope.selectedPaymentMethod === "COD") {
-      showAlert("Chức năng Hiện Chưa Khả Dụng!");
-      return;
-    }
-
     $http
-      .post(urlInvoice, $scope.invoice)
+      .post(urlInvoice, invoiceDto)
       .then((response) => {
-        $scope.idInvoice = response.data.message;
-        return createUserInvoice($scope.idInvoice);
-      })
-      .then(() => {
-        if (!$scope.lstProductOder || $scope.lstProductOder.length === 0) {
-          throw new Error("Không có sản phẩm nào để tạo chi tiết hóa đơn.");
-        }
-
-        const invoiceDetailsPromises = $scope.lstProductOder.map((x) => {
-          const invoiceDetail = {
-            quantity: x.quantity,
-            price: x.productDetails.price,
-            totalprice: x.quantity * x.productDetails.price,
-            invoice: { id: $scope.idInvoice },
-            milkDetail: { id: x.id },
-          };
-          return $scope.AddInvoiceDetail(invoiceDetail);
-        });
-
-        return Promise.all(invoiceDetailsPromises);
-      })
-      .then(() => {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -469,11 +439,8 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          // Chờ Swal kết thúc rồi mới gọi hàm này
-          $scope.payment(
-            $scope.invoice.totalamount,
-            $scope.invoice.invoicecode
-          );
+          console.log(invoiceDto);
+          // $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
         });
       })
       .catch((error) => {
@@ -485,31 +452,9 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
             (error.data ? error.data.error : error.message),
           showConfirmButton: true,
         });
-        console.log(error.data || error);
+        console.error("Error:", error.data || error);
       });
   };
-
-  // Hàm tạo UserInvoice
-  function createUserInvoice(invoiceId) {
-    const userInvoiceData = {
-      user: {
-        id: userInfo.id,
-      },
-      invoice: {
-        id: invoiceId,
-      },
-    };
-
-    return $http
-      .post(urlUserInvoice, userInvoiceData)
-      .then(function (response) {
-        return response.data; // Trả lại dữ liệu nếu cần
-      })
-      .catch(function (error) {
-        console.error("Error when creating user invoice:", error);
-        throw error; // Ném lỗi nếu có
-      });
-  }
 
   // Hàm xử lý lỗi
   function handleError(error) {
