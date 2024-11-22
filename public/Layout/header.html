@@ -1,287 +1,412 @@
 <div class="header">
-    <div ng-controller="ProductListController">
-        <header class="header-2">
-            <div class="top-nav top-header sticky-header sticky-header-3">
-                <div class="container-fluid-lg">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="navbar-top">
-                                <button class="navbar-toggler d-xl-none d-block p-0 me-3" type="button"
-                                    data-bs-toggle="offcanvas" data-bs-target="#primaryMenu">
-                                    <span class="navbar-toggler-icon">
-                                        <i class="iconly-Category icli theme-color"></i>
-                                    </span>
-                                </button>
-                                <a href="index.html" class="web-logo nav-logo">
-                                    <img src="../assets/images/logo/3.png" class="img-fluid blur-up lazyload" alt="">
+  <div ng-controller="ProductListController">
+    <header class="header-2">
+      <div class="top-nav top-header sticky-header sticky-header-3">
+        <div class="container-fluid-lg">
+          <div class="row">
+            <div class="col-12">
+              <div class="navbar-top">
+                <button
+                  class="navbar-toggler d-xl-none d-block p-0 me-3"
+                  type="button"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#primaryMenu"
+                >
+                  <span class="navbar-toggler-icon">
+                    <i class="iconly-Category icli theme-color"></i>
+                  </span>
+                </button>
+                <a href="index.html" class="web-logo nav-logo">
+                  <img
+                    src="../assets/images/logo/3.png"
+                    class="img-fluid blur-up lazyload"
+                    alt=""
+                  />
+                </a>
+
+                <div class="search-full">
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i data-feather="search" class="font-light"></i>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control search-type"
+                      placeholder="Search here.."
+                    />
+                    <span class="input-group-text close-search"> </span>
+                  </div>
+                </div>
+
+                <div class="middle-box">
+                  <div class="center-box">
+                    <div class="searchbar-box order-xl-1 d-none d-xl-block">
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="exampleFormControlInput1"
+                        ng-model="searchTerm"
+                        placeholder="Tìm kiếm sản phẩm, giao tận nhà..."
+                      />
+                      <button
+                        class="btn search-button"
+                        ng-click="filterProductWithSearch()"
+                      >
+                        <i class="iconly-Search icli"></i>
+                      </button>
+                    </div>
+                    <div class="location-box-2">
+                      <button
+                        class="btn location-button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#locationModal"
+                      >
+                        <i class="iconly-Location icli"></i>
+                        <span id="city-name" class="locat-name"
+                          >Đang tải...</span
+                        >
+                        <i class="fa-solid fa-angle-down down-arrow"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="rightside-menu">
+                  <div class="dropdown-dollar">
+                    <div class="dropdown">
+                      <button
+                        class="dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <span>Ngôn Ngữ</span>
+                        <i class="fa-solid fa-angle-down"></i>
+                      </button>
+                      <ul
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <li>
+                          <a
+                            id="vie"
+                            class="dropdown-item"
+                            href="javascript:void(0)"
+                            >Tiếng Việt</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="dropdown">
+                      <button
+                        class="dropdown-toggle m-0"
+                        type="button"
+                        id="dropdownMenuButton2"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <span>Đơn vị tiền tệ</span>
+                        <i class="fa-solid fa-angle-down"></i>
+                      </button>
+                      <ul
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <li>
+                          <a
+                            id="vnd"
+                            class="dropdown-item"
+                            href="javascript:void(0)"
+                            >VNĐ</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="option-list">
+                    <ul>
+                      <li class="mobile">
+                        <a
+                          ng-href="{{ isLogin ? '/profile' : '/login' }}"
+                          class="header-icon user-icon search-icon"
+                        >
+                          <i class="iconly-Profile icli"></i>
+                        </a>
+                        <!-- Phần chi tiết tài khoản người dùng -->
+                        <div class="delivery-detail">
+                          <p class="m-0">Hello,</p>
+                          <p class="m-0">{{userName}}</p>
+                        </div>
+                      </li>
+
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          class="header-icon search-box search-icon"
+                        >
+                          <i class="iconly-Search icli"></i>
+                        </a>
+                      </li>
+                      <li class="onhover-dropdown">
+                        <a
+                          href="javascript:void(0)"
+                          class="header-icon swap-icon"
+                        >
+                          <i class="iconly-Heart icli"></i>
+                        </a>
+                      </li>
+
+                      <li
+                        class="onhover-dropdown"
+                        ng-mouseenter="getListOderProduct()"
+                      >
+                        <a href="/cart" class="header-icon bag-icon">
+                          <small class="badge-number">{{count}}</small>
+                          <i class="iconly-Bag-2 icli"></i>
+                        </a>
+                        <div class="onhover-div">
+                          <ul class="cart-list">
+                            <!-- Loop through the cart products using ng-repeat -->
+                            <li ng-repeat="product in cartProducts">
+                              <div class="drop-cart">
+                                <a
+                                  href="product-left-thumbnail.html"
+                                  class="drop-image"
+                                >
+                                  <img
+                                    ng-src="{{product.productDetails.imgURL}}"
+                                    class="blur-up lazyload"
+                                    alt=""
+                                  />
                                 </a>
 
-                                <div class="search-full">
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i data-feather="search" class="font-light"></i>
-                                        </span>
-                                        <input type="text" class="form-control search-type" placeholder="Search here..">
-                                        <span class="input-group-text close-search">
-
-                                        </span>
-                                    </div>
+                                <div class="drop-contain">
+                                  <a href="product-left-thumbnail.html">
+                                    <h5>
+                                      {{product.productDetails.milkbrandname}} -
+                                      {{product.productDetails.milktypename}}
+                                      ({{product.productDetails.milktastename}})
+                                    </h5>
+                                  </a>
+                                  <h6>
+                                    <span>{{product.quantity}} x</span>
+                                    {{product.productDetails.price| number:''}}
+                                    VNĐ
+                                  </h6>
+                                  <button
+                                    class="close-button"
+                                    ng-click="removeProduct(product)"
+                                  >
+                                    <i class="fa-solid fa-xmark"></i>
+                                  </button>
                                 </div>
+                              </div>
+                            </li>
+                          </ul>
 
-                                <div class="middle-box">
-                                    <div class="center-box">
-                                        <div class="searchbar-box order-xl-1 d-none d-xl-block">
-                                            <input type="search" class="form-control" id="exampleFormControlInput1"
-                                                placeholder="Tìm kiếm sản phẩm, giao tận nhà...">
-                                            <button class="btn search-button">
-                                                <i class="iconly-Search icli"></i>
-                                            </button>
-                                        </div>
-                                        <div class="location-box-2">
-                                            <button class="btn location-button" data-bs-toggle="modal"
-                                                data-bs-target="#locationModal">
-                                                <i class="iconly-Location icli"></i>
-                                                <span id="city-name" class="locat-name">Đang tải...</span>
-                                                <i class="fa-solid fa-angle-down down-arrow"></i>
-                                            </button>
-                                        </div>
+                          <div class="price-box">
+                            <h5>Price :</h5>
+                            <h4 class="theme-color fw-bold">
+                              {{totalPrice| number:''}} VNĐ
+                            </h4>
+                          </div>
 
-                                    </div>
-                                </div>
-
-                                <div class="rightside-menu">
-                                    <div class="dropdown-dollar">
-                                        <div class="dropdown">
-                                            <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <span>Ngôn Ngữ</span> <i class="fa-solid fa-angle-down"></i>
-
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li>
-                                                    <a id="vie" class="dropdown-item" href="javascript:void(0)">Tiếng
-                                                        Việt</a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-
-                                        <div class="dropdown">
-                                            <button class="dropdown-toggle m-0" type="button" id="dropdownMenuButton2"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <span>Đơn vị tiền tệ</span> <i class="fa-solid fa-angle-down"></i>
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li>
-                                                    <a id="vnd" class="dropdown-item" href="javascript:void(0)">VNĐ</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="option-list">
-                                        <ul>
-                                            <li class="mobile">
-                                                <a ng-href="{{ isLogin ? '/profile' : '/login' }}"
-                                                    class="header-icon user-icon search-icon">
-                                                    <i class="iconly-Profile icli"></i>
-                                                </a>
-                                                <!-- Phần chi tiết tài khoản người dùng -->
-                                                <div class="delivery-detail">
-                                                    <p class="m-0">Hello,</p>
-                                                    <p class="m-0">{{userName}}</p>
-                                                </div>
-                                            </li>
-
-                                            <li>
-                                                <a href="javascript:void(0)" class="header-icon search-box search-icon">
-                                                    <i class="iconly-Search icli"></i>
-                                                </a>
-                                            </li>
-                                            <li class="onhover-dropdown">
-                                                <a href="javascript:void(0)" class="header-icon swap-icon">
-                                                    <i class="iconly-Heart icli"></i>
-                                                </a>
-
-                                            </li>
-
-                                            <li class="onhover-dropdown">
-                                                <a href="/cart" class="header-icon bag-icon">
-                                                    <small class="badge-number">{{count}}</small>
-                                                    <i class="iconly-Bag-2 icli"></i>
-                                                </a>
-                                                <div class="onhover-div">
-                                                    <ul class="cart-list">
-                                                        <!-- Loop through the cart products using ng-repeat -->
-                                                        <li ng-repeat="product in cartProducts">
-                                                            <div class="drop-cart">
-                                                                <a href="product-left-thumbnail.html" class="drop-image">
-                                                                    <img ng-src="{{product.productDetails.imgURL}}" class="blur-up lazyload" alt="">
-                                                                </a>
-                                                
-                                                                <div class="drop-contain">
-                                                                    <a href="product-left-thumbnail.html">
-                                                                        <h5>{{product.productDetails.milkbrandname}} - {{product.productDetails.milktypename}} ({{product.productDetails.milktastename}})</h5>
-                                                                    </a>
-                                                                    <h6><span>{{product.quantity}} x</span> {{product.productDetails.price| number:''}} VNĐ</h6>
-                                                                    <button class="close-button" ng-click="removeProduct(product)">
-                                                                        <i class="fa-solid fa-xmark"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                
-                                                    <div class="price-box">
-                                                        <h5>Price :</h5>
-                                                        <h4 class="theme-color fw-bold">{{totalPrice| number:''}} VNĐ</h4>
-                                                    </div>
-                                                
-                                                    <div class="button-group">
-                                                        <a href="/cart" class="btn btn-sm cart-button">View Cart</a>
-                                                        <a href="/checkout" class="btn btn-sm cart-button theme-bg-color text-white">Checkout</a>
-                                                    </div>
-                                                </div>
-                                                
-                                            </li>
-                                            <li class="onhover-dropdown right-side" id="user-icon-dropdown">
-                                                <div class="delivery-login-box d-flex align-items-center">
-                                                    <!-- Icon người dùng từ Iconly -->
-                                                    <div class="header-icon swap-icon me-2">
-                                                        <a ng-href="{{ isLogin ? '/profile' : '/login' }}">
-                                                            <i class="iconly-Profile icli"></i>
-                                                        </a>
-                                                    </div>
-                                                    <!-- Phần chi tiết tài khoản người dùng -->
-                                                    <div class="delivery-detail">
-                                                        <h6 class="m-0">Hello,</h6>
-                                                        <h5 class="m-0">{{userName}}</h5>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Phần dropdown khi click vào tài khoản người dùng -->
-                                                <div class="onhover-div onhover-div-login" id="user-login-menu"
-                                                    ng-init="checkLogin()">
-                                                    <ul class="user-box-name">
-                                                        <li class="product-box-contain" ng-hide="isLogin">
-                                                            <a href="/login">Log In</a>
-                                                        </li>
-                                                        <li class="product-box-contain" ng-hide="isLogin">
-                                                            <a href="/sign-up">Register</a>
-                                                        </li>
-                                                        <li class="product-box-contain" ng-hide="isLogin">
-                                                            <a href="/forgot">Forgot Password</a>
-                                                        </li>
-                                                        <li class="product-box-contain" ng-hide="!isLogin"
-                                                            ng-controller="LoginController">
-                                                            <p ng-click="logout()">Đăng Xuất</p>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                            </div>
+                          <div class="button-group">
+                            <a href="/cart" class="btn btn-sm cart-button"
+                              >View Cart</a
+                            >
+                            <a
+                              href="/checkout"
+                              class="btn btn-sm cart-button theme-bg-color text-white"
+                              >Checkout</a
+                            >
+                          </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container-fluid-lg">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="main-nav">
-                            <div class="header-nav-left mobile">
-                                <button class="dropdown-category dropdown-category-2">
-                                    <i class="iconly-Category icli"></i>
-                                    <span>Tất cả danh mục</span>
-                                </button>
-                            </div>
-
-                            <div class="main-nav navbar navbar-expand-xl navbar-light navbar-sticky">
-                                <div class="offcanvas offcanvas-collapse order-xl-2" id="primaryMenu">
-                                    <div class="offcanvas-header navbar-shadow">
-                                        <h5>Menu</h5>
-                                        <button class="btn-close lead" type="button" data-bs-dismiss="offcanvas"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="offcanvas-body">
-                                        <ul class="navbar-nav">
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="javascript:void(0)"
-                                                    data-bs-toggle="dropdown">Sản Phẩm</a>
-
-                                                <ul class="dropdown-menu">
-                                                    <li class="sub-dropdown-hover">
-                                                        <a href="javascript:void(0)" class="dropdown-item">Loại</a>
-                                                        <ul class="sub-menu">
-                                                            <li ng-repeat="milktype in milktypes">
-                                                                <a
-                                                                    ng-click="filterByType(milktype.id)">{{milktype.milkTypename}}</a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="sub-dropdown-hover">
-                                                        <a href="javascript:void(0)" class="dropdown-item">hãng</a>
-                                                        <ul class="sub-menu">
-                                                            <li ng-repeat="milkbrand in milkbrands">
-                                                                <a
-                                                                    ng-click="filterByBrand(milkbrand.id)">{{milkbrand.milkbrandname}}</a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="sub-dropdown-hover">
-                                                        <a href="javascript:void(0)" class="dropdown-item">Đối tượng</a>
-                                                        <ul class="sub-menu">
-                                                            <li ng-repeat="targetuser in targetusers">
-                                                                <a
-                                                                    ng-click="filterByTargetUser(targetuser.id)">{{targetuser.targetuser}}</a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="right-nav">
-                                <div class="nav-number">
-                                    <img src="../assets/images/icon/music.png" class="img-fluid blur-up lazyload"
-                                        alt="">
-                                    <span>0338739954</span>
-                                </div>
-                                <a href="javascript:void(0)" class="btn theme-bg-color ms-3 fire-button"
-                                    data-bs-toggle="modal" data-bs-target="#deal-box">
-                                    <div class="fire">
-                                        <img src="../assets/images/icon/hot-sale.png" class="img-fluid" alt="">
-                                    </div>
-                                    <span>Khuyến mãi hot</span>
-                                </a>
-                            </div>
+                      </li>
+                      <li
+                        class="onhover-dropdown right-side"
+                        id="user-icon-dropdown"
+                      >
+                        <div
+                          class="delivery-login-box d-flex align-items-center"
+                        >
+                          <!-- Icon người dùng từ Iconly -->
+                          <div class="header-icon swap-icon me-2">
+                            <a ng-href="{{ isLogin ? '/profile' : '/login' }}">
+                              <i class="iconly-Profile icli"></i>
+                            </a>
+                          </div>
+                          <!-- Phần chi tiết tài khoản người dùng -->
+                          <div class="delivery-detail">
+                            <h6 class="m-0">Hello,</h6>
+                            <h5 class="m-0">{{userName}}</h5>
+                          </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div class="mobile-menu d-md-none d-block mobile-cart">
-            <ul>
-                <li>
-                    <a href="index.html">
-                        <i class="iconly-Home icli"></i>
-                        <span>Home</span>
-                    </a>
-                </li>
 
-                <li>
-                    <a ng-href="/cart">
-                        <i class="iconly-Bag-2 icli fly-cate"></i>
-                        <span>Cart</span>
-                    </a>
-                </li>
-            </ul>
+                        <!-- Phần dropdown khi click vào tài khoản người dùng -->
+                        <div
+                          class="onhover-div onhover-div-login"
+                          id="user-login-menu"
+                          ng-init="checkLogin()"
+                        >
+                          <ul class="user-box-name">
+                            <li class="product-box-contain" ng-hide="isLogin">
+                              <a href="/login">Log In</a>
+                            </li>
+                            <li class="product-box-contain" ng-hide="isLogin">
+                              <a href="/sign-up">Register</a>
+                            </li>
+                            <li class="product-box-contain" ng-hide="isLogin">
+                              <a href="/forgot">Forgot Password</a>
+                            </li>
+                            <li
+                              class="product-box-contain"
+                              ng-hide="!isLogin"
+                              ng-controller="LoginController"
+                            >
+                              <p ng-click="logout()">Đăng Xuất</p>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="container-fluid-lg">
+        <div class="row">
+          <div class="col-12">
+            <div class="main-nav">
+              <div class="header-nav-left mobile">
+                <button class="dropdown-category dropdown-category-2">
+                  <i class="iconly-Category icli"></i>
+                  <span>Tất cả danh mục</span>
+                </button>
+              </div>
+
+              <div
+                class="main-nav navbar navbar-expand-xl navbar-light navbar-sticky"
+              >
+                <div
+                  class="offcanvas offcanvas-collapse order-xl-2"
+                  id="primaryMenu"
+                >
+                  <div class="offcanvas-header navbar-shadow">
+                    <h5>Menu</h5>
+                    <button
+                      class="btn-close lead"
+                      type="button"
+                      data-bs-dismiss="offcanvas"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="offcanvas-body">
+                    <ul class="navbar-nav">
+                      <li class="nav-item dropdown">
+                        <a
+                          class="nav-link dropdown-toggle"
+                          href="javascript:void(0)"
+                          data-bs-toggle="dropdown"
+                          >Sản Phẩm</a
+                        >
+
+                        <ul class="dropdown-menu">
+                          <li class="sub-dropdown-hover">
+                            <a href="javascript:void(0)" class="dropdown-item"
+                              >Loại</a
+                            >
+                            <ul class="sub-menu">
+                              <li ng-repeat="milktype in milktypes">
+                                <a ng-click="filterByType(milktype.id)"
+                                  >{{milktype.milkTypename}}</a
+                                >
+                              </li>
+                            </ul>
+                          </li>
+                          <li class="sub-dropdown-hover">
+                            <a href="javascript:void(0)" class="dropdown-item"
+                              >hãng</a
+                            >
+                            <ul class="sub-menu">
+                              <li ng-repeat="milkbrand in milkbrands">
+                                <a ng-click="filterByBrand(milkbrand.id)"
+                                  >{{milkbrand.milkbrandname}}</a
+                                >
+                              </li>
+                            </ul>
+                          </li>
+                          <li class="sub-dropdown-hover">
+                            <a href="javascript:void(0)" class="dropdown-item"
+                              >Đối tượng</a
+                            >
+                            <ul class="sub-menu">
+                              <li ng-repeat="targetuser in targetusers">
+                                <a ng-click="filterByTargetUser(targetuser.id)"
+                                  >{{targetuser.targetuser}}</a
+                                >
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="right-nav">
+                <div class="nav-number">
+                  <img
+                    src="../assets/images/icon/music.png"
+                    class="img-fluid blur-up lazyload"
+                    alt=""
+                  />
+                  <span>0338739954</span>
+                </div>
+                <a
+                  href="javascript:void(0)"
+                  class="btn theme-bg-color ms-3 fire-button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deal-box"
+                >
+                  <div class="fire">
+                    <img
+                      src="../assets/images/icon/hot-sale.png"
+                      class="img-fluid"
+                      alt=""
+                    />
+                  </div>
+                  <span>Khuyến mãi hot</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="mobile-menu d-md-none d-block mobile-cart">
+      <ul>
+        <li>
+          <a href="index.html">
+            <i class="iconly-Home icli"></i>
+            <span>Home</span>
+          </a>
+        </li>
+
+        <li>
+          <a ng-href="/cart">
+            <i class="iconly-Bag-2 icli fly-cate"></i>
+            <span>Cart</span>
+          </a>
+        </li>
+      </ul>
     </div>
+  </div>
 </div>

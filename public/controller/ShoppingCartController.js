@@ -5,7 +5,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const urlInvoice = "http://localhost:1234/api/Invoice/add";
   const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
-  const apiUser = "http://160.30.21.47:1234/api/user/";
+  const apiUser = "http://160.30.21.47:1234/api/user/profile/";
   const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
   const apitGetInvoiceByUser = "http://localhost:1234/api/Invoice/getInvoices/";
   const apiInvoiceDetail =
@@ -374,22 +374,24 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
 
   // Cập nhật tổng tiền khi số lượng thay đổi
   $scope.updateTotal = function (product) {
-    console.log(product);
-    if (product.quantity > product.productDetails.stockquantity) {
+    console.log(product.quantity);
+    if (
+      product.quantity > product.productDetails.stockquantity ||
+      product.quantity < 1
+    ) {
       Swal.fire({
         icon: "error",
         title: "Đặt Hàng Thất Bại",
         text: "Vui lòng nhập đúng số lượng!",
         footer: "Số Lượng Còn Lại: " + product.productDetails.stockquantity,
       });
+      product.quantity = 1;
       return;
     }
     localStorage.setItem(
       "lstProductOder",
       JSON.stringify($scope.lstProductOder)
     );
-    $scope.lstProductOder = JSON.parse(localStorage.getItem("lstProductOder"));
-    window.location.reload();
   };
 
   $scope.createInvoiceAndDetails = function () {
@@ -440,7 +442,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
           timer: 1500,
         }).then(() => {
           console.log(invoiceDto);
-          // $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
+          $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
         });
       })
       .catch((error) => {

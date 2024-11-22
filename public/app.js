@@ -85,6 +85,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
         "http://localhost:1234/api/Invoice/getInvoices/",
         "http://localhost:1234/api/Invoicedetail/getInvoiceDetailByUser/",
         "http://160.30.21.47:1234/api/Invoice/cancel/",
+        "http://160.30.21.47:1234/api/user/profile/",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {

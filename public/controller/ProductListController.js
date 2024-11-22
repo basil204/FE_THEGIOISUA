@@ -21,13 +21,15 @@ app.controller(
         }
       );
     };
-    $scope.cartProducts =
-      JSON.parse(localStorage.getItem("lstProductOder")) || [];
+    $scope.getListOderProduct = function () {
+      $scope.cartProducts =
+        JSON.parse(localStorage.getItem("lstProductOder")) || [];
+      $scope.totalPrice = $scope.cartProducts.reduce(function (sum, product) {
+        return sum + product.quantity * product.productDetails.price;
+      }, 0);
+    };
 
     // Calculate total price
-    $scope.totalPrice = $scope.cartProducts.reduce(function (sum, product) {
-      return sum + product.quantity * product.productDetails.price;
-    }, 0);
 
     // Function to remove a product from the cart
     $scope.removeProduct = function (product) {
@@ -81,7 +83,6 @@ app.controller(
         }
       );
     };
-
     // Filtering functions with routing to products page
     $scope.filterByType = function (typeId) {
       $location.path("/home").search({ type: typeId });
@@ -94,7 +95,9 @@ app.controller(
     $scope.filterByTargetUser = function (targetUserId) {
       $location.path("/home").search({ target: targetUserId });
     };
-
+    $scope.filterProductWithSearch = function () {
+      $location.path("/home").search({ key: $scope.searchTerm });
+    };
     // Fetch initial data for dropdowns
     $scope.getMilktaste();
     $scope.getTargetusers();
@@ -114,6 +117,10 @@ app.controller(
       } else if (params.target) {
         $scope.getdataproduct(
           `http://160.30.21.47:1234/api/Product/page/TargetUser/${params.target}`
+        );
+      } else if (params.key) {
+        $scope.getdataproduct(
+          `http://localhost:1234/api/Product/page/getPageProductWithSearch/${params.key}`
         );
       } else {
         $scope.getdataproduct("http://160.30.21.47:1234/api/Product/page");
