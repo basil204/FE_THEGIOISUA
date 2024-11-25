@@ -330,7 +330,7 @@
                   <tr ng-repeat="log in systemLogs" class="align-middle">
                     <td data-label="Người thực hiện" class="text-center">{{log.user.username}}</td>
                     <td data-label="Hành động" class="text-center">{{log.action}}</td>
-                    <td data-label="Thời gian" class="text-center">{{log.created_at | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td data-label="Thời gian" class="text-center">{{ log.created_at | date:'dd-MM-yyyy|HH:mm:ss' : '+0000' }}</td>
                     <td data-label="Chi tiết" class="text-center">{{log.description}}</td>
                   </tr>
                   </tbody>
