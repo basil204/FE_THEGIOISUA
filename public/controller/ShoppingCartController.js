@@ -16,7 +16,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
   const apitGetInvoiceByUser = "http://160.30.21.47:1234/api/Invoice/getInvoices/";
   const apiInvoiceDetail =
-    "http://localhost:1234/api/Invoicedetail/getInvoiceDetailByUser/";
+    "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
   $scope.selectedPaymentMethod = "";
   $scope.newAddress = null;
   $scope.tinhs = [];

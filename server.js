@@ -13,5 +13,5 @@ app.get("*", (req, res) => {
 // Khởi động server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port localhost:${PORT}`);
+  console.log(`Server is running on port http://localhost:${PORT}`);
 });

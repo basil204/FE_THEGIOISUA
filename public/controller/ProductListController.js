@@ -120,7 +120,7 @@ app.controller(
         );
       } else if (params.key) {
         $scope.getdataproduct(
-          `http://localhost:1234/api/Product/page/getPageProductWithSearch/${params.key}`
+          `http://160.30.21.47:1234/api/Product/page/getPageProductWithSearch/${params.key}`
         );
       } else {
         $scope.getdataproduct("http://160.30.21.47:1234/api/Product/page");
