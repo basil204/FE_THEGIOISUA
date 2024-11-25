@@ -10,7 +10,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   $scope.lstProductOder =
     JSON.parse(localStorage.getItem("lstProductOder")) || [];
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const urlInvoice = "http://localhost:1234/api/Invoice/add";
+  const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
   const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
   const apiUser = "http://160.30.21.47:1234/api/user/";
   const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
