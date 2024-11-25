@@ -14,7 +14,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
   const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
   const apiUser = "http://160.30.21.47:1234/api/user/";
   const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
-  const apitGetInvoiceByUser = "http://localhost:1234/api/Invoice/getInvoices/";
+  const apitGetInvoiceByUser = "http://160.30.21.47:1234/api/Invoice/getInvoices/";
   const apiInvoiceDetail =
     "http://localhost:1234/api/Invoicedetail/getInvoiceDetailByUser/";
   $scope.selectedPaymentMethod = "";
