@@ -38,6 +38,20 @@ app.controller("LoginController", function ($scope, $http) {
               console.log(userInfo);
               localStorage.setItem("userInfo", JSON.stringify(userInfo));
               $scope.isLoggedIn = true; // Update login status
+
+              // Check user role
+              if (userInfo.role === "Admin"|| userInfo.role === "Staff") {
+                Swal.fire({
+                  icon: "warning",
+                  title: "Thông báo",
+                  text: "Bạn là Admin và chỉ được phép truy cập trang admin.",
+                  confirmButtonText: "OK",
+                  timer: 3000,
+                }).then(() => {
+                  window.location.href = "http://160.30.21.47:3004/"; // Redirect to admin page
+                });
+                return; // Exit function if user is Admin
+              }
             }
 
             Swal.fire({
@@ -85,12 +99,12 @@ app.controller("LoginController", function ($scope, $http) {
   // Logout function
   $scope.logout = function () {
     Swal.fire({
-      title: "Are you sure?",
+      title: 'Are you sure?',
       text: "Bạn Có Muốn Đăng Xuất Không?",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("authToken"); // Remove token from localStorage
@@ -108,5 +122,6 @@ app.controller("LoginController", function ($scope, $http) {
         });
       }
     });
+
   };
 });
