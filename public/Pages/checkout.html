@@ -1,27 +1,3 @@
-<section class="breadcrumb-section pt-0">
-  <div class="container-fluid-lg">
-    <div class="row">
-      <div class="col-12">
-        <div class="breadcrumb-contain">
-          <h2>Checkout</h2>
-          <nav>
-            <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item">
-                <a href="index.html">
-                  <i class="fa-solid fa-house"></i>
-                </a>
-              </li>
-              <li class="breadcrumb-item active">Checkout</li>
-            </ol>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Breadcrumb Section End -->
-
-<!-- Checkout section Start -->
 <section class="checkout-section-2 section-b-space">
   <div class="container-fluid-lg">
     <div class="row g-sm-4 g-3">
@@ -29,6 +5,7 @@
         <div class="left-sidebar-checkout">
           <div class="checkout-detail-box">
             <ul>
+              <!-- Địa chỉ giao hàng -->
               <li>
                 <div class="checkout-icon">
                   <lord-icon
@@ -37,14 +14,12 @@
                     trigger="loop-on-hover"
                     colors="primary:#121331,secondary:#646e78,tertiary:#0baf9a"
                     class="lord-icon"
-                  >
-                  </lord-icon>
+                  ></lord-icon>
                 </div>
                 <div class="checkout-box">
                   <div class="checkout-title">
                     <h4>Địa Chỉ Giao Hàng</h4>
                   </div>
-
                   <div class="checkout-detail">
                     <div class="row g-4">
                       <div class="col-xxl-6 col-lg-12 col-md-6">
@@ -53,14 +28,12 @@
                             <ul class="delivery-address-detail">
                               <li>
                                 <p class="text-content">
-                                  <span class="text-title">Địa Chỉ: </span
-                                  >{{userData.address}}
+                                  <span class="text-title">Địa Chỉ: </span>{{userData.address}}
                                 </p>
                               </li>
                               <li>
                                 <h6 class="text-content mb-0">
-                                  <span class="text-title">Số Điện Thoại: </span
-                                  >{{userData.phoneNumber}}
+                                  <span class="text-title">Số Điện Thoại: </span>{{userData.phoneNumber}}
                                 </h6>
                               </li>
                             </ul>
@@ -72,6 +45,7 @@
                 </div>
               </li>
 
+              <!-- Phương thức thanh toán -->
               <li>
                 <div class="checkout-icon">
                   <lord-icon
@@ -80,19 +54,15 @@
                     trigger="loop-on-hover"
                     colors="primary:#0baf9a,secondary:#0baf9a"
                     class="lord-icon"
-                  >
-                  </lord-icon>
+                  ></lord-icon>
                 </div>
                 <div class="checkout-box">
                   <div class="checkout-title">
-                    <h4>Payment Option</h4>
+                    <h4>Phương Thức Thanh Toán</h4>
                   </div>
-
                   <div class="checkout-detail">
-                    <div
-                      class="accordion accordion-flush custom-accordion"
-                      id="accordionFlushExample"
-                    >
+                    <div class="accordion accordion-flush custom-accordion" id="accordionFlushExample">
+                      <!-- Thanh toán khi nhận hàng (COD) -->
                       <div class="accordion-item">
                         <div class="accordion-header" id="flush-headingFour">
                           <div
@@ -116,17 +86,45 @@
                             </div>
                           </div>
                         </div>
-                        <!-- <div id="flush-collapseFour" class="accordion-collapse collapse show"
-                                                      data-bs-parent="#accordionFlushExample">
-                                                      <div class="accordion-body">
-                                                          <p class="cod-review">Thanh toán qua SMS Pay Link. Tiền mặt có
-                                                              thể không được chấp nhận ở các khu vực hạn chế COVID.
-                                                              <a href="javascript:void(0)">Tìm hiểu thêm.</a>
-                                                          </p>
-                                                      </div>
-                                                  </div> -->
+                        <div
+                          id="flush-collapseFour"
+                          class="accordion-collapse collapse show"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div class="accordion-body">
+                            <p class="text-content" style="font-size: 1rem; line-height: 1.6;">
+                              <strong>Thanh toán khi nhận hàng (COD)</strong> là hình thức khách hàng trả tiền cho người giao hàng khi nhận được sản phẩm, thay vì phải thanh toán trước.
+                            </p>
+
+                            <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Ưu Điểm:</h5>
+                            <ul>
+                              <li>
+                                <strong>Tiện lợi và an toàn:</strong> Không cần cung cấp thông tin thẻ, chỉ trả tiền khi nhận hàng.
+                              </li>
+                              <li>
+                                <strong>Kiểm tra sản phẩm trước khi thanh toán:</strong> Đảm bảo sản phẩm đúng như mô tả, không bị lỗi.
+                              </li>
+                            </ul>
+
+                            <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Nhược Điểm:</h5>
+                            <ul>
+                              <li>
+                                <strong>Chi phí vận chuyển cao hơn:</strong> Do doanh nghiệp phải trả thêm phí cho dịch vụ COD.
+                              </li>
+                              <li>
+                                <strong>Có thể mất thời gian:</strong> Quá trình giao hàng và thu tiền có thể lâu hơn so với thanh toán online.
+                              </li>
+                            </ul>
+
+                            <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Ví Dụ:</h5>
+                            <p>
+                              Khách hàng mua điện thoại và chọn COD. Khi nhận hàng, khách kiểm tra và trả tiền cho người giao. Nếu không hài lòng, có thể từ chối nhận hàng.
+                            </p>
+                          </div>
+                        </div>
                       </div>
 
+                      <!-- Ngân hàng trực tuyến -->
                       <div class="accordion-item">
                         <div class="accordion-header" id="flush-headingTwo">
                           <div
@@ -149,15 +147,42 @@
                             </div>
                           </div>
                         </div>
-                        <!-- <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                                                      data-bs-parent="#accordionFlushExample">
-                                                      <div class="accordion-body">
-                                                          <p class="cod-review">Thanh toán qua SMS Pay Link. Tiền mặt có
-                                                              thể không được chấp nhận ở các khu vực hạn chế COVID.
-                                                              <a href="javascript:void(0)">Tìm hiểu thêm.</a>
-                                                          </p>
-                                                      </div>
-                                                  </div> -->
+                        <div
+                          id="flush-collapseTwo"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div class="accordion-body">
+                            <p class="text-content" style="font-size: 1rem; line-height: 1.6;">
+                              <strong>Ngân Hàng Trực Tuyến</strong> cho phép bạn thanh toán ngay lập tức thông qua tài khoản ngân hàng của mình. Bạn chỉ cần chọn ngân hàng và hoàn tất thanh toán qua ứng dụng ngân hàng trực tuyến.
+                            </p>
+
+                            <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Ưu Điểm:</h5>
+                            <ul>
+                              <li>
+                                <strong>Thanh toán nhanh chóng:</strong> Không cần đợi khi nhận hàng, thanh toán trực tiếp qua tài khoản ngân hàng.
+                              </li>
+                              <li>
+                                <strong>Tiện lợi:</strong> Bạn có thể thanh toán mọi lúc, mọi nơi, chỉ cần có kết nối Internet.
+                              </li>
+                            </ul>
+
+                            <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Nhược Điểm:</h5>
+                            <ul>
+                              <li>
+                                <strong>Cần có tài khoản ngân hàng trực tuyến:</strong> Bạn phải có tài khoản và đăng nhập vào ứng dụng ngân hàng.
+                              </li>
+                              <li>
+                                <strong>Không phù hợp với tất cả người dùng:</strong> Một số người dùng có thể cảm thấy không an toàn khi thanh toán trực tuyến.
+                              </li>
+                            </ul>
+
+                            <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Ví Dụ:</h5>
+                            <p>
+                              Khách hàng chọn phương thức thanh toán qua ngân hàng trực tuyến, sau đó đăng nhập vào ứng dụng ngân hàng để hoàn tất thanh toán.
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -168,6 +193,7 @@
         </div>
       </div>
 
+      <!-- Phần tóm tắt đơn hàng -->
       <div class="col-lg-4">
         <div class="right-side-summery-box">
           <div class="summery-box-2">
@@ -192,19 +218,11 @@
                   <span>x {{product.quantity}}</span>
                 </h4>
                 <h4 class="price">
-                  {{(product.productDetails.price * product.quantity)|
-                  number:''}} VNĐ
+                  {{(product.productDetails.price * product.quantity) | number:''}} VNĐ
                 </h4>
               </li>
             </ul>
-            <style>
-              .summery-contain {
-                max-height: 300px;
-                /* Giới hạn chiều cao để hiển thị khoảng 3 sản phẩm */
-                overflow-y: auto;
-                /* Thêm thanh cuộn dọc */
-              }
-            </style>
+
             <div class="summery-contain">
               <div class="coupon-cart">
                 <h6 class="text-content mb-2">Phiếu giảm giá</h6>
@@ -216,9 +234,7 @@
                     placeholder="Nhập mã giảm giá vào đây..."
                     ng-model="vouchercode"
                   />
-                  <button class="btn-apply" ng-click="checkvoucher()">
-                    Áp dụng
-                  </button>
+                  <button class="btn-apply" ng-click="checkvoucher()">Áp dụng</button>
                 </div>
               </div>
               <ul>
@@ -231,65 +247,19 @@
                   <h4 class="price">{{discountmoney | number:''}} VNĐ</h4>
                 </li>
                 <li>
-                  <h4>Số Tiên Phải Thanh Toán</h4>
+                  <h4>Số Tiền Phải Thanh Toán</h4>
                   <h4 class="price">{{totalamount | number:''}} VNĐ</h4>
                 </li>
               </ul>
             </div>
-            <!-- <ul class="summery-total">
-                              <li>
-                                  <h4>Subtotal</h4>
-                                  <h4 class="price">$111.81</h4>
-                              </li>
-  
-                              <li>
-                                  <h4>Shipping</h4>
-                                  <h4 class="price">$8.90</h4>
-                              </li>
-  
-                              <li>
-                                  <h4>Tax</h4>
-                                  <h4 class="price">$29.498</h4>
-                              </li>
-  
-                              <li>
-                                  <h4>Coupon/Code</h4>
-                                  <h4 class="price">$-23.10</h4>
-                              </li>
-  
-                              <li class="list-total">
-                                  <h4>Total (USD)</h4>
-                                  <h4 class="price">$19.28</h4>
-                              </li>
-                          </ul> -->
+
+            <button
+              class="btn theme-bg-color text-white btn-md w-100 mt-4 fw-bold"
+              ng-click="createInvoiceAndDetails()"
+            >
+              Tạo Hoá Đơn
+            </button>
           </div>
-
-          <!-- <div class="checkout-offer">
-                          <div class="offer-title">
-                              <div class="offer-icon">
-                                  <img src="../assets/images/inner-page/offer.svg" class="img-fluid" alt="">
-                              </div>
-                              <div class="offer-name">
-                                  <h6>Available Offers</h6>
-                              </div>
-                          </div>
-  
-                          <ul class="offer-detail">
-                              <li>
-                                  <p>Combo: BB Royal Almond/Badam Californian, Extra Bold 100 gm...</p>
-                              </li>
-                              <li>
-                                  <p>combo: Royal Cashew Californian, Extra Bold 100 gm + BB Royal Honey 500 gm</p>
-                              </li>
-                          </ul>
-                      </div> -->
-
-          <button
-            class="btn theme-bg-color text-white btn-md w-100 mt-4 fw-bold"
-            ng-click="createInvoiceAndDetails()"
-          >
-            Tạo Hoá Đơn
-          </button>
         </div>
       </div>
     </div>
