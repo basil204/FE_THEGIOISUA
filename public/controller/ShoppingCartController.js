@@ -8,7 +8,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
     }
   }
   $scope.lstProductOder =
-    JSON.parse(localStorage.getItem("lstProductOder")) || [];
+    JSON.parse(localStorage.getItem("lstProductOder")) || []
   const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
   const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
   const apiUser = "http://160.30.21.47:1234/api/user/";
