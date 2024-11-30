@@ -7,7 +7,11 @@ app.controller("LoginController", function ($scope, $http, socket) {
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     return JSON.parse(atob(base64));
   }
-
+  $scope.connectUser = function (user) {
+    socket.connect(user).then(function () {
+      socket.sendMessage('/app/connect', { userId: user.id, role: user.role });
+    });
+  };
   // Đăng nhập
   $scope.login = function () {
     if (!$scope.user.username || !$scope.user.password) {
@@ -20,11 +24,7 @@ app.controller("LoginController", function ($scope, $http, socket) {
       return;
     }
 
-    $scope.connectUser = function (user) {
-      socket.connect(user).then(function () {
-        socket.sendMessage('/app/connect', { userId: user.id, role: user.role });
-      });
-    };
+
 
     $http.post("http://160.30.21.47:1234/api/user/authenticate", {
       username: $scope.user.username,

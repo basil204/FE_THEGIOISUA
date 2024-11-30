@@ -1,7 +1,11 @@
 app.controller(
   "VerifyController",
-  function ($scope, $routeParams, $http, $location) {
+  function ($scope, $routeParams, $http, $location, socket) {
     // Function to verify the token
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo) {
+      socket.connect(userInfo);
+    }
     $scope.verifyToken = function () {
       const token = $routeParams.token;
       let isLogin = false;

@@ -1,5 +1,9 @@
-app.controller("ForgotController", function ($scope, $http) {
+app.controller("ForgotController", function ($scope, $http, socket) {
   // Function to send forgot password request
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (userInfo) {
+    socket.connect(userInfo);
+  }
   $scope.sendForgotPassword = function () {
     if (!$scope.email) {
       Swal.fire({

@@ -1,4 +1,4 @@
-app.controller("SignupController", function ($scope, $http) {
+app.controller("SignupController", function ($scope, $http, socket) {
   $scope.user = {
     username: "",
     password: "",
@@ -6,7 +6,10 @@ app.controller("SignupController", function ($scope, $http) {
     fullname: "",
     email: "",
   };
-
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (userInfo) {
+    socket.connect(userInfo);
+  }
   $scope.isSubmitting = false; // Biến theo dõi trạng thái gửi
 
   $scope.register = function () {

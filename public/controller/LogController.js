@@ -1,5 +1,10 @@
-app.controller("LogController", function ($scope, $http) {
+app.controller("LogController", function ($scope, $http, socket) {
     const token = localStorage.getItem("authToken");
+
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo) {
+        socket.connect(userInfo);
+    }
     $scope.systemLogs = [];
     $scope.page = {
         size: 10, // Số lượng bản ghi mỗi trang

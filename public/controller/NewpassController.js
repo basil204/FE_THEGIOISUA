@@ -1,7 +1,12 @@
 app.controller(
   "NewpassController",
-  function ($scope, $routeParams, $http, $location) {
+  function ($scope, $routeParams, $http, $location, socket
+  ) {
     // Function to reset the password
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo) {
+      socket.connect(userInfo);
+    }
     $scope.resetPassword = function () {
       const token = $routeParams.token;
 
