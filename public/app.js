@@ -173,11 +173,16 @@ app.run(['$window', 'socket', function ($window, socket) {
   // Kết nối WebSocket khi người dùng đăng nhập
   socket.connect(userInfo);
 
-  // Đảm bảo khi người dùng đóng trang, kết nối WebSocket bị đóng và ID bị xóa khỏi online users
+  // Sử dụng onbeforeunload và unload để ngắt kết nối WebSocket khi người dùng rời khỏi trang
   $window.onbeforeunload = function () {
     socket.disconnect(userInfo);
   };
+
+  $window.addEventListener('unload', function () {
+    socket.disconnect(userInfo);
+  });
 }]);
+
 
 
 
