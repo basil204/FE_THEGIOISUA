@@ -86,6 +86,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
         "http://160.30.21.47:1234/api/Invoice/cancel/",
         "http://160.30.21.47:1234/api/user/profile/",
+        "http://160.30.21.47:1234/api/u-websocket",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {
@@ -95,27 +96,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
     },
   };
 });
-// app
-//   .factory("httpInterceptor", function ($q) {
-//     return {
-//       request: function (config) {
-//         console.log("Request:", config);
-//         return config;
-//       },
-//       response: function (response) {
-//         console.log("Response:", response);
-//         return response;
-//       },
-//       responseError: function (rejection) {
-//         console.error("Response Error:", rejection);
-//         return $q.reject(rejection);
-//       },
-//     };
-//   })
-//   .config(function ($httpProvider) {
-//     $httpProvider.interceptors.push("httpInterceptor");
-//   });
-// Product Service
+
 app.service("ProductService", function () {
   return {
     setProduct: function (product) {
@@ -135,3 +116,69 @@ app.service("ProductService", function () {
     },
   };
 });
+app.factory('socket', ['$q', function ($q) {
+  var socket = null;
+  var stompClient = null;
+
+  return {
+    connect: function (userInfo) {
+      var deferred = $q.defer();
+      socket = new SockJS('http://160.30.21.47:1234/api/u-websocket'); // URL WebSocket
+      stompClient = Stomp.over(socket);
+
+      stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        // Gửi thông điệp khi kết nối thành công để thông báo người dùng online
+        stompClient.send('/app/connect', {}, JSON.stringify({
+          userId: userInfo.id,
+          role: userInfo.role,
+          status: 'online' // Thông báo người dùng online
+        }));
+        deferred.resolve();
+      }, function (error) {
+        console.error('Error: ' + error);
+        deferred.reject(error);
+      });
+
+      socket.onclose = function () {
+        console.log("Socket closed. Attempting to reconnect...");
+        setTimeout(() => {
+          this.connect(); // Cố gắng kết nối lại sau một vài giây
+        }, 5000);
+      };
+
+      return deferred.promise;
+    },
+
+    sendMessage: function (destination, message) {
+      if (stompClient) {
+        stompClient.send(destination, {}, JSON.stringify(message));
+      }
+    },
+
+    disconnect: function (userInfo) {
+      if (stompClient) {
+        stompClient.send('/app/disconnect', {}, JSON.stringify({ userId: userInfo.id, role: userInfo.role }));
+        stompClient.disconnect();
+      }
+    }
+  };
+}]);
+
+app.run(['$window', 'socket', function ($window, socket) {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (!userInfo) {
+    return;
+  }
+  // Kết nối WebSocket khi người dùng đăng nhập
+  socket.connect(userInfo);
+
+  // Đảm bảo khi người dùng đóng trang, kết nối WebSocket bị đóng và ID bị xóa khỏi online users
+  $window.onbeforeunload = function () {
+    socket.disconnect(userInfo);
+  };
+}]);
+
+
+
+

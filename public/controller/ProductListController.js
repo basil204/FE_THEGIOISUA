@@ -1,6 +1,6 @@
 app.controller(
   "ProductListController",
-  function ($scope, $http, $location, ProductService) {
+  function ($scope, $http, $location, ProductService, socket) {
     // Function to fetch products based on the provided URL
     $scope.isLogin = false; // Giá trị mặc định
     $scope.userName = "My Account";
