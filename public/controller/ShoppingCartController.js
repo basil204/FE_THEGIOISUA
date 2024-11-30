@@ -7,6 +7,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
       Authorization: `Bearer ${token}`,
     }
   }
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   $scope.lstProductOder =
     JSON.parse(localStorage.getItem("lstProductOder")) || []
   const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
