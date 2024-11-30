@@ -1,15 +1,18 @@
-app.controller("ShoppingCartController", function ($scope, $location, $http) {
+app.controller("ShoppingCartController", function ($scope, $location, $http, socket) {
   // Khai báo biến
   const token = localStorage.getItem("authToken");
 
-  const config={
+  const config = {
     headers: {
-        Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     }
   }
   $scope.lstProductOder =
     JSON.parse(localStorage.getItem("lstProductOder")) || [];
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (userInfo) {
+    socket.connect(userInfo);
+  }
   const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
   const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
   const apiUser = "http://160.30.21.47:1234/api/user/";
@@ -195,7 +198,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
     if (userInfo && userInfo.id) {
       // Kiểm tra userInfo và userInfo.id tồn tại
       return $http
-        .get(apiUser +"profile/"+ userInfo.id)
+        .get(apiUser + "profile/" + userInfo.id)
         .then(function (response) {
           $scope.userData = response.data; // Lưu dữ liệu vào $scope.userData
           return $scope.userData; // Trả về dữ liệu sau khi tải xong
@@ -255,7 +258,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
     };
 
     $http
-      .put(apiUser + "updatePhonerNumber", user,config)
+      .put(apiUser + "updatePhonerNumber", user, config)
       .then(function (response) {
         if (response.status === 200) {
           $scope.user(); // Cập nhật lại thông tin người dùng
@@ -313,7 +316,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http) {
       address: $scope.newAddress,
     };
     $http
-      .put(apiUser + "updateAddress", user,config)
+      .put(apiUser + "updateAddress", user, config)
       .then(function (response) {
         if (response.status === 200) {
           $scope.user(); // Cập nhật lại thông tin người dùng

@@ -2,10 +2,13 @@ app.controller(
   "ProductListController",
   function ($scope, $http, $location, ProductService, socket) {
     // Function to fetch products based on the provided URL
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo) {
+      socket.connect(userInfo);
+    }
     $scope.isLogin = false; // Giá trị mặc định
     $scope.userName = "My Account";
     $scope.checkLogin = function () {
-      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if (userInfo != null) {
         $scope.isLogin = true;
         $scope.userName = userInfo.sub;

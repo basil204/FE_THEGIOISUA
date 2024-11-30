@@ -1,7 +1,11 @@
 app.controller(
   "ProductDetailController",
-  function ($scope, $location, $http, ProductService) {
+  function ($scope, $location, $http, ProductService,socket) {
     // Lấy sản phẩm từ ProductService
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo) {
+      socket.connect(userInfo);
+    }
     const product = ProductService.getProduct(); // Lấy sản phẩm từ ProductService
 
     if (product) {
@@ -123,7 +127,7 @@ app.controller(
           // Nếu sản phẩm đã tồn tại, chỉ cập nhật số lượng
           if (
             lstProductOder[existingProductIndex].quantity +
-              stockquantityMilkDetail >
+            stockquantityMilkDetail >
             $scope.productDetails.stockquantity
           ) {
             Swal.fire({
