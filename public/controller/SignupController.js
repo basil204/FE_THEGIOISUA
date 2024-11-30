@@ -6,10 +6,6 @@ app.controller("SignupController", function ($scope, $http, socket) {
     fullname: "",
     email: "",
   };
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  if (userInfo) {
-    socket.connect(userInfo);
-  }
   $scope.isSubmitting = false; // Biến theo dõi trạng thái gửi
 
   $scope.register = function () {

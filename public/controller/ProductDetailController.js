@@ -1,11 +1,7 @@
 app.controller(
   "ProductDetailController",
-  function ($scope, $location, $http, ProductService,socket) {
+  function ($scope, $location, $http, ProductService, socket) {
     // Lấy sản phẩm từ ProductService
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (userInfo) {
-      socket.connect(userInfo);
-    }
     const product = ProductService.getProduct(); // Lấy sản phẩm từ ProductService
 
     if (product) {
