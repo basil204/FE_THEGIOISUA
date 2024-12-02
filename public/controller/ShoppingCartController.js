@@ -1,7 +1,13 @@
 app.controller("ShoppingCartController", function ($scope, $location, $http, socket) {
   // Khai báo biến
   const token = localStorage.getItem("authToken");
-
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+  });
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -448,8 +454,17 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          console.log(invoiceDto);
-          $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
+          if ($scope.selectedPaymentMethod === "COD") {
+            socket.sendMessage('/app/sendMessage', invoiceDto.invoiceCode);
+            socket.subscribe('/topic/messages', function (message) {
+              Toast.fire({
+                icon: 'info',
+                title: `Hóa đơn #${message} đã được đặt!`
+              });
+            });
+          } else {
+            $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
+          }
         });
       })
       .catch((error) => {

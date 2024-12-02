@@ -52,7 +52,9 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
   $locationProvider.html5Mode(true); // Enable HTML5 mode
   $httpProvider.interceptors.push("AuthInterceptor");
 });
-
+app.config(function ($httpProvider) {
+  $httpProvider.interceptors.push('AuthInterceptor');
+});
 // Auth Guard Function
 // Auth Guard Function with redirect
 function requireAuth($q, $location, $route) {
@@ -86,7 +88,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
         "http://160.30.21.47:1234/api/Invoice/cancel/",
         "http://160.30.21.47:1234/api/user/profile/",
-        "http://160.30.21.47:1234/api/u-websocket",
+        "http://160.30.21.47:1234/api/u-websocket/info",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {
@@ -119,35 +121,41 @@ app.service("ProductService", function () {
 app.factory('socket', ['$q', function ($q) {
   var socket = null;
   var stompClient = null;
+  var subscriptions = {}; // Khai báo biến subscriptions để lưu danh sách topic đã subscribe
 
   return {
-    connect: function (userInfo) {
+    connect: function () {
       var deferred = $q.defer();
-      socket = new SockJS('http://160.30.21.47:1234/api/u-websocket'); // URL WebSocket
+      var token = localStorage.getItem("authToken");
+
+      // Tạo kết nối SockJS với token trong query parameter
+      // var socketUrl = "http://160.30.21.47:1234/api/u-websocket?token=" + encodeURIComponent(token);|
+      var socketUrl = "http://160.30.21.47:1234/api/u-websocket"
+      socket = new SockJS(socketUrl);
       stompClient = Stomp.over(socket);
 
+      // Kết nối với Stomp server
       stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        // Gửi thông điệp khi kết nối thành công để thông báo người dùng online
-        stompClient.send('/app/connect', {}, JSON.stringify({
-          userId: userInfo.id,
-          role: userInfo.role,
-          status: 'online' // Thông báo người dùng online
-        }));
         deferred.resolve();
       }, function (error) {
         console.error('Error: ' + error);
         deferred.reject(error);
       });
 
-      socket.onclose = function () {
-        console.log("Socket closed. Attempting to reconnect...");
-        setTimeout(() => {
-          this.connect(); // Cố gắng kết nối lại sau một vài giây
-        }, 5000);
-      };
-
       return deferred.promise;
+    },
+
+    subscribe: function (destination, callback) {
+      if (stompClient) {
+        if (!subscriptions[destination]) {
+          subscriptions[destination] = stompClient.subscribe(destination, function (response) {
+            callback(JSON.parse(response.body));
+          });
+        }
+      } else {
+        console.error('Stomp client is not connected!');
+      }
     },
 
     sendMessage: function (destination, message) {
@@ -160,10 +168,15 @@ app.factory('socket', ['$q', function ($q) {
       if (stompClient) {
         stompClient.send('/app/disconnect', {}, JSON.stringify({ userId: userInfo.id, role: userInfo.role }));
         stompClient.disconnect();
+        stompClient = null;
+        subscriptions = {}; // Xóa danh sách subscriptions
       }
     }
   };
 }]);
+
+
+
 
 app.run(['$window', 'socket', function ($window, socket) {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));

@@ -55,7 +55,7 @@ app.controller("LoginController", function ($scope, $http, socket) {
             }
           }
 
-          $scope.connectUser(userInfo); // Kết nối WebSocket sau khi đăng nhập thành công
+          // $scope.connectUser(userInfo); // Kết nối WebSocket sau khi đăng nhập thành công
           Swal.fire({
             icon: "success",
             title: "Thành công!",

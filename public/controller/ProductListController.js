@@ -9,7 +9,10 @@ app.controller(
       if (userInfo != null) {
         $scope.isLogin = true;
         $scope.userName = userInfo.sub;
-        socket.connect(userInfo);
+        socket.connect().then(function () {
+          socket.sendMessage('/app/connect', { userId: userInfo.id, role: userInfo.role });
+        });
+
       }
     };
     $scope.getdataproduct = function (url) {
