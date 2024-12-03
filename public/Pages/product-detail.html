@@ -12,7 +12,7 @@
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
-    
+
                                 <li class="breadcrumb-item active">{{ (product.milktypename + " " + product.milkbrandname) || 'Sản phẩm không tồn tại' }}</li>
                             </ol>
                         </nav>
@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="right-box-contain">
                                 <h2 class="name">{{ (product.milktypename + " " + product.milkbrandname) || 'Sản phẩm không tồn tại' }}</h2>
@@ -69,7 +69,7 @@
                                         </ul>
                                     </div>
                                 </div>
-    
+
                                 <div class="product-contain">
                                     <p>
                                     </p>
@@ -83,7 +83,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                
+
                                     <div class="form-group">
                                         <label for="capacity-select"><strong>Dung Tích:</strong></label>
                                         <select id="capacity-select" ng-model="selectedUsageCapacity" ng-change="onPackagingUnitChange()" class="styled-select">
@@ -92,7 +92,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                
+
                                     <div class="form-group">
                                         <label for="packaging-select"><strong>Đóng Gói:</strong></label>
                                         <select id="packaging-select" ng-model="selectedPackagingUnit" ng-change="onPackagingUnitChange()" class="styled-select">
@@ -102,18 +102,18 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 <style>
                                     .form-container {
                                         display: flex;
                                         gap: 20px;
                                     }
-                                
+
                                     .form-group {
                                         margin-bottom: 20px;
                                         flex: 1;
                                     }
-                                
+
                                     label {
                                         font-weight: bold;
                                         display: block;
@@ -121,7 +121,7 @@
                                         font-size: 14px;
                                         color: #333;
                                     }
-                                
+
                                     .styled-select {
                                         width: 100%;
                                         padding: 10px;
@@ -138,32 +138,56 @@
                                         background-size: 10px;
                                         appearance: none;
                                     }
-                                
+
                                     .styled-select:focus {
                                         outline: none;
                                         border-color: #007bff;
                                     }
-                                
+
                                     .option-flavor {
                                         color: #e74c3c;
                                     }
-                                
+
                                     .option-capacity {
                                         color: #f39c12;
                                     }
-                                
+
                                     .option-packaging {
                                         color: #3498db;
                                     }
-                                
+
                                     strong {
                                         font-size: 16px;
                                     }
                                 </style>
-                                
+
                                 <div class="note-box product-package">
-                                    <input type="number" class="form-control" ng-model="orderQuantity" ng-disabled="stockquantityMilkDetail < 1"
-        min="1" max="{{stockquantityMilkDetail}}" value="1" placeholder="Nhập số lượng">
+                                  <div class="quantity-container d-flex align-items-center w-50">
+                                    <!-- Giảm số lượng -->
+                                    <button class="btn btn-sm btn-outline-secondary"
+                                            ng-click="orderQuantity = orderQuantity > 1 ? orderQuantity - 1 : 1"
+                                            ng-disabled="orderQuantity <= 1">
+                                      -
+                                    </button>
+
+                                    <!-- Số lượng -->
+                                    <input type="number"
+                                           class="form-control text-center quantity-input"
+                                           ng-model="orderQuantity"
+                                           ng-disabled="stockquantityMilkDetail < 1"
+                                           min="1"
+                                           max="{{stockquantityMilkDetail}}"
+                                           value="1"
+                                           placeholder="Nhập số lượng">
+
+                                    <!-- Tăng số lượng -->
+                                    <button class="btn btn-sm btn-outline-secondary"
+                                            ng-click="orderQuantity = orderQuantity < stockquantityMilkDetail ? orderQuantity + 1 : stockquantityMilkDetail"
+                                            ng-disabled="orderQuantity >= stockquantityMilkDetail">
+                                      +
+                                    </button>
+                                  </div>
+                                  <div class="quantity-container d-flex align-items-center w-50">
 
                                     <button class="btn btn-md bg-dark cart-button text-white w-100" ng-click="oderProduct(
                                             productDetails.milkDetailID,
@@ -172,7 +196,7 @@
                                              selectedUsageCapacity,
                                              selectedPackagingUnit)">Add To Cart</button>
                                 </div>
-    
+                                </div>
                                 <div class="payment-option">
                                     <div class="product-title">
                                         <h4>Guaranteed Safe Checkout</h4>
@@ -212,7 +236,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="col-12">
                             <div class="product-section-box">
                                 <ul class="nav nav-tabs custom-nav" id="myTab" role="tablist">
@@ -220,13 +244,13 @@
                                         <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
                                             data-bs-target="#description" type="button" role="tab">Description</button>
                                     </li>
-    
+
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="review-tab" data-bs-toggle="tab"
                                             data-bs-target="#review" type="button" role="tab">Review</button>
                                     </li>
                                 </ul>
-    
+
                                 <div class="tab-content custom-tab" id="myTabContent">
                                     <div class="tab-pane fade show active" id="description" role="tabpanel">
                                         <div class="product-description">
@@ -240,7 +264,7 @@
                                                     roll halvah brownie topping. Marshmallow powder candy sesame snaps
                                                     jelly beans candy canes marshmallow gingerbread pie.</p>
                                             </div>
-    
+
                                             <div class="nav-desh">
                                                 <div class="desh-title">
                                                     <h5>Organic:</h5>
@@ -258,7 +282,7 @@
                                                     proin libero nunc consequat interdum varius sit amet mattis
                                                     vulputate enim nulla aliquet porttitor lacus luctus accumsan.</p>
                                             </div>
-    
+
                                             <div class="banner-contain nav-desh">
                                                 <img src="../assets/images/vegetable/banner/14.jpg"
                                                     class="bg-img blur-up lazyload" alt="">
@@ -270,7 +294,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-    
+
                                             <div class="nav-desh">
                                                 <div class="desh-title">
                                                     <h5>From The Manufacturer:</h5>
@@ -283,7 +307,7 @@
                                                     pudding cake powder candy ice cream ice cream cake. Jujubes soufflé
                                                     chupa chups cake candy halvah donut. Tart tart icing lemon drops
                                                     fruitcake apple pie.</p>
-    
+
                                                 <p>Dessert liquorice tart soufflé chocolate bar apple pie pastry danish
                                                     soufflé. Gummi bears halvah gingerbread jelly icing. Chocolate cake
                                                     chocolate bar pudding chupa chups bear claw pie dragée donut halvah.
@@ -306,11 +330,11 @@
                                                                     <h2>3.40
                                                                         <i data-feather="star"></i>
                                                                     </h2>
-    
+
                                                                     <h5>5 Overall Rating</h5>
                                                                 </div>
                                                             </div>
-    
+
                                                             <div class="col-xl-12">
                                                                 <ul class="product-rating-list">
                                                                     <li>
@@ -368,9 +392,9 @@
                                                                             <h5 class="total">1</h5>
                                                                         </div>
                                                                     </li>
-    
+
                                                                 </ul>
-    
+
                                                                 <div class="review-title-2">
                                                                     <h4 class="fw-bold">Review this product</h4>
                                                                     <p>Let other customers know what you think</p>
@@ -383,7 +407,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-    
+
                                                 <div class="col-xl-7">
                                                     <div class="review-people">
                                                         <ul class="review-list">
@@ -666,7 +690,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="col-xxl-3 col-xl-4 col-lg-5 d-none d-lg-block wow fadeInUp">
                     <div class="right-sidebar-box">
                         <div class="vendor-box">
@@ -674,15 +698,15 @@
                                 <div class="vendor-image">
                                     <!-- <img src="../assets/images/product/vendor.png" class="blur-up lazyload" alt=""> -->
                                 </div>
-    
+
                                 <div class="vendor-name">
                                     <h5 class="fw-500">{{product.milkbrandname}}</h5>
                                 </div>
                             </div>
-    
+
                             <p class="vendor-detail">Noodles & Company is an American fast-casual
                                 restaurant that offers international and American noodle dishes and pasta.</p>
-    
+
                             <div class="vendor-list">
                                 <!-- <ul>
                                     <li>
@@ -691,7 +715,7 @@
                                             <h5>Address: <span class="text-content">1288 Franklin Avenue</span></h5>
                                         </div>
                                     </li>
-    
+
                                     <li>
                                         <div class="address-contact">
                                             <i data-feather="headphones"></i>
@@ -700,7 +724,7 @@
                                     </li>
                                 </ul> -->
                             </div>
-                        </div>  
+                        </div>
                     </div>
                 </div>
             </div>

@@ -428,6 +428,12 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
     }
     return invoiceCode;
   };
+  $scope.updateQuantity = function(product, change) {
+    if (product.quantity + change >= 1) {
+      product.quantity += change;  // Cập nhật số lượng
+      $scope.updateTotal(product);  // Cập nhật lại tổng sau khi thay đổi số lượng
+    }
+  };
 
   // Cập nhật tổng tiền khi số lượng thay đổi
   $scope.updateTotal = function (product) {

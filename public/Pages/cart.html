@@ -60,16 +60,34 @@
                                         </div>
                                     </td>
 
-                                    <td class="quantity">
-                                        <h4 class="table-title text-content">Số lượng</h4>
-                                        <div class="quantity-price">
-                                            <input type="number" class="form-control text-center"
-                                                ng-model="product.quantity" ng-blur="updateTotal(product)">
-                                        </div>
-                                    </td>
+                                  <td class="quantity">
+                                    <h4 class="table-title text-content">Số lượng</h4>
+                                    <div class="quantity-price d-flex justify-content-center align-items-center">
+                                      <!-- Nút giảm -->
+                                      <button class="btn btn-sm btn-outline-secondary"
+                                              ng-click="updateQuantity(product, -1)"
+                                              style="border-radius: 50%; width: 30px; height: 30px;">
+                                        -
+                                      </button>
+
+                                      <!-- Input số lượng -->
+                                      <input type="number" class="form-control text-center mx-2"
+                                             ng-model="product.quantity" ng-blur="updateTotal(product)" min="1"
+                                             style="width: 60px;">
+
+                                      <!-- Nút tăng -->
+                                      <button class="btn btn-sm btn-outline-secondary"
+                                              ng-click="updateQuantity(product, 1)"
+                                              style="border-radius: 50%; width: 30px; height: 30px;">
+                                        +
+                                      </button>
+                                    </div>
+                                  </td>
 
 
-                                    <td class="subtotal">
+
+
+                                  <td class="subtotal">
                                         <h4 class="table-title text-content">Tổng</h4>
                                         <h5>{{(product.productDetails.price * product.quantity)| number:''}} VNĐ</h5>
                                     </td>
