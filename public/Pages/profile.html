@@ -145,7 +145,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- 
+                <!--
                 <div class="dashboard-title">
                   <h3>Thông tin tài khoản</h3>
                 </div>
@@ -437,13 +437,21 @@
                       <div>
                         <table class="table">
                           <tbody>
-                            <tr>
-                              <td>Full Name :</td>
-                              <td>
-                                <a>{{userData.fullName}}</a>
-                              </td>
-                              <td></td>
-                            </tr>
+                          <tr>
+                            <td>
+                              Full Name :
+                              <a href="javascript:void(0)">
+                                  <span data-bs-toggle="modal" data-bs-target="#add-fullName">
+                                    {{userData.fullName ? 'Edit' : 'Add'}}
+                                  </span>
+                              </a>
+                            </td>
+                            <td>
+                              <a href="javascript:void(0)">
+                                {{userData.fullName ? userData.fullName : 'No full name'}}
+                              </a>
+                            </td>
+                          </tr>
                             <tr>
                               <td>Email :</td>
                               <td>
@@ -630,7 +638,38 @@
     </div>
   </div>
 </div>
+<div class="modal fade theme-modal" id="add-fullName" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Full Name</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
 
+      <div class="modal-body">
+
+        <form>
+          <div class="form-floating mb-4 theme-form-floating">
+            <input type="text" class="form-control" id="fullname" ng-model="fullname" placeholder=" " />
+            <label for="phonenumber">Add Full Name</label>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal"
+                ng-click="addFullName()">
+          Save changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Location Modal Start -->
 <!-- <div class="modal location-modal fade theme-modal" id="locationModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
@@ -893,7 +932,7 @@
 <!-- Remove Profile Modal Start -->
 <!-- <div class="modal fade theme-modal remove-profile" id="removeProfile" tabindex="-1">
 
-  
+
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header d-block text-center">

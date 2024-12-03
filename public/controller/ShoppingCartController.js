@@ -66,7 +66,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
       icon: "success",
       html: `
             <p>Quý khách có thể thanh toán qua mã QR bên dưới:</p>
-            <img src="https://api.vietqr.io/image/970422-0338739954-PmsPdTu.jpg?accountName=NGUYEN%20LIEN%20MANH&amount=${totalamount}&addInfo=${invoicecode}" 
+            <img src="https://api.vietqr.io/image/970422-0338739954-PmsPdTu.jpg?accountName=NGUYEN%20LIEN%20MANH&amount=${totalamount}&addInfo=${invoicecode}"
                  alt="QR Code" style="width: 200px; height: 200px; margin-top: 10px;">
           `,
       showConfirmButton: false,
@@ -291,7 +291,43 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
         }
       });
   };
+  $scope.addFullName = function () {
+    const user = {
+      id: $scope.userData.id,
+      fullname: $scope.fullname,
+    };
 
+    $http
+      .put(apiUser + "updateFullName", user, config)
+      .then(function (response) {
+        if (response.status === 200) {
+          $scope.user(); // Cập nhật lại thông tin người dùng
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Cập nhật số điện thoại thành công",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      })
+      .catch(function (error) {
+        if (error.data && error.data.status === "error") {
+          // Nếu có lỗi và trả về status là "error", hiển thị thông báo lỗi cụ thể
+          const errorMessage = error.data.errors
+            .map((err) => `${err.field}: ${err.message}`)
+            .join("\n");
+
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi cập nhật",
+            text: errorMessage,
+          });
+        } else {
+          console.error("Error updating user:", error.message);
+        }
+      });
+  };
   $scope.addAdress = function () {
     if (
       !$scope.getTinhName() ||
