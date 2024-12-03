@@ -291,6 +291,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
         }
       });
   };
+
   $scope.addFullName = function () {
     const user = {
       id: $scope.userData.id,
@@ -305,7 +306,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Cập nhật số điện thoại thành công",
+            title: "Cập nhật họ tên thành công",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -328,6 +329,7 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
         }
       });
   };
+
   $scope.addAdress = function () {
     if (
       !$scope.getTinhName() ||
@@ -341,19 +343,23 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
       });
       return;
     }
+
     $scope.newAddress =
       $scope.getTinhName().full_name +
       ", " +
       $scope.getQuanName().full_name +
       ", " +
       $scope.getPhuongName().full_name;
+
     if ($scope.detailAddress !== "") {
       $scope.newAddress = $scope.newAddress + ", " + $scope.detailAddress;
     }
+
     const user = {
       id: $scope.userData.id,
       address: $scope.newAddress,
     };
+
     $http
       .put(apiUser + "updateAddress", user, config)
       .then(function (response) {
@@ -384,9 +390,11 @@ app.controller("ShoppingCartController", function ($scope, $location, $http, soc
           console.error("Error updating user:", error.message);
         }
       });
+
     $scope.detailAddress = ""; // Xóa ô nhập địa chỉ
     $scope.phonenumber = ""; // Xóa ô nhập số điện thoại
   };
+
 
   // Hàm lấy tên địa chỉ
   $scope.getTinhName = function () {
