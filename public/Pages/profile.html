@@ -72,15 +72,9 @@
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-log-tab" data-bs-toggle="pill" data-bs-target="#pills-log"
                 type="button" ng-click="getInvoicesByUser()">
-                <i data-feather="shopping-bag"></i>lịch sủa hệ thống
+                <i data-feather="shopping-bag"></i>Lịch Sử Hệ Thống
               </button>
             </li>
-            <!-- <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-address-tab" data-bs-toggle="pill" data-bs-target="#pills-address"
-                type="button" role="tab">
-                <i data-feather="map-pin"></i>Địa chỉ
-              </button>
-            </li> -->
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
                 type="button" role="tab">
@@ -117,9 +111,7 @@
                   <h6 class="text-content">
                     Xin Chào, <b class="text-title">{{userData.fullName}}</b>
                   </h6>
-                  <!-- <p class="text-content">
-                    Bảng điều khiển tài khoản của tôi
-                  </p> -->
+
                 </div>
                 <div class="total-box">
                   <div class="row g-sm-4 g-3">
@@ -145,29 +137,7 @@
                     </div>
                   </div>
                 </div>
-                <!--
-                <div class="dashboard-title">
-                  <h3>Thông tin tài khoản</h3>
-                </div>
 
-                <div class="row g-4">
-                  <div class="col-xxl-6">
-                    <div class="dashboard-content-title">
-                      <h4>
-                        Thông tin liên hệ
-                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editProfile">Edit</a>
-                      </h4>
-                    </div>
-                    <div class="dashboard-detail">
-                      <h6 class="text-content">MARK JECNO</h6>
-                      <h6 class="text-content">{{userData.email}}</h6>
-                      <a data-bs-toggle="modal" data-bs-target="#changePassword" href="javascript:void(0)">Change
-                        Password</a>
-                    </div>
-                  </div>
-
-
-                </div> -->
               </div>
             </div>
             <div class="tab-pane fade" id="pills-order" role="tabpanel">
@@ -283,78 +253,10 @@
               </div>
             </div>
 
-
-
-            <!-- <div class="tab-pane fade" id="pills-address" role="tabpanel">
-              <div class="dashboard-address">
-                <div class="title title-flex">
-                  <div>
-                    <h2>Địa Chỉ Của Tôi</h2>
-                    <span class="title-leaf">
-                      <svg class="icon-width bg-gray">
-                        <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
-                      </svg>
-                    </span>
-                  </div>
-
-                  <button class="btn theme-bg-color text-white btn-sm fw-bold mt-lg-0 mt-3" data-bs-toggle="modal"
-                    data-bs-target="#add-address">
-                    <i data-feather="plus" class="me-2"></i> Add New Address
-                  </button>
-                </div>
-
-                <div class="row g-sm-4 g-3">
-                  <div ng-repeat="x in deliveryAddress track by x.id">
-                    <div class="address-box">
-                      <div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="jack" id="flexRadioDefault2" checked />
-                        </div>
-
-                        <div class="label">
-                          <label>Home</label>
-                        </div>
-
-                        <div class="table-responsive address-table">
-                          <table class="table">
-                            <tbody>
-                              <tr>
-                                <td colspan="2">{{x.userName}}</td>
-                              </tr>
-
-                              <tr>
-                                <td>Address :</td>
-                                <td>
-                                  <p>{{x.address}}</p>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Phone :</td>
-                                <td>{{x.phonenumber}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-
-                      <div class="button-group">
-                        <button class="btn btn-sm add-button w-100" data-bs-toggle="modal"
-                          data-bs-target="#editProfile">
-                          <i data-feather="edit"></i> Edit
-                        </button>
-                        <button class="btn btn-sm add-button w-100" ng-click="removeAddress(x.id)">
-                          <i data-feather="trash-2"></i> Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
             <div class="tab-pane fade" id="pills-profile" role="tabpanel">
               <div class="dashboard-profile">
                 <div class="title">
-                  <h2>My Profile</h2>
+                  <h2>Hồ sơ của tôi</h2>
                   <span class="title-leaf">
                     <svg class="icon-width bg-gray">
                       <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
@@ -363,75 +265,13 @@
                 </div>
 
                 <div class="profile-detail dashboard-bg-box">
-                  <!-- <div class="dashboard-title">
-                    <h3>Profile Name</h3>
-                  </div> -->
-                  <!-- <div class="profile-name-detail">
-                    <div class="d-sm-flex align-items-center d-block">
-                      <h3>{{userData.fullName}}</h3>
-                      <div class="product-rating profile-rating">
-                        <ul class="rating">
-                          <li>
-                            <i data-feather="star" class="fill"></i>
-                          </li>
-                          <li>
-                            <i data-feather="star" class="fill"></i>
-                          </li>
-                          <li>
-                            <i data-feather="star" class="fill"></i>
-                          </li>
-                          <li>
-                            <i data-feather="star"></i>
-                          </li>
-                          <li>
-                            <i data-feather="star"></i>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editProfile">Edit</a>
-                  </div> -->
-
-                  <!-- <div class="location-profile">
-                    <ul>
-                      <li>
-                        <div class="location-box">
-                          <i data-feather="map-pin"></i>
-                          <h6>Downers Grove, IL</h6>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div class="location-box">
-                          <i data-feather="mail"></i>
-                          <h6>{{userData.email}}</h6>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div class="location-box">
-                          <i data-feather="check-square"></i>
-                          <h6>Licensed for 2 years</h6>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div class="profile-description">
-                    <p>
-                      Residences can be classified by and how they are connected
-                      to neighbouring residences and land. Different types of
-                      housing tenure can be used for the same physical type.
-                    </p>
-                  </div> -->
                 </div>
 
                 <div class="profile-about dashboard-bg-box">
                   <div class="row">
                     <div class="col-xxl-7">
                       <div class="dashboard-title mb-3">
-                        <h3>Profile About</h3>
+                        <h3>Hồ sơ Giới thiệu</h3>
                       </div>
 
                       <div>
@@ -439,60 +279,47 @@
                           <tbody>
                           <tr>
                             <td>
-                              Full Name :
-                              <a href="javascript:void(0)">
-                                  <span data-bs-toggle="modal" data-bs-target="#add-fullName">
-                                    {{userData.fullName ? 'Edit' : 'Add'}}
-                                  </span>
-                              </a>
+                              Tên đầy đủ :
                             </td>
                             <td>
-                              <a href="javascript:void(0)">
-                                {{userData.fullName ? userData.fullName : 'No full name'}}
+                              <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#add-fullName">
+                                {{userData.fullName ? userData.fullName : 'Bâm để thêm tên đầy đủ'}}
                               </a>
                             </td>
                           </tr>
-                            <tr>
+
+                          <tr>
                               <td>Email :</td>
                               <td>
                                 <a>{{userData.email}}</a>
                               </td>
                               <td></td>
                             </tr>
-                            <tr>
-                              <td>
-                                Phone Number :
-                                <a href="javascript:void(0)">
-                                  <span data-bs-toggle="modal" data-bs-target="#add-phoneNumber">
-                                    {{userData.phoneNumber ? 'Edit' : 'Add'}}
-                                  </span>
-                                </a>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  {{userData.phoneNumber ? userData.phoneNumber
-                                  : 'No phone number'}}
-                                </a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                Address :
-                                <a class="address" href="javascript:void(0)">
-                                  <span data-bs-toggle="modal" data-bs-target="#add-address">
-                                    {{userData.address ? 'Edit' : 'Add'}}
-                                  </span>
-                                </a>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  {{userData.address ? userData.address : 'No
-                                  address'}}
-                                </a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Registration Date :</td>
+                          <tr>
+                            <td>
+                              Số điện thoại :
+                            </td>
+                            <td>
+                              <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#add-phoneNumber">
+                                {{userData.phoneNumber ? userData.phoneNumber : 'Bâm để thêm số điện thoại'}}
+                              </a>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td>
+                              Địa chỉ :
+                            </td>
+                            <td>
+                              <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#add-address"
+                                 class="d-inline-block text-truncate" style="max-width: 500px;">
+                                {{userData.address ? userData.address : 'Bấm để thêm địa chỉ'}}
+                              </a>
+                            </td>
+                          </tr>
+
+                          <tr>
+                              <td>Ngày đăng ký :</td>
                               <td>
                                 <a>{{userData.registrationDate}}</a>
                               </td>
@@ -503,7 +330,7 @@
                       </div>
 
                       <div class="dashboard-title mb-3">
-                        <h3>Login Details</h3>
+                        <h3>Chi tiết đăng nhập</h3>
                       </div>
 
                       <div class="table-responsive">
@@ -511,7 +338,7 @@
                           <tbody>
                             <tr>
                               <a data-bs-toggle="modal" data-bs-target="#changePassword"
-                                href="javascript:void(0)">Change Password</a>
+                                href="javascript:void(0)">Thay đổi mật khẩu</a>
                             </tr>
                           </tbody>
                         </table>
@@ -549,7 +376,7 @@
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add a new address</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Thêm địa chỉ mới</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal">
           <i class="fa-solid fa-xmark"></i>
         </button>
@@ -595,11 +422,11 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">
-          Close
+          Đóng
         </button>
         <button type="button" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal"
           ng-click="addAdress()">
-          Save changes
+          Lưu thay đổi
         </button>
       </div>
     </div>
@@ -642,7 +469,7 @@
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Full Name</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Thêm tên đầy đủ</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal">
           <i class="fa-solid fa-xmark"></i>
         </button>
@@ -653,176 +480,23 @@
         <form>
           <div class="form-floating mb-4 theme-form-floating">
             <input type="text" class="form-control" id="fullname" ng-model="fullname" placeholder=" " />
-            <label for="phonenumber">Add Full Name</label>
+            <label for="phonenumber">Thêm tên đầy đủ</label>
           </div>
         </form>
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">
-          Close
+          Đóng
         </button>
         <button type="button" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal"
                 ng-click="addFullName()">
-          Save changes
+          Lưu thay đổi
         </button>
       </div>
     </div>
   </div>
 </div>
-<!-- Location Modal Start -->
-<!-- <div class="modal location-modal fade theme-modal" id="locationModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel1">
-          Choose your Delivery Location
-        </h5>
-        <p class="mt-1 text-content">
-          Enter your address and we will specify the offer for your area.
-        </p>
-        <button type="button" class="btn-close" data-bs-dismiss="modal">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="location-list">
-          <div class="search-input">
-            <input type="search" class="form-control" placeholder="Search Your Area" />
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </div>
-
-          <div class="disabled-box">
-            <h6>Select a Location</h6>
-          </div>
-
-          <ul class="location-select custom-height">
-            <li>
-              <a href="javascript:void(0)">
-                <h6>Alabama</h6>
-                <span>Min: $130</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="javascript:void(0)">
-                <h6>Arizona</h6>
-                <span>Min: $150</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="javascript:void(0)">
-                <h6>California</h6>
-                <span>Min: $110</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="javascript:void(0)">
-                <h6>Colorado</h6>
-                <span>Min: $140</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="javascript:void(0)">
-                <h6>Florida</h6>
-                <span>Min: $160</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="javascript:void(0)">
-                <h6>Georgia</h6>
-                <span>Min: $120</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="javascript:void(0)">
-                <h6>Kansas</h6>
-                <span>Min: $170</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="javascript:void(0)">
-                <h6>Minnesota</h6>
-                <span>Min: $120</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="javascript:void(0)">
-                <h6>New York</h6>
-                <span>Min: $110</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="javascript:void(0)">
-                <h6>Washington</h6>
-                <span>Min: $130</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-<!-- Location Modal End -->
-
-<!-- Edit Profile Start -->
-<!-- <div class="modal fade theme-modal" id="editProfile" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel2">Edit Profile</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row g-4">
-          <div class="col-xxl-12">
-            <form>
-              <div class="form-floating theme-form-floating">
-                <input type="text" class="form-control" id="pname" value="Jack Jennas" />
-                <label for="pname">Full Name</label>
-              </div>
-            </form>
-          </div>
-          <div class="col-xxl-12">
-            <form>
-              <div class="form-floating theme-form-floating">
-                <input type="text" class="form-control" id="pname" value="Jack Jennas" />
-                <label for="pname">Full Name</label>
-              </div>
-            </form>
-          </div>
-          <div class="col-xxl-12">
-            <form>
-              <div class="form-floating theme-form-floating">
-                <input type="text" class="form-control" id="pname" value="Jack Jennas" />
-                <label for="pname">Full Name</label>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-dismiss="modal">
-          Close
-        </button>
-        <button type="button" data-bs-dismiss="modal" class="btn theme-bg-color btn-md fw-bold text-light">
-          Save changes
-        </button>
-      </div>
-    </div>
-  </div>
-</div> -->
 <div class="modal fade theme-modal" id="changePassword" tabindex="-1" ng-controller="LoginController">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
@@ -867,124 +541,7 @@
   </div>
 </div>
 
-<!-- Edit Profile End -->
 
-<!-- Edit Card Start -->
-<div class="modal fade theme-modal" id="editCard" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel8">Edit Card</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row g-4">
-          <div class="col-xxl-6">
-            <form>
-              <div class="form-floating theme-form-floating">
-                <input type="text" class="form-control" id="finame" value="Mark" />
-                <label for="finame">First Name</label>
-              </div>
-            </form>
-          </div>
-
-          <div class="col-xxl-6">
-            <form>
-              <div class="form-floating theme-form-floating">
-                <input type="text" class="form-control" id="laname" value="Jecno" />
-                <label for="laname">Last Name</label>
-              </div>
-            </form>
-          </div>
-
-          <div class="col-xxl-4">
-            <form>
-              <div class="form-floating theme-form-floating">
-                <select class="form-select" id="floatingSelect12">
-                  <option selected>Card Type</option>
-                  <option value="kingdom">Visa Card</option>
-                  <option value="states">MasterCard Card</option>
-                  <option value="fra">RuPay Card</option>
-                  <option value="china">Contactless Card</option>
-                  <option value="spain">Maestro Card</option>
-                </select>
-                <label for="floatingSelect12">Card Type</label>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-dismiss="modal">
-          Cancel
-        </button>
-        <button type="button" class="btn theme-bg-color btn-md fw-bold text-light">
-          Update Card
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Edit Card End -->
-
-<!-- Remove Profile Modal Start -->
-<!-- <div class="modal fade theme-modal remove-profile" id="removeProfile" tabindex="-1">
-
-
-  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header d-block text-center">
-        <h5 class="modal-title w-100" id="exampleModalLabel22">
-          Are You Sure ?
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="remove-box">
-          <p>
-            The permission for the use/group, preview is inherited from the
-            object, object will create a new permission for this object
-          </p>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-dismiss="modal">
-          No
-        </button>
-        <button type="button" class="btn theme-bg-color btn-md fw-bold text-light" data-bs-target="#removeAddress"
-          data-bs-toggle="modal">
-          Yes
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade theme-modal remove-profile" id="removeAddress" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-center" id="exampleModalLabel12">Done!</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="remove-box text-center">
-          <h4 class="text-content">It's Removed.</h4>
-        </div>
-      </div>
-      <div class="modal-footer pt-0">
-        <button type="button" class="btn theme-bg-color btn-md fw-bold text-light" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 <div class="modal fade theme-modal" id="optimized-invoice" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
