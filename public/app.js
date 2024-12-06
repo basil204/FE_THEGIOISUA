@@ -53,7 +53,7 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
   $httpProvider.interceptors.push("AuthInterceptor");
 });
 app.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('AuthInterceptor');
+  $httpProvider.interceptors.push("AuthInterceptor");
 });
 // Auth Guard Function
 // Auth Guard Function with redirect
@@ -118,77 +118,86 @@ app.service("ProductService", function () {
     },
   };
 });
-app.factory('socket', ['$q', function ($q) {
-  var socket = null;
-  var stompClient = null;
-  var subscriptions = {}; // Khai báo biến subscriptions để lưu danh sách topic đã subscribe
+app.factory("socket", [
+  "$q",
+  function ($q) {
+    var socket = null;
+    var stompClient = null;
+    var subscriptions = {}; // Khai báo biến subscriptions để lưu danh sách topic đã subscribe
 
-  return {
-    connect: function () {
-      var deferred = $q.defer();
-      var token = localStorage.getItem("authToken");
+    return {
+      connect: function () {
+        var deferred = $q.defer();
+        var token = localStorage.getItem("authToken");
+        var socketUrl =
+          "http://160.30.21.47:1234/api/ws?token=" + encodeURIComponent(token);
+        socket = new SockJS(socketUrl);
+        stompClient = Stomp.over(socket);
 
-      // Tạo kết nối SockJS với token trong query parameter
-      // var socketUrl = "http://160.30.21.47:1234/api/u-websocket?token=" + encodeURIComponent(token);|
-      var socketUrl = "http://160.30.21.47:1234/api/u-websocket"
-      socket = new SockJS(socketUrl);
-      stompClient = Stomp.over(socket);
+        // Kết nối với Stomp server
+        stompClient.connect(
+          {},
+          function (frame) {
+            console.log("Connected: " + frame);
+            deferred.resolve();
+          },
+          function (error) {
+            console.error("Error: " + error);
+            deferred.reject(error);
+          }
+        );
 
-      // Kết nối với Stomp server
-      stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
-        deferred.resolve();
-      }, function (error) {
-        console.error('Error: ' + error);
-        deferred.reject(error);
-      });
+        return deferred.promise;
+      },
 
-      return deferred.promise;
-    },
-
-    subscribe: function (destination, callback) {
-      if (stompClient) {
-        if (!subscriptions[destination]) {
-          subscriptions[destination] = stompClient.subscribe(destination, function (response) {
-            callback(JSON.parse(response.body));
-          });
+      subscribe: function (destination, callback) {
+        if (stompClient) {
+          if (!subscriptions[destination]) {
+            subscriptions[destination] = stompClient.subscribe(
+              destination,
+              function (response) {
+                callback(JSON.parse(response.body));
+              }
+            );
+          }
+        } else {
+          console.error("Stomp client is not connected!");
         }
-      } else {
-        console.error('Stomp client is not connected!');
-      }
-    },
+      },
 
-    sendMessage: function (destination, message) {
-      if (stompClient) {
-        stompClient.send(destination, {}, JSON.stringify(message));
-      }
-    },
+      sendMessage: function (destination, message) {
+        if (stompClient) {
+          stompClient.send(destination, {}, JSON.stringify(message));
+        }
+      },
 
-    disconnect: function (userInfo) {
-      if (stompClient) {
-        stompClient.send('/app/disconnect', {}, JSON.stringify({ userId: userInfo.id, role: userInfo.role }));
-        stompClient.disconnect();
-        stompClient = null;
-        subscriptions = {}; // Xóa danh sách subscriptions
-      }
+      disconnect: function (userInfo) {
+        if (stompClient) {
+          stompClient.send(
+            "/app/disconnect",
+            {},
+            JSON.stringify({ userId: userInfo.id, role: userInfo.role })
+          );
+          stompClient.disconnect();
+          stompClient = null;
+          subscriptions = {}; // Xóa danh sách subscriptions
+        }
+      },
+    };
+  },
+]);
+
+app.run([
+  "$window",
+  "socket",
+  function ($window, socket) {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (!userInfo) {
+      return;
     }
-  };
-}]);
-
-
-
-
-app.run(['$window', 'socket', function ($window, socket) {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  if (!userInfo) {
-    return;
-  }
-  // Đảm bảo khi người dùng đóng trang, kết nối WebSocket bị đóng và ID bị xóa khỏi online users
-  $window.onbeforeunload = function () {
-    socket.disconnect(userInfo);
-  };
-}]);
-
-
-
-
+    // Đảm bảo khi người dùng đóng trang, kết nối WebSocket bị đóng và ID bị xóa khỏi online users
+    $window.onbeforeunload = function () {
+      socket.disconnect(userInfo);
+    };
+  },
+]);
