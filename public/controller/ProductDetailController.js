@@ -113,6 +113,7 @@ app.controller(
           id: IDProductDetail,
           productDetails: $scope.productDetails,
           quantity: stockquantityMilkDetail,
+          selected: false,
         };
 
         const existingProductIndex = lstProductOder.findIndex(

@@ -34,7 +34,7 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
     .when("/checkout", {
       templateUrl: "Pages/checkout.html",
       controller: "ShoppingCartController",
-      resolve: { auth: requireAuth }, // Require authentication
+      // resolve: { auth: requireAuth }, // Require authentication
     })
     .when("/login/:token", {
       templateUrl: "Pages/login.html",
@@ -78,17 +78,11 @@ app.factory("AuthInterceptor", function ($q, $window) {
     request: function (config) {
       const token = $window.localStorage.getItem("authToken");
       const protectedUrls = [
-        "http://160.30.21.47:1234/api/Invoice/add",
         "http://160.30.21.47:1234/api/payment/transactionHistory",
-        "http://160.30.21.47:1234/api/Userinvoice/add",
-        "http://160.30.21.47:1234/api/Invoicedetail/add",
-        "http://160.30.21.47:1234/api/payment/transactionHistory",
-        "http://160.30.21.47:1234/api/Voucher/voucercode",
         "http://160.30.21.47:1234/api/Invoice/getInvoices/",
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
         "http://160.30.21.47:1234/api/Invoice/cancel/",
         "http://160.30.21.47:1234/api/user/profile/",
-        "http://160.30.21.47:1234/api/u-websocket/info",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {
@@ -130,7 +124,9 @@ app.factory("socket", [
         var deferred = $q.defer();
         var token = localStorage.getItem("authToken");
         var socketUrl =
-          "http://160.30.21.47:1234/api/ws?token=" + encodeURIComponent(token);
+          "http://localhost:1234/api/ws?token=" + encodeURIComponent(token);
+        // var socketUrl =
+        //   "http://160.30.21.47:1234/api/ws?token=" + encodeURIComponent(token);
         socket = new SockJS(socketUrl);
         stompClient = Stomp.over(socket);
 

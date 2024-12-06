@@ -8,15 +8,10 @@
               <!-- Địa chỉ giao hàng -->
               <li>
                 <div class="checkout-icon">
-                  <lord-icon
-                    target=".nav-item"
-                    src="https://cdn.lordicon.com/ggihhudh.json"
-                    trigger="loop-on-hover"
-                    colors="primary:#121331,secondary:#646e78,tertiary:#0baf9a"
-                    class="lord-icon"
-                  ></lord-icon>
+                  <lord-icon target=".nav-item" src="https://cdn.lordicon.com/ggihhudh.json" trigger="loop-on-hover"
+                    colors="primary:#121331,secondary:#646e78,tertiary:#0baf9a" class="lord-icon"></lord-icon>
                 </div>
-                <div class="checkout-box">
+                <!-- <div class="checkout-box">
                   <div class="checkout-title">
                     <h4>Địa Chỉ Giao Hàng</h4>
                   </div>
@@ -42,19 +37,92 @@
                       </div>
                     </div>
                   </div>
+                </div> -->
+                <div class="checkout-box">
+                  <div class="checkout-title">
+                    <h4>Địa Chỉ Giao Hàng</h4>
+                  </div>
+                  <div class="checkout-detail">
+                    <div class="row g-4">
+                      <div class="">
+                        <div class="delivery-address-box">
+                          <div>
+                            <ul class="list-unstyled delivery-address-detail">
+                              <li class="mb-3">
+                                <label class="form-label" for="recipientName">
+                                  <span class="text-title">Tên Người Nhận: </span>
+                                </label>
+                                <input type="text" class="form-control" ng-model="fullname"
+                                  placeholder="Nhập tên người nhận" />
+                              </li>
+                              <li class="mb-3">
+                                <label class="form-label" for="phoneNumber">
+                                  <span class="text-title">Số Điện Thoại: </span>
+                                </label>
+                                <input type="number" class="form-control" ng-model="phoneNumber"
+                                  placeholder="Nhập số điện thoại" />
+                              </li>
+                              <li class="mb-3">
+                                <label class="form-label" for="recipientEmail">
+                                  <span class="text-title">Email: </span>
+                                </label>
+                                <input type="email" class="form-control" placeholder="Nhập email" ng-model="email" />
+                              </li>
+
+                              <li class="mb-3">
+                                <label for="tinhSelect">Tỉnh Thành</label>
+                                <select id="tinhSelect" class="form-control css_select" ng-model="selectedTinh"
+                                  ng-change="loadQuan(); getTinhName()"
+                                  ng-options="tinh.id as tinh.full_name for tinh in tinhs">
+                                  <option value="">Chọn Tỉnh Thành</option>
+                                </select>
+                                <span ng-if="tinhName" class="d-block mt-1 text-secondary">Tên Tỉnh: {{ tinhName
+                                  }}</span>
+                              </li>
+                              <li class="mb-3">
+                                <label for="quanSelect">Quận Huyện</label>
+                                <select id="quanSelect" class="form-control css_select" ng-model="selectedQuan"
+                                  ng-change="loadPhuong(); getQuanName()"
+                                  ng-options="quan.id as quan.full_name for quan in quans">
+                                  <option value="">Chọn Quận Huyện</option>
+                                </select>
+                                <span ng-if="quanName" class="d-block mt-1 text-secondary">Tên Quận: {{ quanName
+                                  }}</span>
+                              </li>
+                              <li class="mb-3">
+                                <label for="phuongSelect">Phường Xã</label>
+                                <select id="phuongSelect" class="form-control css_select" ng-model="selectedPhuong"
+                                  ng-change="getPhuongName()"
+                                  ng-options="phuong.id as phuong.full_name for phuong in phuongs">
+                                  <option value="">Chọn Phường Xã</option>
+                                </select>
+                              </li>
+                              <li class="mb-3">
+                                <form>
+                                  <div class="form-floating mb-4 theme-form-floating">
+                                    <input type="text" class="form-control" id="detailAddress" ng-model="detailAddress"
+                                      placeholder=" " />
+                                    <label for="detailAddress">Địa Chỉ Chi Tiết</label>
+                                  </div>
+                                </form>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
+
+
               </li>
 
               <!-- Phương thức thanh toán -->
               <li>
                 <div class="checkout-icon">
-                  <lord-icon
-                    target=".nav-item"
-                    src="https://cdn.lordicon.com/qmcsqnle.json"
-                    trigger="loop-on-hover"
-                    colors="primary:#0baf9a,secondary:#0baf9a"
-                    class="lord-icon"
-                  ></lord-icon>
+                  <lord-icon target=".nav-item" src="https://cdn.lordicon.com/qmcsqnle.json" trigger="loop-on-hover"
+                    colors="primary:#0baf9a,secondary:#0baf9a" class="lord-icon"></lord-icon>
                 </div>
                 <div class="checkout-box">
                   <div class="checkout-title">
@@ -65,60 +133,53 @@
                       <!-- Thanh toán khi nhận hàng (COD) -->
                       <div class="accordion-item">
                         <div class="accordion-header" id="flush-headingFour">
-                          <div
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseFour"
-                          >
+                          <div class="accordion-button collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseFour">
                             <div class="custom-form-check form-check mb-0">
                               <label class="form-check-label" for="cash">
-                                <input
-                                  class="form-check-input mt-0"
-                                  type="radio"
-                                  name="paymentMethod"
-                                  id="cash"
-                                  ng-model="selectedPaymentMethod"
-                                  value="COD"
-                                  checked
-                                />
+                                <input class="form-check-input mt-0" type="radio" name="paymentMethod" id="cash"
+                                  ng-model="selectedPaymentMethod" value="COD" checked />
                                 Thanh Toán Khi Nhận Hàng (COD)
                               </label>
                             </div>
                           </div>
                         </div>
-                        <div
-                          id="flush-collapseFour"
-                          class="accordion-collapse collapse show"
-                          data-bs-parent="#accordionFlushExample"
-                        >
+                        <div id="flush-collapseFour" class="accordion-collapse collapse show"
+                          data-bs-parent="#accordionFlushExample">
                           <div class="accordion-body">
                             <p class="text-content" style="font-size: 1rem; line-height: 1.6;">
-                              <strong>Thanh toán khi nhận hàng (COD)</strong> là hình thức khách hàng trả tiền cho người giao hàng khi nhận được sản phẩm, thay vì phải thanh toán trước.
+                              <strong>Thanh toán khi nhận hàng (COD)</strong> là hình thức khách hàng trả tiền cho người
+                              giao hàng khi nhận được sản phẩm, thay vì phải thanh toán trước.
                             </p>
 
                             <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Ưu Điểm:</h5>
                             <ul>
                               <li>
-                                <strong>Tiện lợi và an toàn:</strong> Không cần cung cấp thông tin thẻ, chỉ trả tiền khi nhận hàng.
+                                <strong>Tiện lợi và an toàn:</strong> Không cần cung cấp thông tin thẻ, chỉ trả tiền khi
+                                nhận hàng.
                               </li>
                               <li>
-                                <strong>Kiểm tra sản phẩm trước khi thanh toán:</strong> Đảm bảo sản phẩm đúng như mô tả, không bị lỗi.
+                                <strong>Kiểm tra sản phẩm trước khi thanh toán:</strong> Đảm bảo sản phẩm đúng như mô
+                                tả, không bị lỗi.
                               </li>
                             </ul>
 
                             <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Nhược Điểm:</h5>
                             <ul>
                               <li>
-                                <strong>Chi phí vận chuyển cao hơn:</strong> Do doanh nghiệp phải trả thêm phí cho dịch vụ COD.
+                                <strong>Chi phí vận chuyển cao hơn:</strong> Do doanh nghiệp phải trả thêm phí cho dịch
+                                vụ COD.
                               </li>
                               <li>
-                                <strong>Có thể mất thời gian:</strong> Quá trình giao hàng và thu tiền có thể lâu hơn so với thanh toán online.
+                                <strong>Có thể mất thời gian:</strong> Quá trình giao hàng và thu tiền có thể lâu hơn so
+                                với thanh toán online.
                               </li>
                             </ul>
 
                             <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Ví Dụ:</h5>
                             <p>
-                              Khách hàng mua điện thoại và chọn COD. Khi nhận hàng, khách kiểm tra và trả tiền cho người giao. Nếu không hài lòng, có thể từ chối nhận hàng.
+                              Khách hàng mua điện thoại và chọn COD. Khi nhận hàng, khách kiểm tra và trả tiền cho người
+                              giao. Nếu không hài lòng, có thể từ chối nhận hàng.
                             </p>
                           </div>
                         </div>
@@ -127,59 +188,54 @@
                       <!-- Ngân hàng trực tuyến -->
                       <div class="accordion-item">
                         <div class="accordion-header" id="flush-headingTwo">
-                          <div
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseTwo"
-                          >
+                          <div class="accordion-button collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseTwo">
                             <div class="custom-form-check form-check mb-0">
                               <label class="form-check-label" for="banking">
-                                <input
-                                  class="form-check-input mt-0"
-                                  type="radio"
-                                  name="paymentMethod"
-                                  id="banking"
-                                  ng-model="selectedPaymentMethod"
-                                  value="NetBanking"
-                                />
+                                <input class="form-check-input mt-0" type="radio" name="paymentMethod" id="banking"
+                                  ng-model="selectedPaymentMethod" value="NetBanking" />
                                 Ngân Hàng Trực Tuyến
                               </label>
                             </div>
                           </div>
                         </div>
-                        <div
-                          id="flush-collapseTwo"
-                          class="accordion-collapse collapse"
-                          data-bs-parent="#accordionFlushExample"
-                        >
+                        <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                          data-bs-parent="#accordionFlushExample">
                           <div class="accordion-body">
                             <p class="text-content" style="font-size: 1rem; line-height: 1.6;">
-                              <strong>Ngân Hàng Trực Tuyến</strong> cho phép bạn thanh toán ngay lập tức thông qua tài khoản ngân hàng của mình. Bạn chỉ cần chọn ngân hàng và hoàn tất thanh toán qua ứng dụng ngân hàng trực tuyến.
+                              <strong>Ngân Hàng Trực Tuyến</strong> cho phép bạn thanh toán ngay lập tức thông qua tài
+                              khoản ngân hàng của mình. Bạn chỉ cần chọn ngân hàng và hoàn tất thanh toán qua ứng dụng
+                              ngân hàng trực tuyến.
                             </p>
 
                             <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Ưu Điểm:</h5>
                             <ul>
                               <li>
-                                <strong>Thanh toán nhanh chóng:</strong> Không cần đợi khi nhận hàng, thanh toán trực tiếp qua tài khoản ngân hàng.
+                                <strong>Thanh toán nhanh chóng:</strong> Không cần đợi khi nhận hàng, thanh toán trực
+                                tiếp qua tài khoản ngân hàng.
                               </li>
                               <li>
-                                <strong>Tiện lợi:</strong> Bạn có thể thanh toán mọi lúc, mọi nơi, chỉ cần có kết nối Internet.
+                                <strong>Tiện lợi:</strong> Bạn có thể thanh toán mọi lúc, mọi nơi, chỉ cần có kết nối
+                                Internet.
                               </li>
                             </ul>
 
                             <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Nhược Điểm:</h5>
                             <ul>
                               <li>
-                                <strong>Cần có tài khoản ngân hàng trực tuyến:</strong> Bạn phải có tài khoản và đăng nhập vào ứng dụng ngân hàng.
+                                <strong>Cần có tài khoản ngân hàng trực tuyến:</strong> Bạn phải có tài khoản và đăng
+                                nhập vào ứng dụng ngân hàng.
                               </li>
                               <li>
-                                <strong>Không phù hợp với tất cả người dùng:</strong> Một số người dùng có thể cảm thấy không an toàn khi thanh toán trực tuyến.
+                                <strong>Không phù hợp với tất cả người dùng:</strong> Một số người dùng có thể cảm thấy
+                                không an toàn khi thanh toán trực tuyến.
                               </li>
                             </ul>
 
                             <h5 class="text-title" style="margin-top: 20px; font-size: 1.2rem;">Ví Dụ:</h5>
                             <p>
-                              Khách hàng chọn phương thức thanh toán qua ngân hàng trực tuyến, sau đó đăng nhập vào ứng dụng ngân hàng để hoàn tất thanh toán.
+                              Khách hàng chọn phương thức thanh toán qua ngân hàng trực tuyến, sau đó đăng nhập vào ứng
+                              dụng ngân hàng để hoàn tất thanh toán.
                             </p>
                           </div>
                         </div>
@@ -202,12 +258,9 @@
             </div>
 
             <ul class="summery-contain">
-              <li ng-repeat="product in lstProductOder">
-                <img
-                  ng-src="{{product.productDetails.imgURL}}"
-                  class="img-fluid blur-up lazyloaded checkout-image"
-                  alt=""
-                />
+              <li ng-repeat="product in lstProductOder" ng-if="product.selected == true">
+                <img ng-src="{{product.productDetails.imgURL}}" class="img-fluid blur-up lazyloaded checkout-image"
+                  alt="" />
                 <h4>
                   {{product.productDetails.packagingunitname}}
                   {{product.productDetails.milktypename}}
@@ -226,17 +279,25 @@
             <div class="summery-contain">
               <div class="coupon-cart">
                 <h6 class="text-content mb-2">Phiếu giảm giá</h6>
-                <div class="mb-3 coupon-box input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="exampleFormControlInput1"
-                    placeholder="Nhập mã giảm giá vào đây..."
-                    ng-model="vouchercode"
-                  />
+
+                <!-- Nhập mã giảm giá -->
+                <!-- <div class="mb-3 coupon-box input-group">
+                  <input type="text" class="form-control" id="exampleFormControlInput1"
+                    placeholder="Nhập mã giảm giá vào đây..." ng-model="vouchercode" />
                   <button class="btn-apply" ng-click="checkvoucher()">Áp dụng</button>
-                </div>
+                </div> -->
+
+                <!-- Chọn mã giảm giá từ danh sách -->
+                <select class="form-select mt-2" ng-model="selectedVoucherCode"
+                  ng-change="selectedVoucher(selectedVoucherCode)">
+                  <option value="" disabled selected>Chọn mã giảm giá</option>
+                  <option value="{{x.vouchercode}}" ng-repeat="x in vouchers"
+                    ng-disabled="calculateTotal() < x.minamount"
+                    ng-bind="x.vouchercode + ' - Giảm ' + x.discountpercentage + '% - Tối Đa: ' + (x.maxamount | number:0) + ' VNĐ'">
+                  </option>
+                </select>
               </div>
+
               <ul>
                 <li>
                   <h4>Tổng Tiền</h4>
@@ -253,10 +314,8 @@
               </ul>
             </div>
 
-            <button
-              class="btn theme-bg-color text-white btn-md w-100 mt-4 fw-bold"
-              ng-click="createInvoiceAndDetails()"
-            >
+            <button class="btn theme-bg-color text-white btn-md w-100 mt-4 fw-bold"
+              ng-click="createInvoiceAndDetails()">
               Tạo Hoá Đơn
             </button>
           </div>

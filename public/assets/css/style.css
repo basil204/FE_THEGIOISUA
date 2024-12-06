@@ -47082,129 +47082,132 @@ body.rtl .theme-product-section .right-box-contain .license-list .accordion-item
 
 /* Styling cho bảng */
 .table-container {
-  margin: 20px 0;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .custom-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #ffffff;
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
 }
 
 .custom-table th {
-  background-color: #343a40;
-  color: #fff;
-  text-align: center;
-  padding: 10px;
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
 }
 
 .custom-table td {
-  padding: 10px;
-  text-align: center;
-  vertical-align: middle;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .table-hover tbody tr:hover {
-  background-color: #f1f3f5;
+    background-color: #f1f3f5;
 }
 
 /* Badge styling */
 .badge {
-  padding: 5px 10px;
-  border-radius: 12px;
-  color: #fff;
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: #fff;
 }
 
 .badge-warning {
     background-color: #ffc107 !important;
-  }
-  .badge-primary {
+}
+
+.badge-primary {
     background-color: #007bff !important;
-  }
-  .badge-danger {
+}
+
+.badge-danger {
     background-color: #dc3545 !important;
-  }
-  .badge-info {
+}
+
+.badge-info {
     background-color: #17a2b8 !important;
-  }
-  .badge-success {
+}
+
+.badge-success {
     background-color: #28a745 !important;
-  }
-  .badge-pink {
+}
+
+.badge-pink {
     background-color: #ff69b4 !important;
-  }
+}
+
 /* Nút xem chi tiết */
 .view-btn {
-  font-size: 0.9rem;
-  padding: 5px 10px;
-  background-color: #6c757d;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    background-color: #6c757d;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .view-btn:hover {
-  background-color: #5a6268;
-  color: #fff;
+    background-color: #5a6268;
+    color: #fff;
 }
+
 .modal-body {
     font-family: Arial, sans-serif;
     font-size: 14px;
     color: #333;
     line-height: 1.6;
-  }
-  
-  .modal-body strong {
+}
+
+.modal-body strong {
     color: #555;
-  }
-  
-  .modal-body span {
+}
+
+.modal-body span {
     display: inline-block;
     margin-bottom: 10px;
-  }
-  
-  .table {
+}
+
+.table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     background-color: #fff;
-  }
-  
-  .table thead {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .table th,
-  .table td {
+}
+
+.table th,
+.table td {
     padding: 10px;
     text-align: left;
     border: 1px solid #ddd;
-  }
-  
-  .table tbody tr:nth-child(even) {
+}
+
+.table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
-  }
-  
-  .table tbody tr:hover {
+}
+
+.table tbody tr:hover {
     background-color: #f1f1f1;
-  }
-  
-  .table th {
+}
+
+.table th {
     font-weight: bold;
     text-transform: capitalize;
-  }
-  
-  .table td[data-label]::before {
+}
+
+.table td[data-label]::before {
     content: attr(data-label);
     font-weight: bold;
     color: #555;
     margin-right: 5px;
     display: none;
-  }
+}
+
 /* Responsive Design for Mobile */
 /* @media (max-width: 768px) {
 
@@ -47261,33 +47264,87 @@ body.rtl .theme-product-section .right-box-contain .license-list .accordion-item
 } */
 @media (max-width: 768px) {
     .table {
-      border: 0;
+        border: 0;
     }
-  
+
     .table thead {
-      display: none;
+        display: none;
     }
-  
+
     .table tr {
-      margin-bottom: 10px;
-      display: block;
-      border: 1px solid #ddd;
+        margin-bottom: 10px;
+        display: block;
+        border: 1px solid #ddd;
     }
-  
+
     .table td {
-      display: block;
-      text-align: right;
-      border: 0;
-      padding: 8px;
+        display: block;
+        text-align: right;
+        border: 0;
+        padding: 8px;
     }
-  
+
     .table td[data-label]::before {
-      display: inline-block;
+        display: inline-block;
     }
+
     .address {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 200px;
     }
-  } 
+}
+
+.checkbox-wrapper-17 input[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.checkbox-wrapper-17 label {
+    --size: 50px;
+
+    cursor: pointer;
+    width: var(--size);
+    height: calc(var(--size) / 2);
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+}
+
+.checkbox-wrapper-17 label:after {
+    content: '';
+    position: absolute;
+    top: 6%;
+    left: 2.5%;
+    width: calc(50% - 5%);
+    height: calc(100% - 11%);
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+.checkbox-wrapper-17 input:checked+label {
+    background: #bada55;
+}
+
+.checkbox-wrapper-17 input:checked+label:after {
+    left: calc(100% - 2.5%);
+    transform: translateX(-100%);
+}
+
+.checkbox-wrapper-17 label:active:after {
+    width: 55%;
+}
+.voucher-option {
+    padding: 8px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    display: block;
+  }
+  .voucher-option:hover {
+    background-color: #f0f0f0;
+  }  

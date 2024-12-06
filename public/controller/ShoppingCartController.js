@@ -18,10 +18,11 @@ app.controller(
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
-    const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
+    console.log($scope.lstProductOder)
+    const urlInvoice = "http://localhost:1234/api/Invoice/add";
     const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
     const apiUser = "http://160.30.21.47:1234/api/user/";
-    const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
+    const apiVoucher = "http://localhost:1234/api/Voucher/";
     const apitGetInvoiceByUser =
       "http://160.30.21.47:1234/api/Invoice/getInvoices/";
     const apiInvoiceDetail =
@@ -38,7 +39,76 @@ app.controller(
     $scope.userInvoices = null;
     $scope.invoiceDetails = [];
     $scope.invoice = null;
-    // Hàm tính toán tổng tiền
+    $scope.vouchers = null;
+    $scope.selectedVoucher = function (x) {
+      $scope.vouchercode = x;
+      $scope.checkvoucher()
+    }
+    $scope.loadVoucher = function () {
+      $http.get(apiVoucher + "voucherActive")
+        .then(function (response) {
+          $scope.vouchers = response.data.Succes;
+          console.log($scope.vouchers)
+        })
+        .catch(function (error) {
+          console.error('Có lỗi khi tải thông tin voucher:', error.data);
+        });
+    }
+    $scope.removeSelectedProducts = function () {
+      swal.fire({
+        title: "Bạn có chắc chắn?",
+        text: "Sản phẩm đã chọn sẽ bị xóa!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Xóa",
+        cancelButtonText: "Hủy"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $scope.lstProductOder = $scope.lstProductOder.filter(product => !product.selected);
+          localStorage.setItem("lstProductOder", JSON.stringify($scope.lstProductOder));
+          $scope.$apply();
+        }
+      });
+    };
+
+    $scope.selectAllProducts = function () {
+      $scope.lstProductOder.forEach(product => {
+        product.selected = true;
+      });
+      localStorage.setItem("lstProductOder", JSON.stringify($scope.lstProductOder));
+    };
+    $scope.unselectAllProducts = function () {
+      $scope.lstProductOder.forEach(product => {
+        product.selected = false;
+      });
+      localStorage.setItem("lstProductOder", JSON.stringify($scope.lstProductOder));
+    };
+    $scope.selectedProductBycart = function (index) {
+      const selectedProduct = $scope.lstProductOder[index];
+      if (selectedProduct.selected) {
+        localStorage.setItem("lstProductOder", JSON.stringify($scope.lstProductOder));
+      } else {
+        localStorage.setItem("lstProductOder", JSON.stringify($scope.lstProductOder));
+      }
+      console.log(selectedProduct)
+    }
+    $scope.removeAllProducts = function () {
+      swal.fire({
+        title: "Bạn có chắc chắn?",
+        text: "Sản phẩm đã chọn sẽ bị xóa!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Xóa",
+        cancelButtonText: "Hủy"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $scope.lstProductOde = localStorage.removeItem("lstProductOder");
+          $scope.lstProductOder = [];
+          $scope.$apply();
+        }
+      });
+
+    }
     $scope.cancelInvoice = function (idinvoice) {
       Swal.fire({
         title: "Xác nhận!",
@@ -333,8 +403,7 @@ app.controller(
           }
         });
     };
-
-    $scope.addAdress = function () {
+    $scope.getAdressInput = function () {
       if (
         !$scope.getTinhName() ||
         !$scope.getQuanName() ||
@@ -358,10 +427,14 @@ app.controller(
       if ($scope.detailAddress !== "") {
         $scope.newAddress = $scope.newAddress + ", " + $scope.detailAddress;
       }
+      return $scope.newAddress
+    }
+    $scope.addAdress = function () {
+
 
       const user = {
         id: $scope.userData.id,
-        address: $scope.newAddress,
+        address: $scope.getAdressInput()
       };
 
       $http
@@ -463,42 +536,53 @@ app.controller(
     };
 
     $scope.createInvoiceAndDetails = function () {
-      const address = $scope.userData.address;
-      const phoneNumber = $scope.userData.phoneNumber;
-      if (!address || !phoneNumber) {
+      var iaddress = $scope.getAdressInput()
+      var iphoneNumber = "0" + $scope.phoneNumber;
+      if (iphoneNumber.length != 10 || $scope.phoneNumber == null) {
         return Swal.fire({
-          position: "center",
           icon: "error",
-          title: "Vui Lòng Thêm Địa Chỉ Giao Hàng",
-          showConfirmButton: true,
+          title: "Có lỗi sảy ra",
+          text: "Vui lòng nhập đúng số điện thoại!",
+        });
+      }
+      var iname = $scope.fullname
+      if (iname == null) {
+        return Swal.fire({
+          icon: "error",
+          title: "Có lỗi sảy ra",
+          text: "Vui lòng nhập đúng tên người dùng",
+        });
+      }
+      var iemail = $scope.email;
+      if (iemail == null) {
+        return Swal.fire({
+          icon: "error",
+          title: "Có lỗi sảy ra",
+          text: "Vui lòng nhập đúng email",
         });
       }
       if (!$scope.selectedPaymentMethod) {
         return showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!");
       }
-
-      // if ($scope.selectedPaymentMethod === "COD") {
-      //   return showAlert("Chức năng Hiện Chưa Khả Dụng!");
-      // }
       const invoiceDto = {
         invoiceCode: $scope.generateInvoiceCode(),
-        deliveryaddress: address,
-        phonenumber: phoneNumber,
+        nguoiNhanHang: iname,
+        email: iemail,
+        deliveryaddress: iaddress,
+        phonenumber: iphoneNumber,
         paymentmethod: $scope.selectedPaymentMethod,
         voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
         sotienGiamGia: $scope.discountmoney || 0,
         tongTien: $scope.totalamount,
-        invoiceDetails: $scope.lstProductOder.map((x) => ({
-          quantity: x.quantity,
-          price: x.productDetails.price,
-          totalprice: x.quantity * x.productDetails.price,
-          milkDetail: { id: x.id },
-        })),
-        nguoiTao: {
-          id: $scope.userData.id,
-        },
+        invoiceDetails: $scope.lstProductOder
+          .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
+          .map((x) => ({
+            quantity: x.quantity,
+            price: x.productDetails.price,
+            totalprice: x.quantity * x.productDetails.price,
+            milkDetail: { id: x.id },
+          })),
       };
-
       $http
         .post(urlInvoice, invoiceDto)
         .then((response) => {
@@ -606,5 +690,6 @@ app.controller(
     // Gọi hàm loadTinh khi khởi tạo controller
     $scope.loadTinh();
     $scope.user();
+    $scope.loadVoucher();
   }
 );

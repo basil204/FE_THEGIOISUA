@@ -27,11 +27,42 @@
         <div class="row g-sm-5 g-3">
             <div class="col-xxl-9">
                 <div class="cart-table">
-                    <div class="table-responsive-xl">
+                    <div class="table-container table-responsive">
                         <table class="table">
+                            <thead>
+                                <td colspan="5" style="text-align: right;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <button class="btn btn-primary" ng-click="selectAllProducts()">Chọn tất
+                                                cả</button>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-info" ng-click="unselectAllProducts()">Huỷ Chọn Tất
+                                                Cả</button>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-danger" ng-click="removeAllProducts()">Xóa tất
+                                                cả</button>
+
+                                        </div>
+                                        <div><button class="btn btn-warning" ng-click="removeSelectedProducts()">Xóa
+                                                những cái đã chọn</button></div>
+                                    </div>
+                                </td>
+                            </thead>
                             <tbody>
                                 <tr class="product-box-contain" ng-repeat="product in lstProductOder track by $index">
+                                    <td>
+                                        <h4 class="table-title text-content">Chọn</h4>
+                                        <div class="checkbox-wrapper-17">
+                                            <input type="checkbox" id="{{$index}}" value="{{$index}}"
+                                                ng-model="product.selected"
+                                                ng-change="selectedProductBycart($index)" /><label
+                                                for="{{$index}}"></label>
+                                        </div>
+                                    </td>
                                     <td class="product-detail">
+                                        <h4 class="table-title text-content">Sản Phẩm</h4>
                                         <div class="product border-0">
                                             <a href="product-left-thumbnail.html" class="product-image">
                                                 <img class="img-fluid blur-up lazyload"
@@ -48,48 +79,40 @@
                                                             {{product.productDetails.capacity}}
                                                             {{product.productDetails.unit}}</a>
                                                     </li>
-
                                                     <h5 class="text-content d-inline-block">Giá :</h5>
-                                                    <span>{{ product.productDetails.price| number:''}} VNĐ</span>
-
-                                                    </li>
-
-
+                                                    <span>{{ product.productDetails.price | number:''}} VNĐ</span>
                                                 </ul>
                                             </div>
                                         </div>
                                     </td>
 
-                                  <td class="quantity">
-                                    <h4 class="table-title text-content">Số lượng</h4>
-                                    <div class="quantity-price d-flex justify-content-center align-items-center">
-                                      <!-- Nút giảm -->
-                                      <button class="btn btn-sm btn-outline-secondary"
-                                              ng-click="updateQuantity(product, -1)"
-                                              style="border-radius: 50%; width: 30px; height: 30px;">
-                                        -
-                                      </button>
+                                    <td class="quantity">
+                                        <h4 class="table-title text-content">Số lượng</h4>
+                                        <div class="quantity-price d-flex justify-content-center align-items-center">
+                                            <!-- Nút giảm -->
+                                            <button class="btn btn-sm btn-outline-secondary"
+                                                ng-click="updateQuantity(product, -1)"
+                                                style="border-radius: 50%; width: 30px; height: 30px;">
+                                                -
+                                            </button>
 
-                                      <!-- Input số lượng -->
-                                      <input type="number" class="form-control text-center mx-2"
-                                             ng-model="product.quantity" ng-blur="updateTotal(product)" min="1"
-                                             style="width: 60px;">
+                                            <!-- Input số lượng -->
+                                            <input type="number" class="form-control text-center mx-2"
+                                                ng-model="product.quantity" ng-blur="updateTotal(product)" min="1"
+                                                style="width: 60px;">
 
-                                      <!-- Nút tăng -->
-                                      <button class="btn btn-sm btn-outline-secondary"
-                                              ng-click="updateQuantity(product, 1)"
-                                              style="border-radius: 50%; width: 30px; height: 30px;">
-                                        +
-                                      </button>
-                                    </div>
-                                  </td>
+                                            <!-- Nút tăng -->
+                                            <button class="btn btn-sm btn-outline-secondary"
+                                                ng-click="updateQuantity(product, 1)"
+                                                style="border-radius: 50%; width: 30px; height: 30px;">
+                                                +
+                                            </button>
+                                        </div>
+                                    </td>
 
-
-
-
-                                  <td class="subtotal">
+                                    <td class="subtotal">
                                         <h4 class="table-title text-content">Tổng</h4>
-                                        <h5>{{(product.productDetails.price * product.quantity)| number:''}} VNĐ</h5>
+                                        <h5>{{(product.productDetails.price * product.quantity) | number:''}} VNĐ</h5>
                                     </td>
 
                                     <td class="save-remove" style="text-align: center; vertical-align: middle;">
@@ -99,7 +122,9 @@
                                     </td>
                                 </tr>
                             </tbody>
+
                         </table>
+
                     </div>
                 </div>
             </div>
