@@ -24,7 +24,7 @@ app.controller(
     const apiUser = "http://160.30.21.47:1234/api/user/";
     const apiVoucher = "http://localhost:1234/api/Voucher/";
     const apitGetInvoiceByUser =
-      "http://160.30.21.47:1234/api/Invoice/getInvoices/";
+      "http://localhost:1234/api/Invoice/getInvoices/";
     const apiInvoiceDetail =
       "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
     $scope.selectedPaymentMethod = "";
@@ -229,8 +229,11 @@ app.controller(
       }
     };
     $scope.calculateTotal = function () {
+      const selectedItems = $scope.lstProductOder.filter(function(item) {
+          return item.selected === true;
+      });
       let total = 0;
-      $scope.lstProductOder.forEach(function (item) {
+      selectedItems.forEach(function (item) {
         const price = Number(item.productDetails.price);
         const quantity = Number(item.quantity);
         if (!isNaN(price) && !isNaN(quantity)) {
@@ -583,44 +586,45 @@ app.controller(
             milkDetail: { id: x.id },
           })),
       };
-      $http
-        .post(urlInvoice, invoiceDto)
-        .then((response) => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Hóa đơn được Tạo Thành Công",
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            if ($scope.selectedPaymentMethod === "COD") {
-              socket.sendMessage("/app/chat", "Ni Hảo");
-              socket.subscribe("/topic/messages", function (message) {
-                console.log(JSON.parse(message));
+      $scope.showTerms().then(function(isAgreed) {
+        if (isAgreed) {
+          console.log("$scope.showTerms() đã đồng ý:", isAgreed);
+          $http
+            .post(urlInvoice, invoiceDto)
+            .then((response) => {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Hóa đơn được Tạo Thành Công",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                if ($scope.selectedPaymentMethod === "COD") {
+                  // socket.sendMessage("/app/chat", "Ni Hảo");
+                  // socket.subscribe("/topic/messages", function (message) {
+                  //   console.log(JSON.parse(message));
+                  // });
+                } else {
+                  $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
+                }
               });
-              // socket.sendMessage("/app/sendMessage", invoiceDto.invoiceCode);
-              // socket.subscribe("/topic/messages", function (message) {
-              //   Toast.fire({
-              //     icon: "info",
-              //     title: `Hóa đơn #${message} đã được đặt!`,
-              //   });
-              // });
-            } else {
-              $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
-            }
-          });
-        })
-        .catch((error) => {
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title:
-              "Yêu cầu không hợp lệ: " +
-              (error.data ? error.data.error : error.message),
-            showConfirmButton: true,
-          });
-          console.error("Error:", error.data || error);
-        });
+            })
+            .catch((error) => {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title:
+                  "Yêu cầu không hợp lệ: " +
+                  (error.data ? error.data.error : error.message),
+                showConfirmButton: true,
+              });
+              console.error("Error:", error.data || error);
+            });
+        } else {
+          console.log("$scope.showTerms() đã bị từ chối.");
+        }
+      });
+      
     };
 
     // Hàm xử lý lỗi
@@ -686,6 +690,40 @@ app.controller(
     $scope.$watch("selectedPaymentMethod", function (newValue) {
       $scope.selectedPaymentMethod = newValue;
     });
+    $scope.showTerms = function() {
+      return Swal.fire({
+        title: 'Điều Khoản và Điều Kiện',
+        html: `
+          <h6>Điều Khoản 1:</h6>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+          
+          <h6>Điều Khoản 2:</h6>
+          <p>Nulla facilisi. Curabitur est gravida et libero vitae dictum.</p>
+          
+          <h6>Điều Khoản 3:</h6>
+          <p>Morbi in sem quis dui placerat ornare. Pellentesque habitant morbi tristique senectus et netus.</p>
+          
+          <label>
+            <input type="checkbox" id="termsCheckbox">
+            Tôi đã đọc và đồng ý với các Điều Khoản và Điều Kiện.
+          </label>
+        `,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Chấp Nhận',
+        cancelButtonText: 'Đóng',
+        preConfirm: function() {
+          if (!document.getElementById('termsCheckbox').checked) {
+            Swal.showValidationMessage('Vui lòng đồng ý với điều khoản');
+            return false;
+          }
+          return true;
+        }
+      }).then(function(result) {
+        // Kết quả khi người dùng nhấn "Chấp Nhận"
+        return result.isConfirmed;
+      });
+    };
 
     // Gọi hàm loadTinh khi khởi tạo controller
     $scope.loadTinh();

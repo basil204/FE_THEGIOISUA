@@ -79,7 +79,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
       const token = $window.localStorage.getItem("authToken");
       const protectedUrls = [
         "http://160.30.21.47:1234/api/payment/transactionHistory",
-        "http://160.30.21.47:1234/api/Invoice/getInvoices/",
+        "http://localhost:1234/api/Invoice/getInvoices/",
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
         "http://160.30.21.47:1234/api/Invoice/cancel/",
         "http://160.30.21.47:1234/api/user/profile/",

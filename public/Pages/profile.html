@@ -216,7 +216,6 @@
                     <tr>
                       <th>Mã Hóa Đơn</th>
                       <th>Tên Khách Hàng</th>
-                      <th>Tên Người Bán</th>
                       <th>Ngày Tạo</th>
                       <th>Phương Thức Thanh Toán</th>
                       <th>Voucher</th>
@@ -228,11 +227,6 @@
                     <tr ng-repeat="invoice in userInvoices">
                       <td data-label="Mã Hóa Đơn">{{invoice.invoiceCode}}</td>
                       <td data-label="Tên Khách Hàng">{{invoice.nguoiMua}}</td>
-                      <td data-label="Tên Người Bán">
-                        <!-- {{invoice.nguoiBan == null ? "Nhân Viên" :
-                        invoice.nguoiBan}} -->
-                        Hệ Thống
-                      </td>
                       <td data-label="Ngày Tạo">{{invoice.ngayTao}}</td>
                       <td data-label="Phương Thức Thanh Toán">
                         {{invoice.paymentmethod}}
