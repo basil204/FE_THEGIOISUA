@@ -15,7 +15,8 @@ app.controller(
         Authorization: `Bearer ${token}`,
       },
     };
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    $scope.userInfo = JSON.parse(localStorage.getItem("userInfo"))||null;
+    console.log("$scope.userInfo: ",$scope.userInfo)
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
     console.log($scope.lstProductOder)
@@ -210,9 +211,9 @@ app.controller(
       // console.log($scope.invoice);
     };
     $scope.getInvoicesByUser = function () {
-      if (userInfo && userInfo.id) {
+      if ($scope.userInfo && $scope.userInfo.id) {
         $http
-          .get(`${apitGetInvoiceByUser}${userInfo.id}`)
+          .get(`${apitGetInvoiceByUser}${$scope.userInfo.id}`)
           .then((response) => {
             if (response.status === 200) {
               $scope.userInvoices = response.data.message; // Lưu danh sách hóa đơn vào scope để hiển thị
@@ -224,7 +225,7 @@ app.controller(
             console.error("Lỗi khi lấy hóa đơn:", error);
           });
       } else {
-        console.warn("User info is not available."); // Thông báo khi userInfo chưa có
+        console.warn("User info is not available."); // Thông báo khi $scope.userInfo chưa có
         return null;
       }
     };
@@ -275,10 +276,10 @@ app.controller(
     };
 
     $scope.user = function () {
-      if (userInfo && userInfo.id) {
-        // Kiểm tra userInfo và userInfo.id tồn tại
+      if ($scope.userInfo && $scope.userInfo.id) {
+        // Kiểm tra $scope.userInfo và $scope.userInfo.id tồn tại
         return $http
-          .get(apiUser + "profile/" + userInfo.id)
+          .get(apiUser + "profile/" + $scope.userInfo.id)
           .then(function (response) {
             $scope.userData = response.data; // Lưu dữ liệu vào $scope.userData
             return $scope.userData; // Trả về dữ liệu sau khi tải xong
@@ -287,7 +288,7 @@ app.controller(
             console.error("Error fetching user data:", error);
           });
       } else {
-        console.warn("User info is not available."); // Thông báo khi userInfo chưa có
+        console.warn("User info is not available."); // Thông báo khi $scope.userInfo chưa có
         return null;
       }
     };
