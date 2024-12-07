@@ -55,6 +55,7 @@ app.controller(
         });
     }
     $scope.removeSelectedProducts = function () {
+      // ---
       swal.fire({
         title: "Bạn có chắc chắn?",
         text: "Sản phẩm đã chọn sẽ bị xóa!",
@@ -62,7 +63,9 @@ app.controller(
         showCancelButton: true,
         confirmButtonText: "Xóa",
         cancelButtonText: "Hủy"
-      }).then((result) => {
+      })
+      // ---
+      .then((result) => {
         if (result.isConfirmed) {
           $scope.lstProductOder = $scope.lstProductOder.filter(product => !product.selected);
           localStorage.setItem("lstProductOder", JSON.stringify($scope.lstProductOder));
@@ -538,89 +541,105 @@ app.controller(
     $scope.createInvoiceAndDetails = function () {
       var iaddress = $scope.getAdressInput()
       var iphoneNumber = "0" + $scope.phoneNumber;
-      if (iphoneNumber.length != 10 || $scope.phoneNumber == null) {
-        return Swal.fire({
-          icon: "error",
-          title: "Có lỗi sảy ra",
-          text: "Vui lòng nhập đúng số điện thoại!",
-        });
-      }
-      var iname = $scope.fullname
-      if (iname == null) {
-        return Swal.fire({
-          icon: "error",
-          title: "Có lỗi sảy ra",
-          text: "Vui lòng nhập đúng tên người dùng",
-        });
-      }
-      var iemail = $scope.email;
-      if (iemail == null) {
-        return Swal.fire({
-          icon: "error",
-          title: "Có lỗi sảy ra",
-          text: "Vui lòng nhập đúng email",
-        });
-      }
-      if (!$scope.selectedPaymentMethod) {
-        return showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!");
-      }
-      const invoiceDto = {
-        invoiceCode: $scope.generateInvoiceCode(),
-        nguoiNhanHang: iname,
-        email: iemail,
-        deliveryaddress: iaddress,
-        phonenumber: iphoneNumber,
-        paymentmethod: $scope.selectedPaymentMethod,
-        voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
-        sotienGiamGia: $scope.discountmoney || 0,
-        tongTien: $scope.totalamount,
-        invoiceDetails: $scope.lstProductOder
-          .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
-          .map((x) => ({
-            quantity: x.quantity,
-            price: x.productDetails.price,
-            totalprice: x.quantity * x.productDetails.price,
-            milkDetail: { id: x.id },
-          })),
-      };
-      $http
-        .post(urlInvoice, invoiceDto)
-        .then((response) => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Hóa đơn được Tạo Thành Công",
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            if ($scope.selectedPaymentMethod === "COD") {
-              socket.sendMessage("/app/chat", "Ni Hảo");
-              socket.subscribe("/topic/messages", function (message) {
-                console.log(JSON.parse(message));
+
+      Swal.fire({
+        title: "Xác nhận mua hàng?",
+        text: "Bạn có chắc chắn muốn tạo hóa đơn?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Đồng ý",
+        cancelButtonText: "Hủy",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Thực hiện logic đặt hàng tại đây
+          if (iphoneNumber.length != 10 || $scope.phoneNumber == null) {
+            return Swal.fire({
+              icon: "error",
+              title: "Có lỗi sảy ra",
+              text: "Vui lòng nhập đúng số điện thoại!",
+            });
+          }
+          var iname = $scope.fullname
+          if (iname == null) {
+            return Swal.fire({
+              icon: "error",
+              title: "Có lỗi sảy ra",
+              text: "Vui lòng nhập đúng tên người dùng",
+            });
+          }
+          var iemail = $scope.email;
+          if (iemail == null) {
+            return Swal.fire({
+              icon: "error",
+              title: "Có lỗi sảy ra",
+              text: "Vui lòng nhập đúng email",
+            });
+          }
+          if (!$scope.selectedPaymentMethod) {
+            return showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!");
+          }
+          const invoiceDto = {
+            invoiceCode: $scope.generateInvoiceCode(),
+            nguoiNhanHang: iname,
+            email: iemail,
+            deliveryaddress: iaddress,
+            phonenumber: iphoneNumber,
+            paymentmethod: $scope.selectedPaymentMethod,
+            voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
+            sotienGiamGia: $scope.discountmoney || 0,
+            tongTien: $scope.totalamount,
+            invoiceDetails: $scope.lstProductOder
+              .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
+              .map((x) => ({
+                quantity: x.quantity,
+                price: x.productDetails.price,
+                totalprice: x.quantity * x.productDetails.price,
+                milkDetail: { id: x.id },
+              })),
+          };
+          $http
+            .post(urlInvoice, invoiceDto)
+            .then((response) => {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Hóa đơn được Tạo Thành Công",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                if ($scope.selectedPaymentMethod === "COD") {
+                  socket.sendMessage("/app/chat", "Ni Hảo");
+                  socket.subscribe("/topic/messages", function (message) {
+                    console.log(JSON.parse(message));
+                  });
+                  // socket.sendMessage("/app/sendMessage", invoiceDto.invoiceCode);
+                  // socket.subscribe("/topic/messages", function (message) {
+                  //   Toast.fire({
+                  //     icon: "info",
+                  //     title: `Hóa đơn #${message} đã được đặt!`,
+                  //   });
+                  // });
+                } else {
+                  $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
+                }
               });
-              // socket.sendMessage("/app/sendMessage", invoiceDto.invoiceCode);
-              // socket.subscribe("/topic/messages", function (message) {
-              //   Toast.fire({
-              //     icon: "info",
-              //     title: `Hóa đơn #${message} đã được đặt!`,
-              //   });
-              // });
-            } else {
-              $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
-            }
-          });
-        })
-        .catch((error) => {
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title:
-              "Yêu cầu không hợp lệ: " +
-              (error.data ? error.data.error : error.message),
-            showConfirmButton: true,
-          });
-          console.error("Error:", error.data || error);
-        });
+            })
+            .catch((error) => {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title:
+                  "Yêu cầu không hợp lệ: " +
+                  (error.data ? error.data.error : error.message),
+                showConfirmButton: true,
+              });
+              console.error("Error:", error.data || error);
+            });
+
+        }
+      });
+
+      
     };
 
     // Hàm xử lý lỗi
@@ -643,13 +662,47 @@ app.controller(
     }
 
     // Hàm xử lý thanh toán
+    // $scope.buttonThanhToan = function () {
+    //   if ($scope.lstProductOder.length < 1) {
+    //     window.location.href = "/home";
+    //   } else {
+    //     window.location.href = "/checkout";
+    //   }
+    // };
     $scope.buttonThanhToan = function () {
-      if ($scope.lstProductOder.length < 1) {
-        window.location.href = "/home";
-      } else {
-        window.location.href = "/checkout";
-      }
-    };
+
+      Swal.fire({
+        title: "Xác nhận thanh toán?",
+        text: "Bạn có chắc chắn muốn thanh toán những sản phẩm này đã chọn?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Đồng ý",
+        cancelButtonText: "Hủy",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Thực hiện logic đặt hàng tại đây
+          if (!$scope.lstProductOder || $scope.lstProductOder.length < 1) {
+            // Hiển thị thông báo nếu giỏ hàng trống
+            Swal.fire({
+                icon: "warning",
+                title: "Giỏ hàng trống!",
+                text: "Bạn chưa có sản phẩm nào trong giỏ hàng. Quay về trang chủ để chọn sản phẩm.",
+                confirmButtonText: "OK",
+            }).then(() => {
+                // Chuyển hướng về trang chủ
+                window.location.href = "/home";
+            });
+        } else {
+            // Nếu có sản phẩm trong giỏ hàng, chuyển hướng đến trang thanh toán
+            window.location.href = "/checkout";
+        }
+
+        }
+      });
+
+      
+  };
+  
 
     // Hàm xóa sản phẩm khỏi danh sách
     $scope.removeProduct = function (index) {

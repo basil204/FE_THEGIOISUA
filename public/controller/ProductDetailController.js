@@ -88,76 +88,91 @@ app.controller(
       $scope.onPackagingUnitChange = function () {
         fetchMilkDetail();
       };
-
+      // Start - Đây là đoạn code không có thông báo xác nhận tương tác
       $scope.oderProduct = function (IDProductDetail, stockquantityMilkDetail) {
-        if (
-          !stockquantityMilkDetail ||
-          $scope.productDetails.stockquantity < stockquantityMilkDetail
-        ) {
-          Swal.fire({
-            icon: "error",
-            title: "Đặt Hàng Thất Bại",
-            text: "Vui lòng nhập đúng số lượng!",
-            footer:
-              "Số Lượng Còn Lại: " + ($scope.productDetails.stockquantity || 0),
-          });
-
-          return;
-        }
-        // localStorage.removeItem("lstProductOder")
-        let lstProductOder =
-          JSON.parse(localStorage.getItem("lstProductOder")) || [];
-
-        // Tạo một đối tượng sản phẩm để thêm vào danh sách đặt hàng
-        const detailProduct = {
-          id: IDProductDetail,
-          productDetails: $scope.productDetails,
-          quantity: stockquantityMilkDetail,
-          selected: false,
-        };
-
-        const existingProductIndex = lstProductOder.findIndex(
-          (item) => item.id === IDProductDetail
-        );
-
-        if (existingProductIndex !== -1) {
-          // Nếu sản phẩm đã tồn tại, chỉ cập nhật số lượng
-          if (
-            lstProductOder[existingProductIndex].quantity +
-            stockquantityMilkDetail >
-            $scope.productDetails.stockquantity
-          ) {
-            Swal.fire({
-              icon: "error",
-              title: "Đặt Hàng Thất Bại",
-              text: "Vui lòng nhập đúng số lượng!",
-              footer:
-                "Số Lượng Trong Giỏ Hàng: " +
-                lstProductOder[existingProductIndex].quantity,
-            });
-            return;
-          }
-          lstProductOder[existingProductIndex].quantity +=
-            stockquantityMilkDetail;
-        } else {
-          // Nếu sản phẩm chưa tồn tại, thêm mới vào danh sách
-          lstProductOder.push(detailProduct);
-        }
-
-        // Lưu lại danh sách vào localStorage
-        localStorage.setItem("lstProductOder", JSON.stringify(lstProductOder));
         Swal.fire({
-          position: "center", // Đặt vị trí thông báo ở giữa
-          icon: "success",
-          title: "Sản phẩm đã được thêm vào giỏ hàng!",
-          showConfirmButton: false,
-          timer: 1500,
+          title: "Xác nhận đặt hàng?",
+          text: "Bạn có chắc chắn muốn thêm sản phẩm này vào giỏ hàng?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Đồng ý",
+          cancelButtonText: "Hủy",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Thực hiện logic đặt hàng tại đây
+            if (
+              !stockquantityMilkDetail ||
+              $scope.productDetails.stockquantity < stockquantityMilkDetail
+            ) {
+              Swal.fire({
+                icon: "error",
+                title: "Đặt Hàng Thất Bại",
+                text: "Vui lòng nhập đúng số lượng!",
+                footer:
+                  "Số Lượng Còn Lại: " + ($scope.productDetails.stockquantity || 0),
+              });
+    
+              return;
+            }
+            // localStorage.removeItem("lstProductOder")
+            let lstProductOder =
+              JSON.parse(localStorage.getItem("lstProductOder")) || [];
+    
+            // Tạo một đối tượng sản phẩm để thêm vào danh sách đặt hàng
+            const detailProduct = {
+              id: IDProductDetail,
+              productDetails: $scope.productDetails,
+              quantity: stockquantityMilkDetail,
+              selected: false,
+            };
+    
+            const existingProductIndex = lstProductOder.findIndex(
+              (item) => item.id === IDProductDetail
+            );
+    
+            if (existingProductIndex !== -1) {
+              // Nếu sản phẩm đã tồn tại, chỉ cập nhật số lượng
+              if (
+                lstProductOder[existingProductIndex].quantity +
+                stockquantityMilkDetail >
+                $scope.productDetails.stockquantity
+              ) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Đặt Hàng Thất Bại",
+                  text: "Vui lòng nhập đúng số lượng!",
+                  footer:
+                    "Số Lượng Trong Giỏ Hàng: " +
+                    lstProductOder[existingProductIndex].quantity,
+                });
+                return;
+              }
+              lstProductOder[existingProductIndex].quantity +=
+                stockquantityMilkDetail;
+            } else {
+              // Nếu sản phẩm chưa tồn tại, thêm mới vào danh sách
+              lstProductOder.push(detailProduct);
+            }
+    
+            // Lưu lại danh sách vào localStorage
+            localStorage.setItem("lstProductOder", JSON.stringify(lstProductOder));
+            Swal.fire({
+              position: "center", // Đặt vị trí thông báo ở giữa
+              icon: "success",
+              title: "Sản phẩm đã được thêm vào giỏ hàng!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
         });
+
       };
+
     } else {
       console.error("Không có sản phẩm để lấy thông tin.");
       // Xử lý khi không có sản phẩm, có thể điều hướng lại hoặc thông báo cho người dùng
       $location.path("/product-list").search({}); // Điều hướng về trang danh sách sản phẩm nếu không có sản phẩm
     }
+    // End
   }
 );
