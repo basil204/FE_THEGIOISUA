@@ -73,7 +73,7 @@
                                 <label for="tinhSelect">Tỉnh Thành</label>
                                 <select id="tinhSelect" class="form-control css_select" ng-model="selectedTinh"
                                   ng-change="loadQuan(); getTinhName()"
-                                  ng-options="tinh.id as tinh.full_name for tinh in tinhs">
+                                  ng-options="tinh.id as tinh.name for tinh in tinhs">
                                   <option value="">Chọn Tỉnh Thành</option>
                                 </select>
                                 <span ng-if="tinhName" class="d-block mt-1 text-secondary">Tên Tỉnh: {{ tinhName
@@ -83,19 +83,11 @@
                                 <label for="quanSelect">Quận Huyện</label>
                                 <select id="quanSelect" class="form-control css_select" ng-model="selectedQuan"
                                   ng-change="loadPhuong(); getQuanName()"
-                                  ng-options="quan.id as quan.full_name for quan in quans">
+                                  ng-options="quan.id as quan.name for quan in quans">
                                   <option value="">Chọn Quận Huyện</option>
                                 </select>
                                 <span ng-if="quanName" class="d-block mt-1 text-secondary">Tên Quận: {{ quanName
                                   }}</span>
-                              </li>
-                              <li class="mb-3">
-                                <label for="phuongSelect">Phường Xã</label>
-                                <select id="phuongSelect" class="form-control css_select" ng-model="selectedPhuong"
-                                  ng-change="getPhuongName()"
-                                  ng-options="phuong.id as phuong.full_name for phuong in phuongs">
-                                  <option value="">Chọn Phường Xã</option>
-                                </select>
                               </li>
                               <li class="mb-3">
                                 <form>

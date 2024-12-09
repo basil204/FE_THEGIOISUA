@@ -83,6 +83,9 @@ app.factory("AuthInterceptor", function ($q, $window) {
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
         "http://160.30.21.47:1234/api/Invoice/cancel/",
         "http://160.30.21.47:1234/api/user/profile/",
+        "http://160.30.21.47:1234/api/user/updatePhonerNumber",
+        "http://160.30.21.47:1234/api/user/updateFullName",
+        "http://160.30.21.47:1234/api/user/updateAddress",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {
@@ -166,7 +169,7 @@ app.factory("socket", [
         }
       },
 
-      disconnect: function (userInfo) {
+      disconnect: function () {
         if (stompClient) {
           stompClient.disconnect();
           stompClient = null;
@@ -177,17 +180,3 @@ app.factory("socket", [
   },
 ]);
 
-// app.run([
-//   "$window",
-//   "socket",
-//   function ($window, socket) {
-//     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-//     if (!userInfo) {
-//       return;
-//     }
-//     // Đảm bảo khi người dùng đóng trang, kết nối WebSocket bị đóng và ID bị xóa khỏi online users
-//     $window.onbeforeunload = function () {
-//       socket.disconnect(userInfo);
-//     };
-//   },
-// ]);

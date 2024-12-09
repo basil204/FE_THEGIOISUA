@@ -2,7 +2,6 @@ app.controller(
   "ShoppingCartController",
   function ($scope, $location, $http, socket) {
     // Khai báo biến
-    const token = localStorage.getItem("authToken");
     const Toast = Swal.mixin({
       toast: true,
       position: "top-right",
@@ -10,6 +9,7 @@ app.controller(
       timer: 3000,
       timerProgressBar: true,
     });
+    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjU1MzQ3NTkzYTU5YTg0MmYwNjRhYzBkMGVlZGY4M2U4OTVlM2M3YjJlN2JjOGIwMDBhNDZlNzk3OTYxNmMzMjM0ODJhMzJhMzYxM2QzZDNlIn0.eyJhdWQiOiIxMyIsImp0aSI6IjU1MzQ3NTkzYTU5YTg0MmYwNjRhYzBkMGVlZGY4M2U4OTVlM2M3YjJlN2JjOGIwMDBhNDZlNzk3OTYxNmMzMjM0ODJhMzJhMzYxM2QzZDNlIiwiaWF0IjoxNzMxMDUwMDA3LCJuYmYiOjE3MzEwNTAwMDcsImV4cCI6MjA0NjU4MjgwNywic3ViIjoiMzM0NSIsInNjb3BlcyI6W119.CZoqzlrsV6HbFVSr0-x2dcrF6Uylb0m1T3ZEOyW-icj31bJUgGFN17Bs2HyUALEeGjnQWMLucLnao7koLDZzuBlXEGKsmrHH2t_2cB10pCU-_-D9_Nj7dcfsooVihMZYBp45JjbXYdnycAondva8qdkcp118DJ2_yCvzBVQyF1-YDKyUIByryKnmkUcv_hnDGe1Xkl63IjdKeDK47ILT7lMTkkjjzJiunBe2WZGCM7VU43tguAjh_tkeEFbJxdbMZ0YHIPyX-p2ZXPRxRyYnM9kybK7k_xwW1Gsy-zQCgkApWpPqsh69xj1YvVZgPk1MDpTjWmiTEfgQ1XUe698aJlQFlI_qxBrjZ9MaWakymEfTCvfzHXohFFQOC_3BwMPusU0PkCsFyFZd1LAU-UJB8gN2jnLsur8IUGb6f18_ysMH_9MqUrLSstNoODLwl4uv-nu7wR0E2AwEV6-kilDCP0soPKqPTMXbeBsMqq5go6jIHsCZMXuSpDKF4Tuhs_kmFeBo0StRLfExRSS36rah_y69gyc7GDoXorlt7tIZNmOw_EBCqJiNCnW1bKdiQLXpc9XP-50YAWKazrlQxx_GOKI2rjqDZLxqN6849PvQbqvxqbiJF1jtYahkT0s0qe0BFs22fniDHI-r0GMIYcKalbMSyyxLAV4MIpPYlNPh_zs"
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -296,40 +296,22 @@ app.controller(
 
     $scope.loadTinh = function () {
       $http
-        .get("https://esgoo.net/api-tinhthanh/1/0.htm")
+        .get("http://sandbox.goship.io/api/v2/cities", config)
         .then(function (response) {
-          if (response.data.error === 0) {
-            $scope.tinhs = response.data.data;
-          }
+          $scope.tinhs = response.data.data;
+          console.log($scope.tinhs)
         });
     };
 
     // Hàm xử lý địa chỉ
     $scope.loadQuan = function () {
       var idTinh = $scope.selectedTinh;
-      $scope.quans = [];
-      $scope.phuongs = [];
+      console.log(idTinh)
       if (idTinh) {
         $http
-          .get("https://esgoo.net/api-tinhthanh/2/" + idTinh + ".htm")
+          .get("http://sandbox.goship.io/api/v2/cities/" + idTinh + "/districts", config)
           .then(function (response) {
-            if (response.data.error === 0) {
-              $scope.quans = response.data.data;
-            }
-          });
-      }
-    };
-
-    $scope.loadPhuong = function () {
-      var idQuan = $scope.selectedQuan;
-      $scope.phuongs = [];
-      if (idQuan) {
-        $http
-          .get("https://esgoo.net/api-tinhthanh/3/" + idQuan + ".htm")
-          .then(function (response) {
-            if (response.data.error === 0) {
-              $scope.phuongs = response.data.data;
-            }
+            $scope.quans = response.data.data;
           });
       }
     };
@@ -340,7 +322,7 @@ app.controller(
       };
 
       $http
-        .put(apiUser + "updatePhonerNumber", user, config)
+        .put(apiUser + "updatePhonerNumber", user)
         .then(function (response) {
           if (response.status === 200) {
             $scope.user(); // Cập nhật lại thông tin người dùng
@@ -378,7 +360,7 @@ app.controller(
       };
 
       $http
-        .put(apiUser + "updateFullName", user, config)
+        .put(apiUser + "updateFullName", user)
         .then(function (response) {
           if (response.status === 200) {
             $scope.user(); // Cập nhật lại thông tin người dùng
@@ -411,8 +393,7 @@ app.controller(
     $scope.getAdressInput = function () {
       if (
         !$scope.getTinhName() ||
-        !$scope.getQuanName() ||
-        !$scope.getPhuongName()
+        !$scope.getQuanName()
       ) {
         Swal.fire({
           icon: "error",
@@ -425,9 +406,7 @@ app.controller(
       $scope.newAddress =
         $scope.getTinhName().full_name +
         ", " +
-        $scope.getQuanName().full_name +
-        ", " +
-        $scope.getPhuongName().full_name;
+        $scope.getQuanName().full_name;
 
       if ($scope.detailAddress !== "") {
         $scope.newAddress = $scope.newAddress + ", " + $scope.detailAddress;
@@ -435,15 +414,13 @@ app.controller(
       return $scope.newAddress
     }
     $scope.addAdress = function () {
-
-
       const user = {
         id: $scope.userData.id,
         address: $scope.getAdressInput()
       };
 
       $http
-        .put(apiUser + "updateAddress", user, config)
+        .put(apiUser + "updateAddress", user)
         .then(function (response) {
           if (response.status === 200) {
             $scope.user(); // Cập nhật lại thông tin người dùng
@@ -484,12 +461,6 @@ app.controller(
 
     $scope.getQuanName = function () {
       return $scope.quans.find((quan) => quan.id === $scope.selectedQuan);
-    };
-
-    $scope.getPhuongName = function () {
-      return $scope.phuongs.find(
-        (phuong) => phuong.id === $scope.selectedPhuong
-      );
     };
 
     // Hàm tạo mã hóa đơn ngẫu nhiên

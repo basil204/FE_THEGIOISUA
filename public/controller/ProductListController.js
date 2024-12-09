@@ -5,6 +5,7 @@ app.controller(
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     $scope.isLogin = false; // Giá trị mặc định
     $scope.userName = "My Account";
+    socket.disconnect();
     socket.connect().then(function () {
       socket.subscribe("/topic/messages", function (message) {
         alert("Received message: " + message);
