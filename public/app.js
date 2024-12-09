@@ -31,7 +31,7 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
       templateUrl: "Pages/cart.html",
       controller: "ShoppingCartController",
     })
-    .when("/detail", {
+    .when("/invoicedetail/:code", {
       templateUrl: "Pages/detail.html",
       controller: "ShoppingCartController",
     })
