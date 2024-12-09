@@ -79,7 +79,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
       const token = $window.localStorage.getItem("authToken");
       const protectedUrls = [
         "http://160.30.21.47:1234/api/payment/transactionHistory",
-        "http://localhost:1234/api/Invoice/getInvoices/",
+        "http://160.30.21.47:1234/api/Invoice/getInvoices/",
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
         "http://160.30.21.47:1234/api/Invoice/cancel/",
         "http://160.30.21.47:1234/api/user/profile/",
@@ -124,9 +124,8 @@ app.factory("socket", [
         var deferred = $q.defer();
         var token = localStorage.getItem("authToken");
         var socketUrl =
-          "http://localhost:1234/api/ws?token=" + encodeURIComponent(token);
-        // var socketUrl =
-        //   "http://160.30.21.47:1234/api/ws?token=" + encodeURIComponent(token);
+          "http://160.30.21.47:1234/api/ws?token=" + encodeURIComponent(token);
+
         socket = new SockJS(socketUrl);
         stompClient = Stomp.over(socket);
 
@@ -169,11 +168,6 @@ app.factory("socket", [
 
       disconnect: function (userInfo) {
         if (stompClient) {
-          stompClient.send(
-            "/app/disconnect",
-            {},
-            JSON.stringify({ userId: userInfo.id, role: userInfo.role })
-          );
           stompClient.disconnect();
           stompClient = null;
           subscriptions = {}; // Xóa danh sách subscriptions

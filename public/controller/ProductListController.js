@@ -5,22 +5,19 @@ app.controller(
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     $scope.isLogin = false; // Giá trị mặc định
     $scope.userName = "My Account";
+    socket.connect().then(function () {
+      socket.subscribe("/topic/messages", function (message) {
+        alert("Received message: " + message);
+      });
+    });
     $scope.checkLogin = function () {
       if (userInfo != null) {
         $scope.isLogin = true;
         $scope.userName = userInfo.sub;
-        socket.connect().then(function () {
-          console.log("Connected successfully to WebSocket!");
-          socket.subscribe('/user/hieu/queue/messages', function (message) {
-            console.log("Received message: " + message.body);
-          });
-        }).catch(function (error) {
-          console.error("Error connecting to WebSocket: " + error);
-        });
       }
     };
     $scope.test = function () {
-      socket.sendMessage('/app/chat', "alo alo")
+      socket.sendMessage('/app/chat', "123213")
     }
     $scope.getdataproduct = function (url) {
       $http.get(url).then(
