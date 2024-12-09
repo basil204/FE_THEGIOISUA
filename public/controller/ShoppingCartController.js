@@ -20,12 +20,12 @@ app.controller(
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
     console.log($scope.lstProductOder)
-    const urlInvoice = "http://localhost:1234/api/Invoice/add";
+    const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
     const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
     const apiUser = "http://160.30.21.47:1234/api/user/";
-    const apiVoucher = "http://localhost:1234/api/Voucher/";
+    const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
     const apitGetInvoiceByUser =
-      "http://localhost:1234/api/Invoice/getInvoices/";
+      "http://160.30.21.47:1234/api/Invoice/getInvoices/";
     const apiInvoiceDetail =
       "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
     $scope.selectedPaymentMethod = "";
