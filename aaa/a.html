@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Step Progress</title>
+    <!-- Thêm Bootstrap từ CDN -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+      }
+
+      /* Stepper Styles */
+      .stepper {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+      }
+
+      .stepper__step {
+        text-align: center;
+        position: relative;
+        flex: 1;
+        transition: all 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .stepper__step-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      .stepper__step-text {
+        font-size: 14px;
+        margin-top: 8px;
+        font-weight: bold;
+      }
+
+      .stepper__step-date {
+        font-size: 12px;
+        color: #777;
+      }
+
+      .stepper__line {
+        position: relative;
+        flex: 1;
+        height: 4px;
+        background-color: #e0e0e0;
+        margin-top: 20px;
+        border-radius: 2px;
+      }
+
+      .stepper__line-foreground {
+        height: 100%;
+        background-color: #2dc258;
+        border-radius: 2px;
+        transition: width 0.3s ease;
+      }
+
+      /* Các trạng thái bước */
+      .stepper__step--finish .stepper__step-icon {
+        background-color: #2dc258;
+        color: white;
+      }
+
+      .stepper__step--pending .stepper__step-icon {
+        background-color: #ccc;
+        color: white;
+      }
+
+      .stepper__step:hover .stepper__step-icon {
+        transform: scale(1.1);
+        background-color: #4caf50;
+      }
+
+      /* Thông tin sản phẩm */
+      .product-list .product-hidden {
+        display: none;
+      }
+
+      .product-details {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+        margin-bottom: 15px;
+      }
+
+      .product-details .d-flex {
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .product-image img {
+        max-width: 100px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      .product-info {
+        margin-left: 20px;
+      }
+
+      .product-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+      }
+
+      .price {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+
+      #toggle-products {
+        background: none;
+        border: none;
+        font-size: 16px;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 0;
+      }
+      #toggle-products {
+        background-color: #2dc258; /* Màu xanh tươi sáng */
+        border-radius: 30px; /* Để nút có hình tròn */
+        padding: 10px 30px; /* Khoảng cách bên trong nút */
+        font-size: 16px; /* Cỡ chữ */
+        font-weight: bold; /* Chữ đậm để nổi bật */
+        color: #fff; /* Màu chữ trắng */
+        border: none; /* Không viền */
+        transition: all 0.3s ease; /* Hiệu ứng chuyển tiếp mượt mà */
+      }
+
+      #toggle-products:hover {
+        background-color: #4caf50; /* Màu khi hover */
+        transform: scale(1.05); /* Tăng kích thước một chút khi hover */
+        cursor: pointer; /* Con trỏ thay đổi khi hover */
+      }
+
+      #toggle-icon {
+        margin-right: 8px; /* Khoảng cách giữa icon và văn bản */
+        transition: transform 0.3s ease; /* Thêm hiệu ứng cho icon */
+      }
+
+      #toggle-products:hover #toggle-icon {
+        transform: rotate(180deg); /* Xoay icon khi hover */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="stepper">
+        <!-- Step 1: Huỷ Đơn -->
+        <div class="stepper__step stepper__step--finish">
+          <div class="stepper__step-icon">
+            <i class="fas fa-times-circle"></i>
+            <!-- Biểu tượng huỷ đơn -->
+          </div>
+          <div class="stepper__step-text">Huỷ Đơn</div>
+          <div class="stepper__step-date">12:00 03-12-2024</div>
+        </div>
+
+        <!-- Step 2: Hoàn thành -->
+        <div class="stepper__step stepper__step--finish">
+          <div class="stepper__step-icon">
+            <i class="fas fa-check"></i>
+            <!-- Biểu tượng hoàn thành -->
+          </div>
+          <div class="stepper__step-text">Hoàn thành</div>
+          <div class="stepper__step-date">12:30 03-12-2024</div>
+        </div>
+
+        <!-- Step 3: Chờ lấy hàng -->
+        <div class="stepper__step stepper__step--finish">
+          <div class="stepper__step-icon">
+            <i class="fas fa-clock"></i>
+            <!-- Biểu tượng chờ lấy hàng -->
+          </div>
+          <div class="stepper__step-text">Chờ lấy hàng</div>
+          <div class="stepper__step-date">14:00 03-12-2024</div>
+        </div>
+
+        <!-- Step 4: Đã lấy hàng -->
+        <div class="stepper__step stepper__step--finish">
+          <div class="stepper__step-icon">
+            <i class="fas fa-truck"></i>
+            <!-- Biểu tượng đã lấy hàng -->
+          </div>
+          <div class="stepper__step-text">Đã lấy hàng</div>
+          <div class="stepper__step-date">15:30 03-12-2024</div>
+        </div>
+
+        <!-- Step 5: Giao hàng thành công -->
+        <div class="stepper__step stepper__step--finish">
+          <div class="stepper__step-icon">
+            <i class="fas fa-check-circle"></i>
+            <!-- Biểu tượng giao hàng thành công -->
+          </div>
+          <div class="stepper__step-text">Giao hàng thành công</div>
+          <div class="stepper__step-date">17:00 03-12-2024</div>
+        </div>
+
+        <!-- Step 6: Chờ Duyệt Đơn -->
+        <div class="stepper__step stepper__step--pending">
+          <div class="stepper__step-icon">
+            <i class="fas fa-pause-circle"></i>
+            <!-- Biểu tượng chờ duyệt đơn -->
+          </div>
+          <div class="stepper__step-text">Chờ Duyệt Đơn</div>
+          <div class="stepper__step-date"></div>
+        </div>
+
+        <!-- Step 7: Chưa Thanh Toán -->
+        <div class="stepper__step stepper__step--pending">
+          <div class="stepper__step-icon">
+            <i class="fas fa-credit-card"></i>
+            <!-- Biểu tượng chưa thanh toán -->
+          </div>
+          <div class="stepper__step-text">Chưa Thanh Toán</div>
+          <div class="stepper__step-date"></div>
+        </div>
+
+        <!-- Step 8: Đơn Chờ -->
+        <div class="stepper__step stepper__step--pending">
+          <div class="stepper__step-icon">
+            <i class="fas fa-hourglass-half"></i>
+            <!-- Biểu tượng đơn chờ -->
+          </div>
+          <div class="stepper__step-text">Đơn Chờ</div>
+          <div class="stepper__step-date"></div>
+        </div>
+      </div>
+
+      <div class="stepper__line mt-4">
+        <div class="stepper__line-foreground" style="width: 75%"></div>
+      </div>
+
+      <!-- Thông tin sản phẩm -->
+      <div class="product-details">
+        <div class="product-list">
+          <!-- Product 1 -->
+          <div class="product-details">
+            <div class="d-flex align-items-start">
+              <div class="product-image">
+                <img
+                  src="https://via.placeholder.com/100"
+                  alt="Product 1"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="product-info ml-3">
+                <h5 class="product-title">
+                  Áo sweater cổ tròn ba chiều đơn giản thời trang cho nam nữ cỡ
+                  M-2XL
+                </h5>
+                <p class="text-muted">
+                  Phân loại hàng: <strong>White, L</strong>
+                </p>
+                <p>x1</p>
+                <p class="price text-danger font-weight-bold">
+                  <del class="text-muted">₫190.000</del> ₫133.000
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 2 -->
+          <div class="product-details">
+            <div class="d-flex align-items-start">
+              <div class="product-image">
+                <img
+                  src="https://via.placeholder.com/100"
+                  alt="Product 2"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="product-info ml-3">
+                <h5 class="product-title">Áo hoodie nam nữ cỡ S-XL</h5>
+                <p class="text-muted">
+                  Phân loại hàng: <strong>Black, M</strong>
+                </p>
+                <p>x1</p>
+                <p class="price text-danger font-weight-bold">
+                  <del class="text-muted">₫220.000</del> ₫180.000
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 3 (Hidden by default) -->
+          <div class="product-details product-hidden">
+            <div class="d-flex align-items-start">
+              <div class="product-image">
+                <img
+                  src="https://via.placeholder.com/100"
+                  alt="Product 3"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="product-info ml-3">
+                <h5 class="product-title">Quần jean nữ thời trang cỡ M-L</h5>
+                <p class="text-muted">
+                  Phân loại hàng: <strong>Blue, L</strong>
+                </p>
+                <p>x1</p>
+                <p class="price text-danger font-weight-bold">
+                  <del class="text-muted">₫250.000</del> ₫210.000
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Button to toggle visibility -->
+        <button
+          id="toggle-products"
+          class="btn btn-primary btn-lg mt-3"
+          style="border-radius: 30px; padding: 10px 30px"
+        >
+          <i id="toggle-icon" class="fas fa-plus"></i> Xem tất cả
+        </button>
+
+        <!-- Price Breakdown Table -->
+        <table class="table table-borderless mt-3">
+          <tbody>
+            <tr>
+              <td class="text-muted">Tổng tiền hàng</td>
+              <td class="text-right">₫133.000</td>
+            </tr>
+            <tr>
+              <td class="text-muted">Phí vận chuyển</td>
+              <td class="text-right">₫17.000</td>
+            </tr>
+            <tr>
+              <td class="text-muted">Voucher từ Shop</td>
+              <td class="text-right text-danger">-₫3.000</td>
+            </tr>
+            <tr class="font-weight-bold">
+              <td>Thành tiền</td>
+              <td class="text-right text-danger">₫119.600</td>
+            </tr>
+            <tr>
+              <td class="text-muted">Phương thức Thanh toán</td>
+              <td class="text-right">SPayLater</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("toggle-products")
+        .addEventListener("click", function () {
+          const hiddenProducts = document.querySelectorAll(".product-hidden");
+          hiddenProducts.forEach(function (product) {
+            product.style.display =
+              product.style.display === "none" ? "block" : "none";
+          });
+
+          this.innerText =
+            this.innerText === "Xem tất cả" ? "Thu gọn" : "Xem tất cả";
+        });
+    </script>
+    <!-- JavaScript Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

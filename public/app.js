@@ -31,6 +31,10 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
       templateUrl: "Pages/cart.html",
       controller: "ShoppingCartController",
     })
+    .when("/detail", {
+      templateUrl: "Pages/detail.html",
+      controller: "ShoppingCartController",
+    })
     .when("/checkout", {
       templateUrl: "Pages/checkout.html",
       controller: "ShoppingCartController",
@@ -179,4 +183,3 @@ app.factory("socket", [
     };
   },
 ]);
-
