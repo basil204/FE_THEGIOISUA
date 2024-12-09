@@ -9,9 +9,11 @@ app.controller(
       timer: 3000,
       timerProgressBar: true,
     });
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjU1MzQ3NTkzYTU5YTg0MmYwNjRhYzBkMGVlZGY4M2U4OTVlM2M3YjJlN2JjOGIwMDBhNDZlNzk3OTYxNmMzMjM0ODJhMzJhMzYxM2QzZDNlIn0.eyJhdWQiOiIxMyIsImp0aSI6IjU1MzQ3NTkzYTU5YTg0MmYwNjRhYzBkMGVlZGY4M2U4OTVlM2M3YjJlN2JjOGIwMDBhNDZlNzk3OTYxNmMzMjM0ODJhMzJhMzYxM2QzZDNlIiwiaWF0IjoxNzMxMDUwMDA3LCJuYmYiOjE3MzEwNTAwMDcsImV4cCI6MjA0NjU4MjgwNywic3ViIjoiMzM0NSIsInNjb3BlcyI6W119.CZoqzlrsV6HbFVSr0-x2dcrF6Uylb0m1T3ZEOyW-icj31bJUgGFN17Bs2HyUALEeGjnQWMLucLnao7koLDZzuBlXEGKsmrHH2t_2cB10pCU-_-D9_Nj7dcfsooVihMZYBp45JjbXYdnycAondva8qdkcp118DJ2_yCvzBVQyF1-YDKyUIByryKnmkUcv_hnDGe1Xkl63IjdKeDK47ILT7lMTkkjjzJiunBe2WZGCM7VU43tguAjh_tkeEFbJxdbMZ0YHIPyX-p2ZXPRxRyYnM9kybK7k_xwW1Gsy-zQCgkApWpPqsh69xj1YvVZgPk1MDpTjWmiTEfgQ1XUe698aJlQFlI_qxBrjZ9MaWakymEfTCvfzHXohFFQOC_3BwMPusU0PkCsFyFZd1LAU-UJB8gN2jnLsur8IUGb6f18_ysMH_9MqUrLSstNoODLwl4uv-nu7wR0E2AwEV6-kilDCP0soPKqPTMXbeBsMqq5go6jIHsCZMXuSpDKF4Tuhs_kmFeBo0StRLfExRSS36rah_y69gyc7GDoXorlt7tIZNmOw_EBCqJiNCnW1bKdiQLXpc9XP-50YAWKazrlQxx_GOKI2rjqDZLxqN6849PvQbqvxqbiJF1jtYahkT0s0qe0BFs22fniDHI-r0GMIYcKalbMSyyxLAV4MIpPYlNPh_zs"
+    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImEzYWYyMzZjY2YxNzhjMzMwMTliZWRiNmY0NzVhMWQxZDMzMzE1NmE0N2U1YWFiNDA2NmFmOTE2MDc0MDdlMWNiYTY3ZDc1YjFiZWU5MDUyIn0.eyJhdWQiOiI3NyIsImp0aSI6ImEzYWYyMzZjY2YxNzhjMzMwMTliZWRiNmY0NzVhMWQxZDMzMzE1NmE0N2U1YWFiNDA2NmFmOTE2MDc0MDdlMWNiYTY3ZDc1YjFiZWU5MDUyIiwiaWF0IjoxNzMzNzcxODgxLCJuYmYiOjE3MzM3NzE4ODEsImV4cCI6MjA0OTMwNDY4MSwic3ViIjoiMzc4MCIsInNjb3BlcyI6W119.LY_gpwvPCnemap1JkpzwW6625Vd-Q_K8kc3nmJudacMj2XXsSHj_mDN-IfxwrRJiCcFHxgVyywcEIbpXuucLLIzXxCDrRKxMm4B1t4vLsN5pWf3d82FMH8Bxbtd0xRgmYSNh-XKhz1cCmOYXAhpfzvjDjY28R0vI2pGvESrYZAvnoAhwLAg7WAkQ4V5tsj0QHn4lWYQXTHgwlPDODBylxM2WikJw-OXW4dEX3JGn1ns5yF55Kgz7-vI3FXMyLwJ2uBWg_jMtJPj4SjSotkhjZwsbDNJrttNHv7Xkkeow29XnjysD7obEnCqkcy3xlYdz30X5bNzsJP7gqOy3AKPxDQeTMTAV42iGsLWfLLlQTG3gXIhixoZChq9w35K_O5OCx7PiqFADduAxtuVge0gBLH6XIdz1QBr_yUqvszmyMI0IWWtcSprbf-s8PJ4FtyhLNKeN5fidmes-mpV4Pmonk_DsuVhdPazlkmv8IO-DUbvo6CsqHnikeV_v_xPrhIsOwnsC8ISeMNQOkT_fMKEZvQzgGrL56NnJ0Av-FPVXaNNAkf6uWILsg_Ye9gWKUgb_Acr_XfVHB4GzFdtXEmsbMOCS4fWv_CHOzBmCMjHp8aWaInIBfxGzdLRjnF3hToaV7_O02illQtZa7mXLHlUz6lRTcmaP73FH1Wm3xSf1qtQ"
     const config = {
       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     };
@@ -296,7 +298,7 @@ app.controller(
 
     $scope.loadTinh = function () {
       $http
-        .get("http://sandbox.goship.io/api/v2/cities", config)
+        .get("https://api.goship.io/api/v2/cities", config)
         .then(function (response) {
           $scope.tinhs = response.data.data;
           console.log($scope.tinhs)
@@ -309,7 +311,7 @@ app.controller(
       console.log(idTinh)
       if (idTinh) {
         $http
-          .get("http://sandbox.goship.io/api/v2/cities/" + idTinh + "/districts", config)
+          .get("https://api.goship.io/api/v2/cities/" + idTinh + "/districts", config)
           .then(function (response) {
             $scope.quans = response.data.data;
           });
