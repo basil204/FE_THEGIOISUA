@@ -404,9 +404,9 @@ app.controller(
       }
 
       $scope.newAddress =
-        $scope.getTinhName().full_name +
+        $scope.getTinhName().name +
         ", " +
-        $scope.getQuanName().full_name;
+        $scope.getQuanName().name;
 
       if ($scope.detailAddress !== "") {
         $scope.newAddress = $scope.newAddress + ", " + $scope.detailAddress;
