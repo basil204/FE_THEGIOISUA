@@ -15,8 +15,8 @@ app.controller(
         Authorization: `Bearer ${token}`,
       },
     };
-    $scope.userInfo = JSON.parse(localStorage.getItem("userInfo"))||null;
-    console.log("$scope.userInfo: ",$scope.userInfo)
+    $scope.userInfo = JSON.parse(localStorage.getItem("userInfo")) || null;
+    console.log("$scope.userInfo: ", $scope.userInfo)
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
     console.log($scope.lstProductOder)
@@ -230,8 +230,8 @@ app.controller(
       }
     };
     $scope.calculateTotal = function () {
-      const selectedItems = $scope.lstProductOder.filter(function(item) {
-          return item.selected === true;
+      const selectedItems = $scope.lstProductOder.filter(function (item) {
+        return item.selected === true;
       });
       let total = 0;
       selectedItems.forEach(function (item) {
@@ -282,6 +282,7 @@ app.controller(
           .get(apiUser + "profile/" + $scope.userInfo.id)
           .then(function (response) {
             $scope.userData = response.data; // Lưu dữ liệu vào $scope.userData
+            $scope.email = $scope.userData.email
             return $scope.userData; // Trả về dữ liệu sau khi tải xong
           })
           .catch(function (error) {
@@ -587,7 +588,7 @@ app.controller(
             milkDetail: { id: x.id },
           })),
       };
-      $scope.showTerms().then(function(isAgreed) {
+      $scope.showTerms().then(function (isAgreed) {
         if (isAgreed) {
           console.log("$scope.showTerms() đã đồng ý:", isAgreed);
           $http
@@ -625,7 +626,7 @@ app.controller(
           console.log("$scope.showTerms() đã bị từ chối.");
         }
       });
-      
+
     };
 
     // Hàm xử lý lỗi
@@ -691,7 +692,7 @@ app.controller(
     $scope.$watch("selectedPaymentMethod", function (newValue) {
       $scope.selectedPaymentMethod = newValue;
     });
-    $scope.showTerms = function() {
+    $scope.showTerms = function () {
       return Swal.fire({
         title: 'Điều Khoản và Điều Kiện',
         html: `
@@ -713,14 +714,14 @@ app.controller(
         showCancelButton: true,
         confirmButtonText: 'Chấp Nhận',
         cancelButtonText: 'Đóng',
-        preConfirm: function() {
+        preConfirm: function () {
           if (!document.getElementById('termsCheckbox').checked) {
             Swal.showValidationMessage('Vui lòng đồng ý với điều khoản');
             return false;
           }
           return true;
         }
-      }).then(function(result) {
+      }).then(function (result) {
         // Kết quả khi người dùng nhấn "Chấp Nhận"
         return result.isConfirmed;
       });

@@ -6,13 +6,7 @@
         <h2>Sản phẩm của chúng tôi</h2>
         <ul class="nav nav-tabs tab-style-color-2 tab-style-color" id="myTab">
           <li class="nav-item">
-            <button
-              class="nav-link btn active"
-              id="all-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#all"
-              type="button"
-            >
+            <button class="nav-link btn active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button">
               Tất cả
             </button>
           </li>
@@ -22,39 +16,22 @@
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="all" role="tabpanel">
           <div class="row g-8">
-            <div
-              class="col-xxl-2 col-lg-3 col-md-4 col-6 wow fadeInUp"
-              ng-repeat="product in products"
-            >
+            <div class="col-xxl-2 col-lg-3 col-md-4 col-6 wow fadeInUp" ng-repeat="product in products">
               <div class="product-box-4">
                 <div class="product-image">
                   <div class="label-flex">
-                    <button
-                      class="btn p-0 wishlist btn-wishlist notifi-wishlist"
-                    >
+                    <button class="btn p-0 wishlist btn-wishlist notifi-wishlist">
                       <!-- <i class="iconly-Heart icli"></i> -->
                     </button>
                   </div>
 
                   <a ng-click="viewDetail(product)">
-                    <img
-                      ng-src="{{ product.imgUrl }}"
-                      alt="{{product.milktypename}}"
-                      class="img-fluid"
-                    />
+                    <img ng-src="{{ product.imgUrl }}" alt="{{product.milktypename}}" class="img-fluid" />
                   </a>
 
                   <ul class="option">
-                    <li
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Quick View"
-                    >
-                      <a
-                        ng-click="viewDetail(product)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#view"
-                      >
+                    <li data-bs-toggle="tooltip" data-bs-placement="top" title="Quick View">
+                      <a ng-click="viewDetail(product)" data-bs-toggle="modal" data-bs-target="#view">
                         <i class="iconly-Show icli"></i>
                       </a>
                     </li>
@@ -91,11 +68,9 @@
                     <h5 class="price theme-color">
                       {{product.minPrice | currency:"₫":0}} - {{product.maxPrice | currency:"₫":0}}
                     </h5>
-                    <button
-                      ng-click="viewDetail(product)"
+                    <button ng-click="viewDetail(product)"
                       class="btn theme-bg-color fw-bold text-white d-flex align-items-center justify-content-center p-2 rounded-circle shadow-sm hover-shadow-lg transition-all"
-                      style="font-size: 14px; height: 40px; width: 40px;"
-                    >
+                      style="font-size: 14px; height: 40px; width: 40px;">
                       <!-- Biểu tượng giỏ hàng -->
                       <i class="fas fa-shopping-cart"></i>
                     </button>
@@ -104,17 +79,18 @@
 
 
                 </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-  <!-- Product Section End -->
-  <!-- Product Section Start -->
-  <!-- <section class="product-section-2">
+</div>
+</section>
+<button ng-click="test()">test</button>
+<!-- Product Section End -->
+<!-- Product Section Start -->
+<!-- <section class="product-section-2">
         <div class="container-fluid-lg">
             <div class="row gy-sm-5 gy-4">
                 <div class="col-xxl-6 col-md-6">
@@ -257,7 +233,7 @@
                     </div>
                 </div>
     </section> -->
-  <!-- Product Section End
+<!-- Product Section End
  Banner Section Start -->
 <!--  <section class="banner-section">-->
 <!--    <div class="container-fluid-lg">-->

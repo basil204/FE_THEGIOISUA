@@ -10,11 +10,18 @@ app.controller(
         $scope.isLogin = true;
         $scope.userName = userInfo.sub;
         socket.connect().then(function () {
-          socket.sendMessage('/app/connect', { userId: userInfo.id, role: userInfo.role });
+          console.log("Connected successfully to WebSocket!");
+          socket.subscribe('/user/hieu/queue/messages', function (message) {
+            console.log("Received message: " + message.body);
+          });
+        }).catch(function (error) {
+          console.error("Error connecting to WebSocket: " + error);
         });
-
       }
     };
+    $scope.test = function () {
+      socket.sendMessage('/app/chat', "alo alo")
+    }
     $scope.getdataproduct = function (url) {
       $http.get(url).then(
         function (response) {

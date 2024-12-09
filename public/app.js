@@ -183,17 +183,17 @@ app.factory("socket", [
   },
 ]);
 
-app.run([
-  "$window",
-  "socket",
-  function ($window, socket) {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (!userInfo) {
-      return;
-    }
-    // Đảm bảo khi người dùng đóng trang, kết nối WebSocket bị đóng và ID bị xóa khỏi online users
-    $window.onbeforeunload = function () {
-      socket.disconnect(userInfo);
-    };
-  },
-]);
+// app.run([
+//   "$window",
+//   "socket",
+//   function ($window, socket) {
+//     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+//     if (!userInfo) {
+//       return;
+//     }
+//     // Đảm bảo khi người dùng đóng trang, kết nối WebSocket bị đóng và ID bị xóa khỏi online users
+//     $window.onbeforeunload = function () {
+//       socket.disconnect(userInfo);
+//     };
+//   },
+// ]);
