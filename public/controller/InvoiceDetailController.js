@@ -16,7 +16,6 @@ app.controller("InvoiceDetailController", function ($scope, $http, socket) {
         338: "Đơn Chờ",
         305: "Thanh toán thành công"
     };
-
     // Hàm lấy trạng thái từ mã trạng thái
     $scope.getStatus = function (statusCode) {
         return $scope.statusMap[statusCode] || "Không xác định";

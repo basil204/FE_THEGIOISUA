@@ -2,23 +2,32 @@ app.controller(
   "ProductListController",
   function ($scope, $http, $location, ProductService, socket) {
     // Function to fetch products based on the provided URL
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    });
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     $scope.isLogin = false; // Giá trị mặc định
     $scope.userName = "My Account";
-    socket.connect().then(function () {
-      socket.subscribe("/topic/messages", function (message) {
-        alert("Received message: " + message);
-      });
-    });
+    if (!socket.isConnected) {
+      socket.connect().then(function () {
+        socket.subscribe("/topic/messages", function (message) {
+          Toast.fire({
+            icon: 'info',
+            title: `Hóa đơn #${message} đã được đặt!`
+          });
+        })
+      })
+    }
     $scope.checkLogin = function () {
       if (userInfo != null) {
         $scope.isLogin = true;
         $scope.userName = userInfo.sub;
       }
     };
-    $scope.test = function () {
-      socket.sendMessage('/app/chat', "123213")
-    }
     $scope.getdataproduct = function (url) {
       $http.get(url).then(
         function (response) {

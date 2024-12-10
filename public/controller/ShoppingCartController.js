@@ -38,8 +38,25 @@ app.controller(
     $scope.voucher = null;
     $scope.userInvoices = null;
     $scope.invoiceDetails = [];
-    $scope.invoice = null;
+    $scope.invoice = JSON.parse(localStorage.getItem("invoice")) || null;
     $scope.vouchers = null;
+    $scope.statusMap = {
+      0: "Không hoạt động",
+      1: "Hoạt động",
+      336: "Huỷ Đơn",
+      913: "Hoàn thành",
+      901: "Chờ lấy hàng",
+      903: "Đã lấy hàng",
+      904: "Giao hàng",
+      301: "Chờ Duyệt Đơn",
+      337: "Chưa Thanh Toán",
+      338: "Đơn Chờ",
+      305: "Thanh toán thành công"
+    };
+    // Hàm lấy trạng thái từ mã trạng thái
+    $scope.getStatus = function (statusCode) {
+      return $scope.statusMap[statusCode] || "Không xác định";
+    };
     $scope.selectedVoucher = function (x) {
       $scope.vouchercode = x;
       $scope.checkvoucher()
@@ -124,7 +141,7 @@ app.controller(
             .get(cancelInvoice + idinvoice)
             .then(function (response) {
               Swal.fire("Thành công!", "Hủy Thành Công", "success");
-              location.reload();
+              window.location.href = "/home";
             })
             .catch(function (error) {
               console.error("Error fetching invoice details:", error);
@@ -581,6 +598,7 @@ app.controller(
           })),
       };
       $scope.showTerms().then(function (isAgreed) {
+        socket.sendMessage('/app/invoice', invoiceDto.invoiceCode)
         if (isAgreed) {
           $http
             .post(urlInvoice, invoiceDto)
@@ -593,10 +611,7 @@ app.controller(
                 timer: 1500,
               }).then(() => {
                 if ($scope.selectedPaymentMethod === "COD") {
-                  // socket.sendMessage("/app/chat", "Ni Hảo");
-                  // socket.subscribe("/topic/messages", function (message) {
-                  //   console.log(JSON.parse(message));
-                  // });
+                  socket.sendMessage('/app/cod')
                 } else {
                   $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
                 }

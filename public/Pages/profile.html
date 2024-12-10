@@ -177,20 +177,14 @@
                       <td data-label="Voucher">{{invoice.voucherCode}}</td>
                       <td data-label="Trạng Thái">
                         <span class="badge" ng-class="{
-                            'badge-warning': invoice.trangThai == 335,
-                            'badge-primary': invoice.trangThai == 334,
-                            'badge-danger': invoice.trangThai == 336,
-                            'badge-info': invoice.trangThai == 337,
-                            'badge-success': invoice.trangThai == 338,
+                            'badge-warning': invoice.trangThai == 336,
+                            'badge-primary': invoice.trangThai == 913,
+                            'badge-danger': invoice.trangThai == 901,
+                            'badge-info': invoice.trangThai == 903,
+                            'badge-success': invoice.trangThai == 904,
                             'badge-pink': invoice.trangThai == 301
                           }">
-                          {{ invoice.trangThai == 335 ? "Chờ Thanh Toán" :
-                          invoice.trangThai == 334 ? "Chờ Giao Hàng" :
-                          invoice.trangThai == 336 ? "Đã Hủy" :
-                          invoice.trangThai == 337 ? "Hoàn Tiền" :
-                          invoice.trangThai == 338 ? "Hoàn Thành" :
-                          invoice.trangThai == 301 ? "Chờ Duyệt Đơn":"Trạng Thái
-                          Không Xác Định" }}
+                          {{getStatus(invoice.trangThai)}}
                         </span>
                       </td>
                       <td data-label="Thao Tác">
