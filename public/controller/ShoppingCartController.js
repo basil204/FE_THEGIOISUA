@@ -18,10 +18,8 @@ app.controller(
       },
     };
     $scope.userInfo = JSON.parse(localStorage.getItem("userInfo")) || null;
-    console.log("$scope.userInfo: ", $scope.userInfo)
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
-    console.log($scope.lstProductOder)
     const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
     const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
     const apiUser = "http://160.30.21.47:1234/api/user/";
@@ -51,7 +49,6 @@ app.controller(
       $http.get(apiVoucher + "voucherActive")
         .then(function (response) {
           $scope.vouchers = response.data.Succes;
-          console.log($scope.vouchers)
         })
         .catch(function (error) {
           console.error('Có lỗi khi tải thông tin voucher:', error.data);
@@ -93,7 +90,6 @@ app.controller(
       } else {
         localStorage.setItem("lstProductOder", JSON.stringify($scope.lstProductOder));
       }
-      console.log(selectedProduct)
     }
     $scope.removeAllProducts = function () {
       swal.fire({
@@ -160,7 +156,6 @@ app.controller(
               clearInterval(countdownInterval);
               clearInterval(paymentCheckInterval);
               Swal.close();
-              console.log("Đã hết thời gian kiểm tra sau 10 phút");
             }
           }, 1000);
 
@@ -188,7 +183,7 @@ app.controller(
               })
               .catch((error) => {
                 if (error.status === 404) {
-                  console.log("Không tìm thấy giao dịch, thử lại sau.");
+                  console.error("Không tìm thấy giao dịch, thử lại sau.");
                 } else {
                   console.error(
                     "Lỗi khác khi kiểm tra trạng thái thanh toán:",
@@ -210,7 +205,6 @@ app.controller(
         .catch(function (error) {
           console.error("Error fetching invoice details:", error);
         });
-      // console.log($scope.invoice);
     };
     $scope.getInvoicesByUser = function () {
       if ($scope.userInfo && $scope.userInfo.id) {
@@ -295,20 +289,47 @@ app.controller(
         return null;
       }
     };
-
+    $scope.amountShip = function () {
+      const data = {
+        "shipment": {
+          "address_from": {
+            "district": "181810",// ngo quyen
+            "city": "180000"//hai phong
+          },
+          "address_to": {
+            "district": $scope.selectedQuan,
+            "city": $scope.selectedTinh
+          },
+          "parcel": {
+            "cod": $scope.calculateTotal(),
+            "amount": $scope.calculateTotal(),
+            "width": 10,
+            "height": 10,
+            "length": 10,
+            "weight": 750
+          }
+        }
+      }
+      $http
+        .post("https://api.goship.io/api/v2/rates", data, config)
+        .then(function (response) {
+          $scope.ships = response.data.data;
+        })
+        .catch(function (error) {
+          console.error("API Error:", error);
+        });
+    }
     $scope.loadTinh = function () {
       $http
         .get("https://api.goship.io/api/v2/cities", config)
         .then(function (response) {
           $scope.tinhs = response.data.data;
-          console.log($scope.tinhs)
         });
     };
 
     // Hàm xử lý địa chỉ
     $scope.loadQuan = function () {
       var idTinh = $scope.selectedTinh;
-      console.log(idTinh)
       if (idTinh) {
         $http
           .get("https://api.goship.io/api/v2/cities/" + idTinh + "/districts", config)
@@ -413,6 +434,7 @@ app.controller(
       if ($scope.detailAddress !== "") {
         $scope.newAddress = $scope.newAddress + ", " + $scope.detailAddress;
       }
+
       return $scope.newAddress
     }
     $scope.addAdress = function () {
@@ -493,7 +515,6 @@ app.controller(
 
     // Cập nhật tổng tiền khi số lượng thay đổi
     $scope.updateTotal = function (product) {
-      console.log(product.quantity);
       if (
         product.quantity > product.productDetails.stockquantity ||
         product.quantity < 1
@@ -551,6 +572,7 @@ app.controller(
         paymentmethod: $scope.selectedPaymentMethod,
         voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
         sotienGiamGia: $scope.discountmoney || 0,
+        sotienShip: selectedShip,
         tongTien: $scope.totalamount,
         invoiceDetails: $scope.lstProductOder
           .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
@@ -563,7 +585,6 @@ app.controller(
       };
       $scope.showTerms().then(function (isAgreed) {
         if (isAgreed) {
-          console.log("$scope.showTerms() đã đồng ý:", isAgreed);
           $http
             .post(urlInvoice, invoiceDto)
             .then((response) => {
@@ -595,8 +616,6 @@ app.controller(
               });
               console.error("Error:", error.data || error);
             });
-        } else {
-          console.log("$scope.showTerms() đã bị từ chối.");
         }
       });
 
@@ -604,7 +623,6 @@ app.controller(
 
     // Hàm xử lý lỗi
     function handleError(error) {
-      console.log("Lỗi khi thêm hóa đơn:", error);
       if (error.data && error.data.errors) {
         $scope.errors = error.data.errors;
       } else {

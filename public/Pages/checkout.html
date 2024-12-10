@@ -82,7 +82,7 @@
                               <li class="mb-3">
                                 <label for="quanSelect">Quận Huyện</label>
                                 <select id="quanSelect" class="form-control css_select" ng-model="selectedQuan"
-                                  ng-change="loadPhuong(); getQuanName()"
+                                  ng-change="loadPhuong(); getQuanName(); amountShip()"
                                   ng-options="quan.id as quan.name for quan in quans">
                                   <option value="">Chọn Quận Huyện</option>
                                 </select>
@@ -271,15 +271,6 @@
             <div class="summery-contain">
               <div class="coupon-cart">
                 <h6 class="text-content mb-2">Phiếu giảm giá</h6>
-
-                <!-- Nhập mã giảm giá -->
-                <!-- <div class="mb-3 coupon-box input-group">
-                  <input type="text" class="form-control" id="exampleFormControlInput1"
-                    placeholder="Nhập mã giảm giá vào đây..." ng-model="vouchercode" />
-                  <button class="btn-apply" ng-click="checkvoucher()">Áp dụng</button>
-                </div> -->
-
-                <!-- Chọn mã giảm giá từ danh sách -->
                 <select class="form-select mt-2" ng-model="selectedVoucherCode"
                   ng-change="selectedVoucher(selectedVoucherCode)">
                   <option value="" disabled selected>Chọn mã giảm giá</option>
@@ -289,7 +280,15 @@
                   </option>
                 </select>
               </div>
-
+              <div class="coupon-cart">
+                <h6 class="text-content mb-2">Đơn Vị Vận Chuyển</h6>
+                <select class="form-select mt-2" ng-model="selectedShip">
+                  <option value="" disabled selected>Chọn Đơn Vị Vận Chuyển</option>
+                  <option value="{{x.total_fee}}" ng-repeat="x in ships"
+                    ng-bind="x.carrier_name + ' - Giao Hàng ' + x.service + ' - '+x.expected">
+                  </option>
+                </select>
+              </div>
               <ul>
                 <li>
                   <h4>Tổng Tiền</h4>
@@ -298,6 +297,10 @@
                 <li>
                   <h4>Giảm</h4>
                   <h4 class="price">{{discountmoney | number:''}} VNĐ</h4>
+                </li>
+                <li>
+                  <h4>Phí Vận Chuyển</h4>
+                  <h4 class="price">{{(selectedShip||0) | number:''}} VNĐ</h4>
                 </li>
                 <li>
                   <h4>Số Tiền Phải Thanh Toán</h4>
