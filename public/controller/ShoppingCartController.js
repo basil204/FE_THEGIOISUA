@@ -54,6 +54,9 @@ app.controller(
           console.error('Có lỗi khi tải thông tin voucher:', error.data);
         });
     }
+    $scope.selectedShipping = function (amout) {
+      $scope.totalamount = $scope.calculateTotal() - $scope.discountmoney + Number(amout);
+    }
     $scope.removeSelectedProducts = function () {
       swal.fire({
         title: "Bạn có chắc chắn?",
@@ -241,7 +244,7 @@ app.controller(
       });
       return total;
     };
-    $scope.totalamount = $scope.calculateTotal() - $scope.discountmoney;
+    $scope.totalamount = $scope.calculateTotal();
     $scope.checkvoucher = function () {
       if ($scope.vouchercode) {
         const params = {
@@ -255,8 +258,7 @@ app.controller(
             if (response.status === 200) {
               $scope.voucher = response.data;
               $scope.discountmoney = response.data.discountAmount; // Lưu dữ liệu voucher vào biến
-              $scope.totalamount =
-                $scope.calculateTotal() - $scope.discountmoney;
+              $scope.totalamount = $scope.calculateTotal() - $scope.discountmoney
             }
           })
           .catch(function (error) {
@@ -563,6 +565,9 @@ app.controller(
       if (!$scope.selectedPaymentMethod) {
         return showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!");
       }
+      if (!$scope.selectedShip) {
+        return showAlert("Vui Lòng Chọn Đơn Vị Vận Chuyển");
+      }
       const invoiceDto = {
         invoiceCode: $scope.generateInvoiceCode(),
         nguoiNhanHang: iname,
@@ -572,7 +577,7 @@ app.controller(
         paymentmethod: $scope.selectedPaymentMethod,
         voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
         sotienGiamGia: $scope.discountmoney || 0,
-        sotienShip: selectedShip,
+        sotienShip: $scope.selectedShip,
         tongTien: $scope.totalamount,
         invoiceDetails: $scope.lstProductOder
           .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn

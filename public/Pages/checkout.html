@@ -282,7 +282,7 @@
               </div>
               <div class="coupon-cart">
                 <h6 class="text-content mb-2">Đơn Vị Vận Chuyển</h6>
-                <select class="form-select mt-2" ng-model="selectedShip">
+                <select class="form-select mt-2" ng-model="selectedShip" ng-change="selectedShipping(selectedShip)">
                   <option value="" disabled selected>Chọn Đơn Vị Vận Chuyển</option>
                   <option value="{{x.total_fee}}" ng-repeat="x in ships"
                     ng-bind="x.carrier_name + ' - Giao Hàng ' + x.service + ' - '+x.expected">
