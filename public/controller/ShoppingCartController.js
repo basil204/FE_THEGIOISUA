@@ -26,8 +26,7 @@ app.controller(
     const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
     const apitGetInvoiceByUser =
       "http://160.30.21.47:1234/api/Invoice/getInvoices/";
-    const apiInvoiceDetail =
-      "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
+
     $scope.selectedPaymentMethod = "";
     $scope.newAddress = null;
     $scope.tinhs = [];
@@ -199,15 +198,8 @@ app.controller(
       });
     };
     $scope.getInvoiceDetailByUser = function (invoice) {
-      $scope.invoice = invoice;
-      $http
-        .get(apiInvoiceDetail + invoice.invoiceID)
-        .then(function (response) {
-          $scope.invoiceDetails = response.data.message;
-        })
-        .catch(function (error) {
-          console.error("Error fetching invoice details:", error);
-        });
+      localStorage.setItem("invoice", JSON.stringify(invoice));
+      window.location.href = "/invoicedetail"
     };
     $scope.getInvoicesByUser = function () {
       if ($scope.userInfo && $scope.userInfo.id) {

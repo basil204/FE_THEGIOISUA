@@ -1,48 +1,49 @@
 <div class="container">
   <div class="invoice-header">
     <h3>Hoá Đơn</h3>
-    <p>Mã đơn hàng: <strong>#123456</strong></p>
-    <p>Ngày tạo: <strong>03-12-2024</strong></p>
+    <p>Mã đơn hàng: <strong>{{ invoice.invoiceCode }}</strong></p>
+    <p>Ngày tạo: <strong>{{ invoice.ngayTao }}</strong></p>
+    <p>Trạng thái: <strong>{{ getStatus(invoice.trangThai) }}</strong></p>
   </div>
 
   <div class="stepper">
-    <div class="stepper__step stepper__step--finish">
+    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai==901">
       <div class="stepper__step-icon">
         <i class="fas fa-clock"></i>
       </div>
       <div class="stepper__step-text">Chờ lấy hàng</div>
       <div class="stepper__step-date">14:00 03-12-2024</div>
     </div>
-    <div class="stepper__line"></div>
+    <!-- <div class="stepper__line" ng-show="invoice.trangThai==901"></div> -->
 
-    <div class="stepper__step stepper__step--finish">
+    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai==903">
       <div class="stepper__step-icon">
         <i class="fas fa-truck"></i>
       </div>
       <div class="stepper__step-text">Đã lấy hàng</div>
       <div class="stepper__step-date">15:30 03-12-2024</div>
     </div>
-    <div class="stepper__line"></div>
+    <!-- <div class="stepper__line" ng-show="invoice.trangThai==903"></div> -->
 
-    <div class="stepper__step stepper__step--finish">
+    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai==904">
       <div class="stepper__step-icon">
         <i class="fas fa-truck"></i>
       </div>
       <div class="stepper__step-text">Giao Hàng</div>
       <div class="stepper__step-date">15:30 03-12-2024</div>
     </div>
-    <div class="stepper__line"></div>
+    <!-- <div class="stepper__line" ng-show="invoice.trangThai==904"></div> -->
 
-    <div class="stepper__step stepper__step--pending">
+    <div class="stepper__step stepper__step--pending" ng-show="invoice.trangThai==913">
       <div class="stepper__step-icon">
         <i class="fas fa-check"></i>
       </div>
       <div class="stepper__step-text">Hoàn thành</div>
       <div class="stepper__step-date">12:30 03-12-2024</div>
     </div>
-    <div class="stepper__line"></div>
+    <!-- <div class="stepper__line" ng-show="invoice.trangThai==913"></div> -->
 
-    <div class="stepper__step stepper__step--red">
+    <div class="stepper__step stepper__step--red" ng-show="invoice.trangThai==336">
       <div class="stepper__step-icon">
         <i class="fas fa-times-circle"></i>
       </div>
@@ -53,44 +54,20 @@
 
   <!-- Thông tin sản phẩm -->
   <div class="product-details">
-    <div class="product-list">
+    <div class="product-list" ng-repeat="x in invoiceDetails">
       <!-- Product 1 -->
       <div class="product-item">
         <div class="d-flex align-items-start">
           <div class="product-image">
-            <img
-              src="https://via.placeholder.com/100"
-              alt="Product 1"
-              class="img-fluid"
-            />
+            <img ng-src="{{x.imgUrl}}" alt="Product 1" class="img-fluid" />
           </div>
           <div class="product-info ml-3">
             <h5 class="product-title">
-              Áo sweater cổ tròn ba chiều đơn giản thời trang cho nam nữ cỡ
-              M-2XL
+              {{x.packagingunitname}} {{x.milkTypename}} {{x.milkbrandname}}
+              {{x.milktastename}} {{x.capacity}} {{x.unit}}
             </h5>
-            <p class="text-muted">Phân loại hàng: <strong>White, L</strong></p>
-            <p>x1</p>
-            <p class="price text-danger font-weight-bold">₫133.000</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 2 -->
-      <div class="product-item">
-        <div class="d-flex align-items-start">
-          <div class="product-image">
-            <img
-              src="https://via.placeholder.com/100"
-              alt="Product 2"
-              class="img-fluid"
-            />
-          </div>
-          <div class="product-info ml-3">
-            <h5 class="product-title">Áo hoodie nam nữ cỡ S-XL</h5>
-            <p class="text-muted">Phân loại hàng: <strong>Black, M</strong></p>
-            <p>x1</p>
-            <p class="price text-danger font-weight-bold">₫180.000</p>
+            <p>x{{x.quantity}}</p>
+            <p class="price text-danger font-weight-bold">{{x.price*x.quantity | number:''}} VNĐ</p>
           </div>
         </div>
       </div>
@@ -107,26 +84,17 @@
       <div class="col-md-6 mb-4 mb-md-0">
         <h6 class="font-weight-bold mb-3">Địa chỉ nhận hàng</h6>
         <div class="row mb-2">
-          <div class="col-sm-4 font-weight-bold">Vận chuyển:</div>
-          <div class="col-sm-8 text-muted">Standard Express</div>
-        </div>
-        <div class="row mb-2">
-          <div class="col-sm-4 font-weight-bold">Mã vận đơn:</div>
-          <div class="col-sm-8 text-muted">VN2416339263471</div>
-        </div>
-        <div class="row mb-2">
           <div class="col-sm-4 font-weight-bold">Người nhận:</div>
-          <div class="col-sm-8 text-muted">Nguyễn Liên Mạnh</div>
+          <div class="col-sm-8 text-muted">{{invoice.nguoiNhanHang}}</div>
         </div>
         <div class="row mb-2">
           <div class="col-sm-4 font-weight-bold">Số điện thoại:</div>
-          <div class="col-sm-8 text-muted">(+84) 338739954</div>
+          <div class="col-sm-8 text-muted">{{invoice.phonenumber}}</div>
         </div>
         <div class="row mb-2">
           <div class="col-sm-4 font-weight-bold">Địa chỉ:</div>
           <div class="col-sm-8 text-muted">
-            Số 10, Ngách 2 40 Quang Đàm, Phường Sở Dầu, Quận Hồng Bàng, Hải
-            Phòng
+            {{invoice.deliveryaddress}}
           </div>
         </div>
       </div>
@@ -157,25 +125,25 @@
       <tbody>
         <tr>
           <td class="text-muted">Tổng tiền hàng</td>
-          <td class="text-right font-weight-bold">₫133.000</td>
+          <td class="text-right font-weight-bold">{{invoice.tongTien + invoice.sotienGiamGia -invoice.sotienShip |
+            number:''}} VNĐ</td>
         </tr>
         <tr>
           <td class="text-muted">Phí vận chuyển</td>
-          <td class="text-right font-weight-bold">₫17.000</td>
+          <td class="text-right font-weight-bold">{{invoice.sotienShip | number:''}} VNĐ</td>
         </tr>
         <tr>
           <td class="text-muted">Voucher từ Shop</td>
-          <td class="text-right text-danger font-weight-bold">-₫3.000</td>
+          <td class="text-right text-danger font-weight-bold">{{invoice.sotienGiamGia | number:''}} VNĐ</td>
         </tr>
         <tr class="font-weight-bold">
           <td>Tổng thành tiền</td>
-          <td class="text-right text-danger font-weight-bold">₫119.600</td>
+          <td class="text-right text-danger font-weight-bold">{{invoice.tongTien | number:''}} VNĐ</td>
         </tr>
         <tr>
           <td class="text-muted">Phương thức thanh toán</td>
-          <td class="text-right">SPayLater</td>
+          <td class="text-right">{{invoice.paymentmethod}}</td>
         </tr>
       </tbody>
     </table>
-    
 </div>

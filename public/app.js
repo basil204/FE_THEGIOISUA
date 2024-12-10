@@ -31,9 +31,9 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
       templateUrl: "Pages/cart.html",
       controller: "ShoppingCartController",
     })
-    .when("/invoicedetail/:code", {
+    .when("/invoicedetail", {
       templateUrl: "Pages/detail.html",
-      controller: "ShoppingCartController",
+      controller: "InvoiceDetailController",
     })
     .when("/checkout", {
       templateUrl: "Pages/checkout.html",
