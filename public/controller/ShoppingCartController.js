@@ -611,7 +611,7 @@ app.controller(
                 timer: 1500,
               }).then(() => {
                 if ($scope.selectedPaymentMethod === "COD") {
-                  socket.sendMessage('/app/cod')
+                  socket.sendMessage('/app/cod', invoiceDto.invoiceCode)
                 } else {
                   $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
                 }
