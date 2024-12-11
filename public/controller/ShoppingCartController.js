@@ -120,7 +120,7 @@ app.controller(
         cancelButtonText: "Hủy"
       }).then((result) => {
         if (result.isConfirmed) {
-          $scope.lstProductOde = localStorage.removeItem("lstProductOder");
+          $scope.lstProductOder = localStorage.removeItem("lstProductOder");
           $scope.lstProductOder = [];
           $scope.$apply();
         }
@@ -598,8 +598,8 @@ app.controller(
           })),
       };
       $scope.showTerms().then(function (isAgreed) {
-        socket.sendMessage('/app/invoice', invoiceDto.invoiceCode)
         if (isAgreed) {
+          socket.sendMessage('/app/invoice', invoiceDto.invoiceCode)
           $http
             .post(urlInvoice, invoiceDto)
             .then((response) => {
@@ -610,6 +610,7 @@ app.controller(
                 showConfirmButton: false,
                 timer: 1500,
               }).then(() => {
+                $scope.lstProductOde = localStorage.removeItem("lstProductOder");
                 if ($scope.selectedPaymentMethod === "COD") {
                   socket.sendMessage('/app/cod', invoiceDto.invoiceCode)
                 } else {

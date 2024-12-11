@@ -147,12 +147,14 @@
       </tbody>
     </table>
     <!-- Buttons for Payment and Cancellation -->
-    <div class="text-center mt-4" ng-show="invoice.trangThai==337">
+    <div class="text-center mt-4">
       <div class="d-flex justify-content-center gap-3 " ng-controller="ShoppingCartController">
-        <button class="btn btn-success btn-lg" ng-click="payment(invoice.tongTien,invoice.invoiceCode)">
+        <button class="btn btn-success btn-lg" ng-click="payment(invoice.tongTien,invoice.invoiceCode)"
+          ng-show="invoice.trangThai==337">
           Thanh Toán
         </button>
-        <button class="btn btn-danger btn-lg" ng-click="cancelInvoice(invoice.invoiceID)">
+        <button class="btn btn-danger btn-lg" ng-click="cancelInvoice(invoice.invoiceID)"
+          ng-show="invoice.trangThai==337 || invoice.trangThai==301">
           Huỷ Đơn
         </button>
       </div>
