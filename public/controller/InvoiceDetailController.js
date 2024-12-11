@@ -2,7 +2,6 @@ app.controller("InvoiceDetailController", function ($scope, $http, socket) {
     const apiInvoiceDetail =
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
     $scope.invoice = JSON.parse(localStorage.getItem("invoice")) || null;
-    console.log($scope.invoice)
     $scope.statusMap = {
         0: "Không hoạt động",
         1: "Hoạt động",
@@ -26,7 +25,6 @@ app.controller("InvoiceDetailController", function ($scope, $http, socket) {
                 .get(apiInvoiceDetail + $scope.invoice.invoiceID)
                 .then(function (response) {
                     $scope.invoiceDetails = response.data.message;
-                    console.log($scope.invoiceDetails)
                 })
                 .catch(function (error) {
                     console.error("Error fetching invoice details:", error);

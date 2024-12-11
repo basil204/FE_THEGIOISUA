@@ -91,42 +91,35 @@ app.controller("LoginController", function ($scope, $http, socket) {
         if (response.status === 200) {
           const token = response.data.token;
           if (token) {
-            localStorage.setItem("authToken", token);
             const userInfo = parseJwt(token);
-            console.log(userInfo);
-            localStorage.setItem("userInfo", JSON.stringify(userInfo));
             $scope.isLoggedIn = true; // Update login status
-
-            // Check user role
-            if (userInfo.role === "Admin" || userInfo.role === "Staff") {
+            if (userInfo.role === "Customer") {
               Swal.fire({
-                icon: "warning",
-                title: "Thông báo",
-                text: "Bạn là Admin và chỉ được phép truy cập trang admin.",
+                icon: "success",
+                title: "Thành công!",
+                text: response.data.message || "Đăng nhập thành công!",
                 confirmButtonText: "OK",
                 timer: 3000,
               }).then(() => {
-                window.location.href = "http://160.30.21.47:3004/"; // Redirect to admin page
+                localStorage.setItem("authToken", token);
+                localStorage.setItem("userInfo", JSON.stringify(userInfo));
+                const redirectPath = localStorage.getItem("redirectAfterLogin");
+                if (redirectPath) {
+                  localStorage.removeItem("redirectAfterLogin"); // Clear the redirect path after use
+                  window.location.href = redirectPath; // Redirect to the intended page
+                } else {
+                  window.location.href = "/home"; // Default to home page if no redirect path
+                }
               });
-              return; // Exit function if user is Admin
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: "Đăng nhập thất bại. Vui lòng thử lại.",
+                confirmButtonText: "OK",
+              });
             }
           }
-
-          Swal.fire({
-            icon: "success",
-            title: "Thành công!",
-            text: response.data.message || "Đăng nhập thành công!",
-            confirmButtonText: "OK",
-            timer: 3000,
-          }).then(() => {
-            const redirectPath = localStorage.getItem("redirectAfterLogin");
-            if (redirectPath) {
-              localStorage.removeItem("redirectAfterLogin"); // Clear the redirect path after use
-              window.location.href = redirectPath; // Redirect to the intended page
-            } else {
-              window.location.href = "/home"; // Default to home page if no redirect path
-            }
-          });
         } else {
           Swal.fire({
             icon: "error",

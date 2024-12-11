@@ -16,7 +16,6 @@ app.controller("LogController", function ($scope, $http, socket) {
             headers: { 'Authorization': `Bearer ${token}` }
         }).then(function (response) {
             const data = response.data;
-            console.log("System logs:", data);
             $scope.systemLogs = data.content;
             $scope.page = data.page; // Cập nhật thông tin phân trang
         }).catch(function (error) {

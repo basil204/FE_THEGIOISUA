@@ -140,7 +140,6 @@ app.factory("socket", [
         stompClient.connect(
           {},
           function (frame) {
-            console.log("Connected: " + frame);
             deferred.resolve();
           },
           function (error) {
