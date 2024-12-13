@@ -1,4 +1,4 @@
-app.controller("LogController", function ($scope, $http, socket) {
+app.controller("LogController", function ($scope, $http) {
     const token = localStorage.getItem("authToken");
     $scope.systemLogs = [];
     $scope.page = {

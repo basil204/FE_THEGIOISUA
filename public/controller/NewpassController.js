@@ -1,6 +1,6 @@
 app.controller(
   "NewpassController",
-  function ($scope, $routeParams, $http, $location, socket
+  function ($scope, $routeParams, $http, $location
   ) {
     $scope.resetPassword = function () {
       const token = $routeParams.token;

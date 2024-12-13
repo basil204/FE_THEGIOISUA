@@ -1,4 +1,4 @@
-app.controller("InvoiceDetailController", function ($scope, $http, socket, $routeParams) {
+app.controller("InvoiceDetailController", function ($scope, $http, $routeParams) {
     const invoiceCode = $routeParams.invoiceCode;
     $scope.invoice = null;
     if (!invoiceCode) {

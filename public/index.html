@@ -37,20 +37,17 @@
 
 <body class="theme-color-6">
   <!-- Loader Start -->
-  <div class="fullpage-loader">
+  <div class="fullpage-loader" ng-show="isLoading">
     <span></span>
     <span></span>
     <span></span>
     <span></span>
     <span></span>
-    <span></span>
+    <span></span> 
   </div>
 
   <!-- Header and Footer -->
   <header ng-include="'Layout/header.html'"></header>
-  <div class="loading-indicator" ng-show="isLoading">
-    <i class="fas fa-spinner fa-spin"></i> Đang tải...
-  </div>
   <div ng-view></div>
   <footer ng-include="'Layout/footer.html'"></footer>
 

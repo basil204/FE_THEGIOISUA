@@ -1,6 +1,6 @@
 app.controller(
   "ProductDetailController",
-  function ($scope, $location, $http, ProductService, socket) {
+  function ($scope, $location, $http, ProductService) {
     // Lấy sản phẩm từ ProductService
     const product = ProductService.getProduct(); // Lấy sản phẩm từ ProductService
 

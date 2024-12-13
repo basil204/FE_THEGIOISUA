@@ -47325,104 +47325,106 @@ body.rtl .theme-product-section .right-box-contain .license-list .accordion-item
 .checkbox-wrapper-17 label:active:after {
     width: 55%;
 }
+
 .voucher-option {
     padding: 8px;
     font-size: 14px;
     color: #333;
     background-color: #fff;
     display: block;
-  }
-  .voucher-option:hover {
+}
+
+.voucher-option:hover {
     background-color: #f0f0f0;
-  }  
-  
-    /* Hoá Đơn Header */
+}
+
+/* Hoá Đơn Header */
 .invoice-header {
     background-color: #f8f9fa;
     padding: 20px 30px;
     border-radius: 10px;
     margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .invoice-header h3 {
+}
+
+.invoice-header h3 {
     margin: 0;
     font-size: 24px;
     color: #333;
-  }
-  
-  .invoice-header p {
+}
+
+.invoice-header p {
     margin: 5px 0;
     font-size: 16px;
     color: #555;
-  }
-  
-  .invoice-header strong {
+}
+
+.invoice-header strong {
     color: #000;
-  }
-  
-  /* Sản phẩm */
-  .product-details {
+}
+
+/* Sản phẩm */
+.product-details {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
-  }
-  
-  .product-details .d-flex {
+}
+
+.product-details .d-flex {
     display: flex;
     align-items: flex-start;
-  }
-  
-  .product-image img {
+}
+
+.product-image img {
     max-width: 100px;
     border-radius: 8px;
     object-fit: cover;
-  }
-  
-  .product-info {
+}
+
+.product-info {
     margin-left: 20px;
-  }
-  
-  .product-title {
+}
+
+.product-title {
     font-size: 16px;
     font-weight: bold;
     color: #333;
     margin-bottom: 8px;
-  }
-  
-  .price {
+}
+
+.price {
     font-size: 18px;
     font-weight: bold;
     margin-top: 10px;
-  }
-  
-  .price .text-muted {
+}
+
+.price .text-muted {
     text-decoration: line-through;
-  }
-  
-  .product-list .product-hidden {
+}
+
+.product-list .product-hidden {
     display: block;
-  }
-  
-  /* Stepper */
-  .stepper {
+}
+
+/* Stepper */
+.stepper {
     display: flex;
     justify-content: space-between;
     margin-top: 40px;
-  }
-  
-  .stepper__step {
+}
+
+.stepper__step {
     text-align: center;
     position: relative;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .stepper__step-icon {
+}
+
+.stepper__step-icon {
     width: 50px;
     height: 50px;
     display: flex;
@@ -47431,21 +47433,22 @@ body.rtl .theme-product-section .right-box-contain .license-list .accordion-item
     border-radius: 50%;
     background-color: #e0e0e0;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .stepper__step-text {
+}
+
+.stepper__step-text {
     font-size: 14px;
     margin-top: 8px;
-  }
-  
-  .stepper__line {
+}
+
+.stepper__line {
     flex: 1;
     height: 4px;
     background-color: #e0e0e0;
     margin-top: 20px;
     border-radius: 2px;
-  }
-  .stepper__line {
+}
+
+.stepper__line {
     flex: 1;
     height: 4px;
     background-color: #e0e0e0;
@@ -47453,93 +47456,141 @@ body.rtl .theme-product-section .right-box-contain .license-list .accordion-item
     border-radius: 2px;
     position: relative;
     top: -2px;
-  }
-  
-  /* Active Stepper Line */
-  .stepper__step--finish .stepper__line {
-    background-color: #2dc258; /* Green for completed steps */
-  }
-  
-  /* Pending Stepper Line */
-  .stepper__step--pending .stepper__line {
-    background-color: #f0ad4e; /* Orange for pending steps */
-  }
-  
-  /* Red Stepper Line */
-  .stepper__step--red .stepper__line {
-    background-color: #ff4d4d; /* Red for canceled steps */
-  }
-  .stepper__line-foreground {
+}
+
+/* Active Stepper Line */
+.stepper__step--finish .stepper__line {
+    background-color: #2dc258;
+    /* Green for completed steps */
+}
+
+/* Pending Stepper Line */
+.stepper__step--pending .stepper__line {
+    background-color: #f0ad4e;
+    /* Orange for pending steps */
+}
+
+/* Red Stepper Line */
+.stepper__step--red .stepper__line {
+    background-color: #ff4d4d;
+    /* Red for canceled steps */
+}
+
+.stepper__line-foreground {
     height: 100%;
     background-color: #2dc258;
     border-radius: 2px;
-  }
+}
+
 /* In đậm và đổi màu cho stepper hoàn thành */
 .stepper__step--finish {
-    color: #2dc258; /* Màu xanh nổi bật */
-    font-weight: bold; /* Chữ in đậm */
-  }
-  
-  .stepper__step--finish .stepper__step-icon {
-    background-color: #2dc258; /* Màu nền xanh cho icon */
-    color: white; /* Màu chữ/icon trắng */
-    font-size: 20px; /* Tăng kích thước icon */
-    box-shadow: 0 4px 10px rgba(45, 194, 88, 0.5); /* Đổ bóng màu xanh nhạt */
-  }
-  
-  .stepper__step--finish .stepper__step-text {
-    color: #2dc258; /* Màu xanh cho văn bản */
-    font-weight: bold; /* Chữ in đậm */
-  }
-  
-  .stepper__step--finish .stepper__step-date {
-    color: #2dc258; /* Màu xanh cho ngày tháng */
-    font-weight: bold; /* Chữ in đậm */
-  }
-  .stepper__step--red .stepper__step-icon {
-    background-color: #ff4d4d; /* Màu đỏ */
-    color: white; /* Màu chữ trắng */
-  }
-  
-  .stepper__step--red .stepper__step-text {
-    color: #ff4d4d; /* Màu chữ đỏ */
-  }
-  
-  .stepper__step--red .stepper__step-date {
-    color: #ff4d4d; /* Màu đỏ cho ngày */
-  }
+    color: #2dc258;
+    /* Màu xanh nổi bật */
+    font-weight: bold;
+    /* Chữ in đậm */
+}
 
-  .delivery-address {
-    background-color: #f8f9fa; /* Light background for contrast */
+.stepper__step--finish .stepper__step-icon {
+    background-color: #2dc258;
+    /* Màu nền xanh cho icon */
+    color: white;
+    /* Màu chữ/icon trắng */
+    font-size: 20px;
+    /* Tăng kích thước icon */
+    box-shadow: 0 4px 10px rgba(45, 194, 88, 0.5);
+    /* Đổ bóng màu xanh nhạt */
+}
+
+.stepper__step--finish .stepper__step-text {
+    color: #2dc258;
+    /* Màu xanh cho văn bản */
+    font-weight: bold;
+    /* Chữ in đậm */
+}
+
+.stepper__step--finish .stepper__step-date {
+    color: #2dc258;
+    /* Màu xanh cho ngày tháng */
+    font-weight: bold;
+    /* Chữ in đậm */
+}
+
+.stepper__step--red .stepper__step-icon {
+    background-color: #ff4d4d;
+    /* Màu đỏ */
+    color: white;
+    /* Màu chữ trắng */
+}
+
+.stepper__step--red .stepper__step-text {
+    color: #ff4d4d;
+    /* Màu chữ đỏ */
+}
+
+.stepper__step--red .stepper__step-date {
+    color: #ff4d4d;
+    /* Màu đỏ cho ngày */
+}
+
+.delivery-address {
+    background-color: #f8f9fa;
+    /* Light background for contrast */
     padding: 20px;
-    border: 1px solid #ddd; /* Border to separate sections */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  }
-  
-  .delivery-address h5 {
+    border: 1px solid #ddd;
+    /* Border to separate sections */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+}
+
+.delivery-address h5 {
     color: #333;
     font-size: 18px;
-  }
-  
-  .delivery-address .row {
+}
+
+.delivery-address .row {
     margin-bottom: 10px;
-  }
-  
-  .delivery-address .font-weight-bold {
-    color: #495057; /* Darker color for labels */
-  }
-  
-  .delivery-address .text-muted {
-    color: #6c757d; /* Muted color for the content */
-  }
-  
-  .delivery-address .col-sm-4 {
+}
+
+.delivery-address .font-weight-bold {
+    color: #495057;
+    /* Darker color for labels */
+}
+
+.delivery-address .text-muted {
+    color: #6c757d;
+    /* Muted color for the content */
+}
+
+.delivery-address .col-sm-4 {
     font-weight: bold;
-    color: #495057; /* Darker color for labels */
-  }
-  
-  .delivery-address .col-sm-8 {
+    color: #495057;
+    /* Darker color for labels */
+}
+
+.delivery-address .col-sm-8 {
     color: #333;
-  }
-  
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Màu nền mờ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    /* Đảm bảo overlay nằm trên cùng */
+}
+
+/* Định dạng cho phần loader */
+.loader {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}

@@ -1,4 +1,4 @@
-app.controller("LoginController", function ($scope, $http, socket) {
+app.controller("LoginController", function ($scope, $http) {
   // Check login status
   $scope.isLoggedIn = !!localStorage.getItem("authToken");
 
@@ -161,7 +161,6 @@ app.controller("LoginController", function ($scope, $http, socket) {
         localStorage.removeItem("authToken"); // Remove token from localStorage
         localStorage.removeItem("userInfo"); // Remove user info
         $scope.isLoggedIn = false; // Update login status
-        socket.disconnect()
         Swal.fire({
           icon: "info",
           title: "Đăng xuất thành công!",

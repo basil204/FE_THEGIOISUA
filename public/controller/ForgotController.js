@@ -1,4 +1,4 @@
-app.controller("ForgotController", function ($scope, $http, socket) {
+app.controller("ForgotController", function ($scope, $http) {
   // Function to send forgot password reque
   $scope.sendForgotPassword = function () {
     if (!$scope.email) {

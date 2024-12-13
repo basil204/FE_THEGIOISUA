@@ -1,6 +1,6 @@
 app.controller(
   "ProductListController",
-  function ($scope, $http, $location, ProductService, socket) {
+  function ($scope, $http, $location, ProductService) {
     // Function to fetch products based on the provided URL
     const Toast = Swal.mixin({
       toast: true,
@@ -12,16 +12,6 @@ app.controller(
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     $scope.isLogin = false; // Giá trị mặc định
     $scope.userName = "My Account";
-    if (!socket.isConnected) {
-      socket.connect().then(function () {
-        socket.subscribe("/topic/messages", function (message) {
-          Toast.fire({
-            icon: 'info',
-            title: `Hóa đơn #${message} đã được đặt!`
-          });
-        })
-      })
-    }
     $scope.checkLogin = function () {
       if (userInfo != null) {
         $scope.isLogin = true;
@@ -156,7 +146,6 @@ app.controller(
     $scope.countProductOrders = function () {
       $scope.count = ProductService.countProductOrders();
     };
-
     // Call checkFilter when the controller is initialized
     $scope.checkFilter();
     $scope.countProductOrders();

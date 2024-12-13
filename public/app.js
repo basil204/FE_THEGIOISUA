@@ -116,70 +116,7 @@ app.service("ProductService", function () {
       return orderList.filter((order) => order.id).length;
     },
   };
-});
-app.factory("socket", [
-  "$q",
-  function ($q) {
-    var socket = null;
-    var stompClient = null;
-    var subscriptions = {}; // Khai báo biến subscriptions để lưu danh sách topic đã subscribe
-
-    return {
-      connect: function () {
-        var deferred = $q.defer();
-        var token = localStorage.getItem("authToken");
-        var socketUrl =
-          "http://160.30.21.47:1234/api/ws?token=" + encodeURIComponent(token);
-
-        socket = new SockJS(socketUrl);
-        stompClient = Stomp.over(socket);
-
-        // Kết nối với Stomp server
-        stompClient.connect(
-          {},
-          function (frame) {
-            deferred.resolve();
-          },
-          function (error) {
-            console.error("Error: " + error);
-            deferred.reject(error);
-          }
-        );
-
-        return deferred.promise;
-      },
-
-      subscribe: function (destination, callback) {
-        if (stompClient) {
-          if (!subscriptions[destination]) {
-            subscriptions[destination] = stompClient.subscribe(
-              destination,
-              function (response) {
-                callback(JSON.parse(response.body));
-              }
-            );
-          }
-        } else {
-          console.error("Stomp client is not connected!");
-        }
-      },
-
-      sendMessage: function (destination, message) {
-        if (stompClient) {
-          stompClient.send(destination, {}, JSON.stringify(message));
-        }
-      },
-
-      disconnect: function () {
-        if (stompClient) {
-          stompClient.disconnect();
-          stompClient = null;
-          subscriptions = {}; // Xóa danh sách subscriptions
-        }
-      },
-    };
-  },
-]);
+})
 app.factory('loadingInterceptor', function ($q, $rootScope) {
   let activeRequests = 0;
 
@@ -209,3 +146,67 @@ app.factory('loadingInterceptor', function ($q, $rootScope) {
     }
   };
 });
+app.run(function ($rootScope, $http, $location) {
+  let socket = null;
+  let stompClient = null;
+  let isConnected = false;
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-right",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+  });
+  // Kết nối WebSocket tự động khi ứng dụng được khởi tạo
+  function connectWebSocket() {
+    if (isConnected) {
+      return; // Nếu đã kết nối rồi thì không cần kết nối lại
+    }
+
+    const token = localStorage.getItem("authToken"); // Lấy token từ localStorage
+    const socketUrl = `http://160.30.21.47:1234/api/ws?token=${encodeURIComponent(token)}`;
+
+    socket = new SockJS(socketUrl); // Tạo kết nối SockJS
+    stompClient = Stomp.over(socket); // Tạo đối tượng Stomp client
+
+    stompClient.connect({}, function (frame) {
+      isConnected = true;
+      console.log("WebSocket connected: " + frame);
+
+      // Đăng ký các subscriptions tại đây
+      stompClient.subscribe("/topic/messages", function (message) {
+        console.log("Received message: ", message.body);
+        // Xử lý thông điệp ở đây (ví dụ: hiển thị Toast)
+        Toast.fire({
+          icon: 'info',
+          title: `Hóa đơn #${message.body} đã được đặt!`
+        });
+      });
+
+    }, function (error) {
+      console.error("Error: " + error);
+    });
+
+    // Gắn stompClient vào $rootScope để sử dụng ở các controller khác
+    $rootScope.stompClient = stompClient;
+  }
+
+  // Ngắt kết nối WebSocket
+  function disconnectWebSocket() {
+    if (stompClient) {
+      stompClient.disconnect();
+      isConnected = false;
+      console.log("WebSocket disconnected");
+    }
+  }
+
+  // Kết nối WebSocket khi ứng dụng được khởi tạo
+  connectWebSocket();
+
+  // Đảm bảo ngắt kết nối WebSocket khi ứng dụng bị hủy
+  $rootScope.$on('$destroy', function () {
+    disconnectWebSocket();
+  });
+});
+
+

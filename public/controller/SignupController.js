@@ -1,4 +1,4 @@
-app.controller("SignupController", function ($scope, $http, socket) {
+app.controller("SignupController", function ($scope, $http) {
   $scope.user = {
     username: "",
     password: "",

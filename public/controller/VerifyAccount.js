@@ -1,6 +1,6 @@
 app.controller(
   "VerifyController",
-  function ($scope, $routeParams, $http, $location, socket) {
+  function ($scope, $routeParams, $http, $location) {
     // Function to verify the token
     $scope.verifyToken = function () {
       const token = $routeParams.token;
