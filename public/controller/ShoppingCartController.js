@@ -9,19 +9,19 @@ app.controller(
       timer: 3000,
       timerProgressBar: true,
     });
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImEzYWYyMzZjY2YxNzhjMzMwMTliZWRiNmY0NzVhMWQxZDMzMzE1NmE0N2U1YWFiNDA2NmFmOTE2MDc0MDdlMWNiYTY3ZDc1YjFiZWU5MDUyIn0.eyJhdWQiOiI3NyIsImp0aSI6ImEzYWYyMzZjY2YxNzhjMzMwMTliZWRiNmY0NzVhMWQxZDMzMzE1NmE0N2U1YWFiNDA2NmFmOTE2MDc0MDdlMWNiYTY3ZDc1YjFiZWU5MDUyIiwiaWF0IjoxNzMzNzcxODgxLCJuYmYiOjE3MzM3NzE4ODEsImV4cCI6MjA0OTMwNDY4MSwic3ViIjoiMzc4MCIsInNjb3BlcyI6W119.LY_gpwvPCnemap1JkpzwW6625Vd-Q_K8kc3nmJudacMj2XXsSHj_mDN-IfxwrRJiCcFHxgVyywcEIbpXuucLLIzXxCDrRKxMm4B1t4vLsN5pWf3d82FMH8Bxbtd0xRgmYSNh-XKhz1cCmOYXAhpfzvjDjY28R0vI2pGvESrYZAvnoAhwLAg7WAkQ4V5tsj0QHn4lWYQXTHgwlPDODBylxM2WikJw-OXW4dEX3JGn1ns5yF55Kgz7-vI3FXMyLwJ2uBWg_jMtJPj4SjSotkhjZwsbDNJrttNHv7Xkkeow29XnjysD7obEnCqkcy3xlYdz30X5bNzsJP7gqOy3AKPxDQeTMTAV42iGsLWfLLlQTG3gXIhixoZChq9w35K_O5OCx7PiqFADduAxtuVge0gBLH6XIdz1QBr_yUqvszmyMI0IWWtcSprbf-s8PJ4FtyhLNKeN5fidmes-mpV4Pmonk_DsuVhdPazlkmv8IO-DUbvo6CsqHnikeV_v_xPrhIsOwnsC8ISeMNQOkT_fMKEZvQzgGrL56NnJ0Av-FPVXaNNAkf6uWILsg_Ye9gWKUgb_Acr_XfVHB4GzFdtXEmsbMOCS4fWv_CHOzBmCMjHp8aWaInIBfxGzdLRjnF3hToaV7_O02illQtZa7mXLHlUz6lRTcmaP73FH1Wm3xSf1qtQ"
+    const tokenAddress = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImEzYWYyMzZjY2YxNzhjMzMwMTliZWRiNmY0NzVhMWQxZDMzMzE1NmE0N2U1YWFiNDA2NmFmOTE2MDc0MDdlMWNiYTY3ZDc1YjFiZWU5MDUyIn0.eyJhdWQiOiI3NyIsImp0aSI6ImEzYWYyMzZjY2YxNzhjMzMwMTliZWRiNmY0NzVhMWQxZDMzMzE1NmE0N2U1YWFiNDA2NmFmOTE2MDc0MDdlMWNiYTY3ZDc1YjFiZWU5MDUyIiwiaWF0IjoxNzMzNzcxODgxLCJuYmYiOjE3MzM3NzE4ODEsImV4cCI6MjA0OTMwNDY4MSwic3ViIjoiMzc4MCIsInNjb3BlcyI6W119.LY_gpwvPCnemap1JkpzwW6625Vd-Q_K8kc3nmJudacMj2XXsSHj_mDN-IfxwrRJiCcFHxgVyywcEIbpXuucLLIzXxCDrRKxMm4B1t4vLsN5pWf3d82FMH8Bxbtd0xRgmYSNh-XKhz1cCmOYXAhpfzvjDjY28R0vI2pGvESrYZAvnoAhwLAg7WAkQ4V5tsj0QHn4lWYQXTHgwlPDODBylxM2WikJw-OXW4dEX3JGn1ns5yF55Kgz7-vI3FXMyLwJ2uBWg_jMtJPj4SjSotkhjZwsbDNJrttNHv7Xkkeow29XnjysD7obEnCqkcy3xlYdz30X5bNzsJP7gqOy3AKPxDQeTMTAV42iGsLWfLLlQTG3gXIhixoZChq9w35K_O5OCx7PiqFADduAxtuVge0gBLH6XIdz1QBr_yUqvszmyMI0IWWtcSprbf-s8PJ4FtyhLNKeN5fidmes-mpV4Pmonk_DsuVhdPazlkmv8IO-DUbvo6CsqHnikeV_v_xPrhIsOwnsC8ISeMNQOkT_fMKEZvQzgGrL56NnJ0Av-FPVXaNNAkf6uWILsg_Ye9gWKUgb_Acr_XfVHB4GzFdtXEmsbMOCS4fWv_CHOzBmCMjHp8aWaInIBfxGzdLRjnF3hToaV7_O02illQtZa7mXLHlUz6lRTcmaP73FH1Wm3xSf1qtQ"
     const config = {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${tokenAddress}`,
       },
     };
     $scope.userInfo = JSON.parse(localStorage.getItem("userInfo")) || null;
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
     const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
-    const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
+
     const apiUser = "http://160.30.21.47:1234/api/user/";
     const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
     const apitGetInvoiceByUser =
@@ -38,7 +38,6 @@ app.controller(
     $scope.voucher = null;
     $scope.userInvoices = null;
     $scope.invoiceDetails = [];
-    $scope.invoice = JSON.parse(localStorage.getItem("invoice")) || null;
     $scope.vouchers = null;
     $scope.statusMap = {
       0: "Không hoạt động",
@@ -127,96 +126,8 @@ app.controller(
       });
 
     }
-    $scope.cancelInvoice = function (idinvoice) {
-      Swal.fire({
-        title: "Xác nhận!",
-        text: "Bạn có chắc muốn tiếp tục?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          $http
-            .get(cancelInvoice + idinvoice)
-            .then(function (response) {
-              Swal.fire("Thành công!", "Hủy Thành Công", "success");
-              window.location.href = "/home";
-            })
-            .catch(function (error) {
-              console.error("Error fetching invoice details:", error);
-            });
-        }
-      });
-    };
-    $scope.payment = function (totalamount, invoicecode) {
-      let remainingTime = 600; // 10 phút
-
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        html: `
-            <p>Quý khách có thể thanh toán qua mã QR bên dưới:</p>
-            <img src="https://api.vietqr.io/image/970422-0338739954-PmsPdTu.jpg?accountName=NGUYEN%20LIEN%20MANH&amount=${totalamount}&addInfo=${invoicecode}"
-                 alt="QR Code" style="width: 200px; height: 200px; margin-top: 10px;">
-          `,
-        showConfirmButton: false,
-        footer: `<p>Thời gian chờ: <span id="countdown">${Math.floor(
-          remainingTime / 60
-        )} phút ${remainingTime % 60} giây</span></p>`,
-        didOpen: () => {
-          const countdownElement = document.getElementById("countdown");
-          const countdownInterval = setInterval(() => {
-            remainingTime--;
-            countdownElement.textContent = `${Math.floor(
-              remainingTime / 60
-            )} phút ${remainingTime % 60} giây`;
-            if (remainingTime <= 0) {
-              clearInterval(countdownInterval);
-              clearInterval(paymentCheckInterval);
-              Swal.close();
-            }
-          }, 1000);
-
-          const paymentCheckInterval = setInterval(() => {
-            $http
-              .post("http://160.30.21.47:1234/api/payment/transactionHistory", {
-                creditAmount: totalamount,
-                description: invoicecode,
-              })
-              .then((response) => {
-                if (response.status === 200) {
-                  clearInterval(countdownInterval);
-                  clearInterval(paymentCheckInterval);
-                  Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Hóa đơn đã được thanh toán thành công!",
-                    showConfirmButton: true,
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      window.location.href = "/profile";
-                    }
-                  });
-                }
-              })
-              .catch((error) => {
-                if (error.status === 404) {
-                  console.error("Không tìm thấy giao dịch, thử lại sau.");
-                } else {
-                  console.error(
-                    "Lỗi khác khi kiểm tra trạng thái thanh toán:",
-                    error
-                  );
-                }
-              });
-          }, 5000);
-        },
-      });
-    };
     $scope.getInvoiceDetailByUser = function (invoice) {
-      localStorage.setItem("invoice", JSON.stringify(invoice));
-      window.location.href = "/invoicedetail"
+      window.location.href = "/invoicedetail/" + invoice.invoiceCode
     };
     $scope.getInvoicesByUser = function () {
       if ($scope.userInfo && $scope.userInfo.id) {
@@ -610,13 +521,13 @@ app.controller(
                 showConfirmButton: false,
                 timer: 1500,
               }).then(() => {
-                $scope.lstProductOde = localStorage.removeItem("lstProductOder");
                 if ($scope.selectedPaymentMethod === "COD") {
                   socket.sendMessage('/app/cod', invoiceDto.invoiceCode)
-                } else {
-                  $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
                 }
+                $scope.lstProductOde = localStorage.removeItem("lstProductOder");
+                window.location.href = "/invoicedetail/" + invoiceDto.invoiceCode
               });
+
             })
             .catch((error) => {
               Swal.fire({
@@ -700,18 +611,32 @@ app.controller(
       return Swal.fire({
         title: 'Điều Khoản và Điều Kiện',
         html: `
-          <h6>Điều Khoản 1:</h6>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
-          
-          <h6>Điều Khoản 2:</h6>
-          <p>Nulla facilisi. Curabitur est gravida et libero vitae dictum.</p>
-          
-          <h6>Điều Khoản 3:</h6>
-          <p>Morbi in sem quis dui placerat ornare. Pellentesque habitant morbi tristique senectus et netus.</p>
-          
+          <h6>Điều Khoản 1: Cung Cấp Thông Tin Chính Xác</h6>
+          <p>
+          Người dùng cam kết cung cấp thông tin đầy đủ và chính xác bao gồm họ tên, địa chỉ nhận hàng, số điện thoại và thông tin thanh toán. 
+          Nếu thông tin không chính xác hoặc không đầy đủ, hệ thống có quyền từ chối xử lý đơn hàng.
+          </p>
+
+          <h6>Điều Khoản 2: Thanh Toán Và Xác Nhận</h6>
+          <p>
+          Hóa đơn sẽ chỉ được tạo sau khi người dùng hoàn tất thanh toán qua phương thức đã chọn. 
+          Trong trường hợp thanh toán thất bại, đơn hàng sẽ không được xử lý và hệ thống sẽ thông báo qua email hoặc số điện thoại cung cấp.
+          </p>
+
+          <h6>Điều Khoản 3: Thời Gian Hiệu Lực Của Hóa Đơn</h6>
+          <p>
+          Hóa đơn có hiệu lực trong vòng 24 giờ kể từ khi được tạo. Sau thời gian này, nếu không có khiếu nại từ phía người dùng, hóa đơn sẽ được xem là hợp lệ và không thể chỉnh sửa hoặc hủy bỏ.
+          </p>
+
+          <h6>Điều Khoản 4: Trách Nhiệm Kiểm Tra Thông Tin</h6>
+          <p>
+          Người dùng chịu trách nhiệm kiểm tra thông tin đơn hàng, bao gồm sản phẩm, số lượng và tổng tiền trước khi xác nhận. 
+          Hệ thống sẽ không chịu trách nhiệm đối với sai sót do người dùng nhập sai thông tin.
+          </p>
+
           <label>
             <input type="checkbox" id="termsCheckbox">
-            Tôi đã đọc và đồng ý với các Điều Khoản và Điều Kiện.
+            Tôi đã đọc và đồng ý với các Điều Khoản liên quan đến việc tạo và xử lý hóa đơn.
           </label>
         `,
         icon: 'info',

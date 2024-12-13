@@ -31,7 +31,7 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
       templateUrl: "Pages/cart.html",
       controller: "ShoppingCartController",
     })
-    .when("/invoicedetail", {
+    .when("/invoicedetail/:invoiceCode", {
       templateUrl: "Pages/detail.html",
       controller: "InvoiceDetailController",
     })
@@ -82,7 +82,6 @@ app.factory("AuthInterceptor", function ($q, $window) {
     request: function (config) {
       const token = $window.localStorage.getItem("authToken");
       const protectedUrls = [
-        "http://160.30.21.47:1234/api/payment/transactionHistory",
         "http://160.30.21.47:1234/api/Invoice/getInvoices/",
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/",
         "http://160.30.21.47:1234/api/Invoice/cancel/",
@@ -90,6 +89,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
         "http://160.30.21.47:1234/api/user/updatePhonerNumber",
         "http://160.30.21.47:1234/api/user/updateFullName",
         "http://160.30.21.47:1234/api/user/updateAddress",
+        "http://localhost:1234/api/Invoice/getInvoice/",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {
