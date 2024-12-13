@@ -518,7 +518,7 @@ app.controller(
                   $scope.sendMessage("/app/cod", invoiceDto.invoiceCode)
                 }
                 $scope.lstProductOde = localStorage.removeItem("lstProductOder");
-                if (userInfo) {
+                if ($scope.userInfo) {
                   window.location.href = "/invoicedetail/" + invoiceDto.invoiceCode
                 } else {
                   window.location.href = "/login"
