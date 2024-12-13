@@ -48,6 +48,9 @@
 
   <!-- Header and Footer -->
   <header ng-include="'Layout/header.html'"></header>
+  <div class="loading-indicator" ng-show="isLoading">
+    <i class="fas fa-spinner fa-spin"></i> Đang tải...
+  </div>
   <div ng-view></div>
   <footer ng-include="'Layout/footer.html'"></footer>
 

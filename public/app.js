@@ -67,6 +67,9 @@ function requireAuth($q, $location, $route) {
     return $q.reject("Not Authenticated");
   }
 }
+app.config(function ($httpProvider) {
+  $httpProvider.interceptors.push('loadingInterceptor');
+});
 
 // Inject the dependencies for requireAuth
 requireAuth.$inject = ["$q", "$location", "$route"];
@@ -177,3 +180,32 @@ app.factory("socket", [
     };
   },
 ]);
+app.factory('loadingInterceptor', function ($q, $rootScope) {
+  let activeRequests = 0;
+
+  function setLoadingStatus(isLoading) {
+    $rootScope.isLoading = isLoading; // Thay đổi trạng thái toàn cục
+  }
+
+  return {
+    request: function (config) {
+      activeRequests++;
+      setLoadingStatus(true);
+      return config;
+    },
+    response: function (response) {
+      activeRequests--;
+      if (activeRequests === 0) {
+        setLoadingStatus(false);
+      }
+      return response;
+    },
+    responseError: function (rejection) {
+      activeRequests--;
+      if (activeRequests === 0) {
+        setLoadingStatus(false);
+      }
+      return $q.reject(rejection);
+    }
+  };
+});
