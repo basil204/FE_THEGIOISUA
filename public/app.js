@@ -55,12 +55,7 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
 
   $locationProvider.html5Mode(true); // Enable HTML5 mode
   $httpProvider.interceptors.push("AuthInterceptor");
-});
-app.config(function ($httpProvider) {
-  $httpProvider.interceptors.push("AuthInterceptor");
-});
-// Auth Guard Function
-// Auth Guard Function with redirect
+})
 function requireAuth($q, $location, $route) {
   const authToken = localStorage.getItem("authToken");
   if (authToken) {
@@ -89,7 +84,7 @@ app.factory("AuthInterceptor", function ($q, $window) {
         "http://160.30.21.47:1234/api/user/updatePhonerNumber",
         "http://160.30.21.47:1234/api/user/updateFullName",
         "http://160.30.21.47:1234/api/user/updateAddress",
-        "http://localhost:1234/api/Invoice/getInvoice/",
+        "http://160.30.21.47:1234/api/Invoice/getInvoice/",
       ];
 
       if (token && protectedUrls.some((url) => config.url.includes(url))) {
