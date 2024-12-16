@@ -147,7 +147,9 @@ app.controller(
           }
         });
     };
-
+    const configs = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
     $scope.getInvoiceDetailByUser = function (invoice) {
       window.location.href = "/invoicedetail/" + invoice.invoiceCode;
     };
