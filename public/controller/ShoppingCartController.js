@@ -604,7 +604,7 @@ app.controller(
                 showConfirmButton: false,
                 timer: 1500,
               }).then(() => {
-                $scope.creaetOdership(invoiceDto.invoiceCode)
+                $scope.creaetOdership(invoiceDto.invoiceCode, invoiceDto.nguoiNhanHang, invoiceDto.phonenumber, invoiceDto.deliveryaddress)
                 if ($scope.selectedPaymentMethod === "COD") {
                   $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
                 }
@@ -755,7 +755,7 @@ app.controller(
         console.error("WebSocket is not connected.");
       }
     };
-    $scope.creaetOdership = function (invoiceCode) {
+    $scope.creaetOdership = function (invoiceCode, name, phone, address) {
       data = {
         shipment: {
           rate: idrate, // Giá vận chuyển
@@ -765,16 +765,16 @@ app.controller(
             phone: "0909090909",
             street: "12 Nguyễn Huệ",
             ward: "100300",
-            district: "100300",
-            city: "100000"
+            district: "181810", // ngo quyen
+            city: "180000", //hai phong
           },
           address_to: { // Địa chỉ người nhận (động)
-            name: "Lê Thị D",
-            phone: "0988888888",
-            street: "98 Phan Đình Phùng",
-            district: "100300",
-            ward: "100300",
-            city: "100000"
+            name: name,
+            phone: phone,
+            street: address,
+            district: $scope.selectedQuan,
+            ward: $scope.selectedQuan,
+            city: $scope.selectedTinh,
           },
           parcel: { // Chi tiết gói hàng
             cod: $scope.calculateTotal() || 0, // Tổng tiền hàng
