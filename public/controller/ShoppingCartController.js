@@ -22,7 +22,6 @@ app.controller(
     const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
     const apitGetInvoiceByUser =
       "http://160.30.21.47:1234/api/Invoice/getInvoicespage/";
-
     $scope.selectedPaymentMethod = "";
     $scope.newAddress = null;
     $scope.tinhs = [];
@@ -66,9 +65,13 @@ app.controller(
           console.error("Có lỗi khi tải thông tin voucher:", error.data);
         });
     };
-    $scope.selectedShipping = function (amout) {
+    $scope.selectedShipping = function (isSelected) {
+      idrate = isSelected.id;
+      console.log(idrate);
       $scope.totalamount =
-        $scope.calculateTotal() - $scope.discountmoney + Number(amout);
+        $scope.calculateTotal() -
+        $scope.discountmoney +
+        Number(isSelected.total_fee);
     };
     $scope.removeSelectedProducts = function () {
       swal
@@ -147,11 +150,6 @@ app.controller(
 
     $scope.getInvoiceDetailByUser = function (invoice) {
       window.location.href = "/invoicedetail/" + invoice.invoiceCode;
-    };
-    const configs = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     };
     $scope.currentPage = 0;
     $scope.pageSize = 5;
@@ -321,10 +319,10 @@ app.controller(
           parcel: {
             cod: $scope.calculateTotal(),
             amount: $scope.calculateTotal(),
-            width: 10,
-            height: 10,
-            length: 10,
-            weight: 750,
+            width: 20,
+            height: 20,
+            length: 20,
+            weight: 500,
           },
         },
       };
@@ -591,7 +589,7 @@ app.controller(
         paymentmethod: $scope.selectedPaymentMethod,
         voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
         sotienGiamGia: $scope.discountmoney || 0,
-        sotienShip: $scope.selectedShip,
+        sotienShip: $scope.selectedShip.total_fee,
         tongTien: $scope.totalamount,
         invoiceDetails: $scope.lstProductOder
           .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
@@ -615,6 +613,12 @@ app.controller(
                 showConfirmButton: false,
                 timer: 1500,
               }).then(() => {
+                $scope.creaetOdership(
+                  invoiceDto.invoiceCode,
+                  invoiceDto.nguoiNhanHang,
+                  invoiceDto.phonenumber,
+                  invoiceDto.deliveryaddress
+                );
                 if ($scope.selectedPaymentMethod === "COD") {
                   $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
                 }
@@ -764,6 +768,50 @@ app.controller(
       } else {
         console.error("WebSocket is not connected.");
       }
+    };
+    $scope.creaetOdership = function (invoiceCode, name, phone, address) {
+      data = {
+        shipment: {
+          rate: idrate, // Giá vận chuyển
+          order_id: invoiceCode, // Mã đơn hàng
+          address_from: {
+            // Địa chỉ người gửi (cố định)
+            name: "VTPOST",
+            phone: "0909090909",
+            street: "12 Nguyễn Huệ",
+            ward: "100300",
+            district: "181810", // ngo quyen
+            city: "180000", //hai phong
+          },
+          address_to: {
+            // Địa chỉ người nhận (động)
+            name: name,
+            phone: phone,
+            street: address,
+            district: $scope.selectedQuan,
+            ward: $scope.selectedQuan,
+            city: $scope.selectedTinh,
+          },
+          parcel: {
+            // Chi tiết gói hàng
+            cod: $scope.calculateTotal() || 0, // Tổng tiền hàng
+            amount: $scope.calculateTotal() || 0, // Giá trị đơn hàng
+            weight: "500", // Trọng lượng (gram)
+            width: "20", // Chiều rộng (cm)
+            height: "20", // Chiều cao (cm)
+            length: "20", // Chiều dài (cm)
+            metadata: "Hàng nặng, cẩn thận khi vận chuyển.", // Ghi chú
+          },
+        },
+      };
+      $http
+        .post("https://api.goship.io/api/v2/shipments", data, config)
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.error("API Error:", error);
+        });
     };
   }
 );
