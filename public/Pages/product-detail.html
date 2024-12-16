@@ -13,7 +13,8 @@
                                     </a>
                                 </li>
 
-                                <li class="breadcrumb-item active">{{ (product.milktypename + " " + product.milkbrandname) || 'Sản phẩm không tồn tại' }}</li>
+                                <li class="breadcrumb-item active">{{ (product.milktypename + " " +
+                                    product.milkbrandname) || 'Sản phẩm không tồn tại' }}</li>
                             </ol>
                         </nav>
                     </div>
@@ -33,7 +34,8 @@
                                         <div class="product-main-2 no-arrow">
                                             <div>
                                                 <div class="slider-image">
-                                                    <img ng-src="{{ productDetails.imgURL || 'https://inoxcongsang.com/wp-content/uploads/2020/08/icon-hang-tam-het.jpg' }}" id="img-1"
+                                                    <img ng-src="{{ productDetails.imgURL || 'https://inoxcongsang.com/wp-content/uploads/2020/08/icon-hang-tam-het.jpg' }}"
+                                                        id="img-1"
                                                         data-zoom-image="../assets/images/product/category/1.jpg"
                                                         class="img-fluid image_zoom_cls-0 blur-up lazyload" alt="">
                                                 </div>
@@ -46,9 +48,10 @@
 
                         <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="right-box-contain">
-                                <h2 class="name">{{ (product.milktypename + " " + product.milkbrandname) || 'Sản phẩm không tồn tại' }}</h2>
+                                <h2 class="name">{{ (product.milktypename + " " + product.milkbrandname) || 'Sản phẩm
+                                    không tồn tại' }}</h2>
                                 <div class="price-rating">
-                                    <h3 class="theme-color price">{{priceMilkDetail}} VNĐ</h3>
+                                    <h3 class="theme-color price">Giá: {{priceMilkDetail}} VNĐ</h3>
                                     <div class="product-rating custom-rate">
                                         <ul class="rating">
                                             <li>
@@ -69,16 +72,16 @@
                                         </ul>
                                     </div>
                                 </div>
-
                                 <div class="product-contain">
-                                    <p>
-                                    </p>
+                                    Số lượng: {{stockquantityMilkDetail}}
                                 </div>
                                 <div class="form-container">
                                     <div class="form-group">
                                         <label for="flavor-select"><strong>Vị:</strong></label>
-                                        <select id="flavor-select" ng-model="selectedFlavor" ng-change="onPackagingUnitChange()" class="styled-select">
-                                            <option ng-repeat="flavor in flavors" ng-value="flavor.id" class="option-flavor">
+                                        <select id="flavor-select" ng-model="selectedFlavor"
+                                            ng-change="onPackagingUnitChange()" class="styled-select">
+                                            <option ng-repeat="flavor in flavors" ng-value="flavor.id"
+                                                class="option-flavor">
                                                 {{ flavor.milktastename }}
                                             </option>
                                         </select>
@@ -86,18 +89,22 @@
 
                                     <div class="form-group">
                                         <label for="capacity-select"><strong>Dung Tích:</strong></label>
-                                        <select id="capacity-select" ng-model="selectedUsageCapacity" ng-change="onPackagingUnitChange()" class="styled-select">
-                                            <option ng-repeat="capacity in usageCapacities" ng-value="capacity.id" class="option-capacity">
-                                               {{ capacity.capacity }} {{ capacity.unit }}
+                                        <select id="capacity-select" ng-model="selectedUsageCapacity"
+                                            ng-change="onPackagingUnitChange()" class="styled-select">
+                                            <option ng-repeat="capacity in usageCapacities" ng-value="capacity.id"
+                                                class="option-capacity">
+                                                {{ capacity.capacity }} {{ capacity.unit }}
                                             </option>
                                         </select>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="packaging-select"><strong>Đóng Gói:</strong></label>
-                                        <select id="packaging-select" ng-model="selectedPackagingUnit" ng-change="onPackagingUnitChange()" class="styled-select">
-                                            <option ng-repeat="unit in packagingUnits" ng-value="unit.id" class="option-packaging">
-                                                 {{ unit.packagingunitname }}
+                                        <select id="packaging-select" ng-model="selectedPackagingUnit"
+                                            ng-change="onPackagingUnitChange()" class="styled-select">
+                                            <option ng-repeat="unit in packagingUnits" ng-value="unit.id"
+                                                class="option-packaging">
+                                                {{ unit.packagingunitname }}
                                             </option>
                                         </select>
                                     </div>
@@ -162,40 +169,35 @@
                                 </style>
 
                                 <div class="note-box product-package">
-                                  <div class="quantity-container d-flex align-items-center w-50">
-                                    <!-- Giảm số lượng -->
-                                    <button class="btn btn-sm btn-outline-secondary"
+                                    <div class="quantity-container d-flex align-items-center w-50">
+                                        <!-- Giảm số lượng -->
+                                        <button class="btn btn-sm btn-outline-secondary"
                                             ng-click="orderQuantity = orderQuantity > 1 ? orderQuantity - 1 : 1"
                                             ng-disabled="orderQuantity <= 1">
-                                      -
-                                    </button>
+                                            -
+                                        </button>
 
-                                    <!-- Số lượng -->
-                                    <input type="number"
-                                           class="form-control text-center quantity-input"
-                                           ng-model="orderQuantity"
-                                           ng-disabled="stockquantityMilkDetail < 1"
-                                           min="1"
-                                           max="{{stockquantityMilkDetail}}"
-                                           value="1"
-                                           placeholder="Nhập số lượng">
+                                        <!-- Số lượng -->
+                                        <input type="number" class="form-control text-center quantity-input"
+                                            ng-model="orderQuantity" ng-disabled="stockquantityMilkDetail < 1" min="1"
+                                            max="{{stockquantityMilkDetail}}" value="1" placeholder="Nhập số lượng">
 
-                                    <!-- Tăng số lượng -->
-                                    <button class="btn btn-sm btn-outline-secondary"
+                                        <!-- Tăng số lượng -->
+                                        <button class="btn btn-sm btn-outline-secondary"
                                             ng-click="orderQuantity = orderQuantity < stockquantityMilkDetail ? orderQuantity + 1 : stockquantityMilkDetail"
                                             ng-disabled="orderQuantity >= stockquantityMilkDetail">
-                                      +
-                                    </button>
-                                  </div>
-                                  <div class="quantity-container d-flex align-items-center w-50">
+                                            +
+                                        </button>
+                                    </div>
+                                    <div class="quantity-container d-flex align-items-center w-50">
 
-                                    <button class="btn btn-md bg-dark cart-button text-white w-100" ng-click="oderProduct(
+                                        <button class="btn btn-md bg-dark cart-button text-white w-100" ng-click="oderProduct(
                                             productDetails.milkDetailID,
                                              orderQuantity,
                                              selectedFlavor,
                                              selectedUsageCapacity,
                                              selectedPackagingUnit)">Add To Cart</button>
-                                </div>
+                                    </div>
                                 </div>
                                 <div class="payment-option">
                                     <div class="product-title">
