@@ -87,7 +87,7 @@
                 data-bs-toggle="pill"
                 data-bs-target="#pills-order"
                 type="button"
-                ng-click="getInvoicesByUser()"
+                ng-click="searchInvoices()"
               >
                 <i data-feather="shopping-bag"></i>Hóa Đơn Của Tôi
               </button>
@@ -99,7 +99,7 @@
                 data-bs-toggle="pill"
                 data-bs-target="#pills-log"
                 type="button"
-                ng-click="getInvoicesByUser()"
+                ng-click="searchInvoices()"
               >
                 <i data-feather="shopping-bag"></i>Lịch Sử Hệ Thống
               </button>
@@ -226,7 +226,7 @@
                     role="tab"
                     aria-controls="tab-content-1"
                     aria-selected="true"
-                    ng-click="search.trangThai = null; getInvoicesByUser()"
+                    ng-click="search.trangThai = null; searchInvoices()"
                     >Tất cả</a
                   >
                 </li>
@@ -239,7 +239,7 @@
                   role="tab"
                   aria-controls="tab-content-2"
                   aria-selected="false"
-                  ng-click="search.trangThai = 901; getInvoicesByUser()"
+                  ng-click="search.trangThai = 301; searchInvoices()"
                   >Chờ Duyệt</a
                 >
 
@@ -252,7 +252,7 @@
                     role="tab"
                     aria-controls="tab-content-3"
                     aria-selected="false"
-                    ng-click="search.trangThai = 903; getInvoicesByUser()"
+                    ng-click="search.trangThai = 903; searchInvoices()"
                     >Đã Lấy hàng</a
                   >
                 </li>
@@ -265,7 +265,7 @@
                     role="tab"
                     aria-controls="tab-content-4"
                     aria-selected="false"
-                    ng-click="search.trangThai = 904; getInvoicesByUser()"
+                    ng-click="search.trangThai = 904; searchInvoices()"
                     >Giao Hàng</a
                   >
                 </li>
@@ -278,7 +278,7 @@
                     role="tab"
                     aria-controls="tab-content-5"
                     aria-selected="false"
-                    ng-click="search.trangThai = 913; getInvoicesByUser()"
+                    ng-click="search.trangThai = 913; searchInvoices()"
                     >Hoàn Thành</a
                   >
                 </li>
@@ -290,7 +290,7 @@
                     href="#tab-content-6"
                     role="tab"
                     aria-controls="tab-content-6"
-                    ng-click="search.trangThai = 336; getInvoicesByUser()"
+                    ng-click="search.trangThai = 336; searchInvoices()"
                     aria-selected="false"
                     >Hủy</a
                   >
@@ -313,7 +313,7 @@
                       id="startDate"
                       class="form-control"
                       ng-model="search.startDate"
-                      ng-change="getInvoicesByUser()"
+                      ng-change="searchInvoices()"
                     />
                   </div>
 
@@ -406,7 +406,7 @@
                       id="startDate"
                       class="form-control"
                       ng-model="search.startDate"
-                      ng-change="getInvoicesByUser()"
+                      ng-change="searchInvoices()"
                     />
                   </div>
 
@@ -499,7 +499,7 @@
                       id="startDate"
                       class="form-control"
                       ng-model="search.startDate"
-                      ng-change="getInvoicesByUser()"
+                      ng-change="searchInvoices()"
                     />
                   </div>
 
@@ -592,7 +592,7 @@
                       id="startDate"
                       class="form-control"
                       ng-model="search.startDate"
-                      ng-change="getInvoicesByUser()"
+                      ng-change="searchInvoices()"
                     />
                   </div>
 
@@ -685,7 +685,7 @@
                       id="startDate"
                       class="form-control"
                       ng-model="search.startDate"
-                      ng-change="getInvoicesByUser()"
+                      ng-change="searchInvoices()"
                     />
                   </div>
 
@@ -778,7 +778,7 @@
                       id="startDate"
                       class="form-control"
                       ng-model="search.startDate"
-                      ng-change="getInvoicesByUser()"
+                      ng-change="searchInvoices()"
                     />
                   </div>
 

@@ -21,7 +21,7 @@ app.controller(
     const apiUser = "http://160.30.21.47:1234/api/user/";
     const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
     const apitGetInvoiceByUser =
-      "http://localhost:1234/api/Invoice/getInvoicespage/";
+      "http://160.30.21.47:1234/api/Invoice/getInvoicespage/";
 
     $scope.selectedPaymentMethod = "";
     $scope.newAddress = null;
@@ -144,6 +144,7 @@ app.controller(
           }
         });
     };
+
     $scope.getInvoiceDetailByUser = function (invoice) {
       window.location.href = "/invoicedetail/" + invoice.invoiceCode;
     };
@@ -165,10 +166,17 @@ app.controller(
 
       return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     }
-    $scope.getInvoicesByUser = function () {
-      // Đảm bảo $scope.search luôn là một đối tượng (nếu chưa có)
+    $scope.searchInvoices = function () {
+      $scope.getInvoicesByUser(true); // Gọi hàm với resetPage = true để đặt lại trang về 0 khi tìm kiếm mới.
+    };
+    $scope.getInvoicesByUser = function (resetPage = false) {
+      // Đảm bảo $scope.search luôn là một đối tượng
       $scope.search = $scope.search || {};
 
+      // Kiểm tra nếu có yêu cầu reset currentPage về 0
+      if (resetPage) {
+        $scope.currentPage = 0; // Đặt lại trang hiện tại về 0 nếu có yêu cầu
+      }
       let queryParams = [];
 
       // Kiểm tra nếu startDate có giá trị, nếu có thì thêm vào queryParams
