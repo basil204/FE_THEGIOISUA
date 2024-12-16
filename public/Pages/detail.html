@@ -7,42 +7,43 @@
   </div>
 
   <div class="stepper">
-    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai==901">
+    <!-- Bước 1: Chờ lấy hàng -->
+    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=901">
       <div class="stepper__step-icon">
         <i class="fas fa-clock"></i>
       </div>
       <div class="stepper__step-text">Chờ lấy hàng</div>
       <div class="stepper__step-date">14:00 03-12-2024</div>
     </div>
-    <!-- <div class="stepper__line" ng-show="invoice.trangThai==901"></div> -->
-
-    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai==903">
+    
+    <!-- Bước 2: Đã lấy hàng -->
+    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=903">
       <div class="stepper__step-icon">
         <i class="fas fa-truck"></i>
       </div>
       <div class="stepper__step-text">Đã lấy hàng</div>
       <div class="stepper__step-date">15:30 03-12-2024</div>
     </div>
-    <!-- <div class="stepper__line" ng-show="invoice.trangThai==903"></div> -->
-
-    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai==904">
+    
+    <!-- Bước 3: Giao hàng -->
+    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=904">
       <div class="stepper__step-icon">
         <i class="fas fa-truck"></i>
       </div>
       <div class="stepper__step-text">Giao Hàng</div>
       <div class="stepper__step-date">15:30 03-12-2024</div>
     </div>
-    <!-- <div class="stepper__line" ng-show="invoice.trangThai==904"></div> -->
-
-    <div class="stepper__step stepper__step--pending" ng-show="invoice.trangThai==913">
+    
+    <!-- Bước 4: Hoàn thành -->
+    <div class="stepper__step stepper__step--pending" ng-show="invoice.trangThai>=913">
       <div class="stepper__step-icon">
         <i class="fas fa-check"></i>
       </div>
       <div class="stepper__step-text">Hoàn thành</div>
       <div class="stepper__step-date">12:30 03-12-2024</div>
     </div>
-    <!-- <div class="stepper__line" ng-show="invoice.trangThai==913"></div> -->
-
+    
+    <!-- Bước 5: Huỷ Đơn -->
     <div class="stepper__step stepper__step--red" ng-show="invoice.trangThai==336">
       <div class="stepper__step-icon">
         <i class="fas fa-times-circle"></i>
@@ -51,6 +52,7 @@
       <div class="stepper__step-date">12:00 03-12-2024</div>
     </div>
   </div>
+  
 
   <!-- Thông tin sản phẩm -->
   <div class="product-details">
