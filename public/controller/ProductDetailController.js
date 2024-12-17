@@ -89,10 +89,10 @@ app.controller(
         fetchMilkDetail();
       };
 
-      $scope.oderProduct = function (IDProductDetail, stockquantityMilkDetail) {
+      $scope.oderProduct = function (IDProductDetail, stockquantity) {
         if (
-          !stockquantityMilkDetail ||
-          $scope.productDetails.stockquantity < stockquantityMilkDetail
+          !stockquantity ||
+          $scope.productDetails.stockquantity < stockquantity
         ) {
           Swal.fire({
             icon: "error",
@@ -112,7 +112,7 @@ app.controller(
         const detailProduct = {
           id: IDProductDetail,
           productDetails: $scope.productDetails,
-          quantity: stockquantityMilkDetail,
+          quantity: stockquantity,
           selected: true,
         };
 
@@ -124,7 +124,7 @@ app.controller(
           // Nếu sản phẩm đã tồn tại, chỉ cập nhật số lượng
           if (
             lstProductOder[existingProductIndex].quantity +
-            stockquantityMilkDetail >
+            stockquantity >
             $scope.productDetails.stockquantity
           ) {
             Swal.fire({
@@ -138,12 +138,12 @@ app.controller(
             return;
           }
           lstProductOder[existingProductIndex].quantity +=
-            stockquantityMilkDetail;
+            stockquantity;
         } else {
           // Nếu sản phẩm chưa tồn tại, thêm mới vào danh sách
           lstProductOder.push(detailProduct);
         }
-
+        $scope.stockquantityMilkDetail -= stockquantity
         // Lưu lại danh sách vào localStorage
         localStorage.setItem("lstProductOder", JSON.stringify(lstProductOder));
         Swal.fire({
