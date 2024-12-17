@@ -359,6 +359,19 @@ app.controller(
           });
       }
     };
+    $scope.loadPhuong = function () {
+      var idQuan = $scope.selectedQuan;
+      if (idQuan) {
+        $http
+          .get(
+            "https://api.goship.io/api/v1/wards?district_code=" + idQuan,
+            config
+          )
+          .then(function (response) {
+            $scope.phuongs = response.data.data;
+          });
+      }
+    };
     $scope.addPhoneNumber = function () {
       const user = {
         id: $scope.userData.id,
@@ -435,7 +448,11 @@ app.controller(
         });
     };
     $scope.getAdressInput = function () {
-      if (!$scope.getTinhName() || !$scope.getQuanName()) {
+      if (
+        !$scope.getTinhName() ||
+        !$scope.getQuanName() ||
+        !$scope.getPhuongName()
+      ) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -445,14 +462,17 @@ app.controller(
       }
 
       $scope.newAddress =
-        $scope.getTinhName().name + ", " + $scope.getQuanName().name;
+        $scope.getTinhName().name +
+        ", " +
+        $scope.getQuanName().name +
+        ", " +
+        $scope.getPhuongName().name;
 
       if ($scope.detailAddress !== "") {
         $scope.newAddress = $scope.newAddress + ", " + $scope.detailAddress;
       }
-
-      return $scope.newAddress;
-    };
+      return $scope.newAddress
+    }
     $scope.addAdress = function () {
       const user = {
         id: $scope.userData.id,
@@ -502,7 +522,11 @@ app.controller(
     $scope.getQuanName = function () {
       return $scope.quans.find((quan) => quan.id === $scope.selectedQuan);
     };
-
+    $scope.getPhuongName = function () {
+      return $scope.phuongs.find(
+        (phuong) => phuong.id === $scope.selectedPhuong
+      );
+    };
     // Hàm tạo mã hóa đơn ngẫu nhiên
     $scope.generateInvoiceCode = function () {
       const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -608,22 +632,15 @@ app.controller(
           $http
             .post(urlInvoice, invoiceDto)
             .then((response) => {
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Hóa đơn được Tạo Thành Công",
-                showConfirmButton: false,
-                timer: 1500,
-              }).then(() => {
-                $scope.creaetOdership(
-                  invoiceDto.invoiceCode,
-                  invoiceDto.nguoiNhanHang,
-                  invoiceDto.phonenumber,
-                  invoiceDto.deliveryaddress
-                );
-                if ($scope.selectedPaymentMethod === "COD") {
-                  $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
-                }
+              if ($scope.selectedPaymentMethod === "COD") {
+                $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
+              }
+              $scope.creaetOdership(
+                invoiceDto.invoiceCode,
+                invoiceDto.nguoiNhanHang,
+                invoiceDto.phonenumber,
+                invoiceDto.deliveryaddress
+              ).then(function (data) {
                 $scope.lstProductOde =
                   localStorage.removeItem("lstProductOder");
                 if ($scope.userInfo) {
@@ -632,19 +649,11 @@ app.controller(
                 } else {
                   window.location.href = "/login";
                 }
-              });
+              })
+                .catch(function (error) {
+                  console.error("Failed to create shipment:", error);
+                });
             })
-            .catch((error) => {
-              Swal.fire({
-                position: "center",
-                icon: "error",
-                title:
-                  "Yêu cầu không hợp lệ: " +
-                  (error.data ? error.data.error : error.message),
-                showConfirmButton: true,
-              });
-              console.error("Error:", error.data || error);
-            });
         }
       });
     };
@@ -778,10 +787,10 @@ app.controller(
           order_id: invoiceCode, // Mã đơn hàng
           address_from: {
             // Địa chỉ người gửi (cố định)
-            name: "VTPOST",
+            name: "SUA FPOLY",
             phone: "0909090909",
-            street: "12 Nguyễn Huệ",
-            ward: "100300",
+            street: "271 Lê Thánh Tông",
+            ward: "1097",
             district: "181810", // ngo quyen
             city: "180000", //hai phong
           },
@@ -791,7 +800,7 @@ app.controller(
             phone: phone,
             street: address,
             district: $scope.selectedQuan,
-            ward: $scope.selectedQuan,
+            ward: $scope.selectedPhuong,
             city: $scope.selectedTinh,
           },
           parcel: {
@@ -806,13 +815,15 @@ app.controller(
           },
         },
       };
-      $http
+      return $http
         .post("https://api.goship.io/api/v2/shipments", data, config)
         .then(function (response) {
-          console.log(response.data);
+          // Có thể xử lý thêm tại đây nếu cần
+          return response.data; // Trả về dữ liệu từ response
         })
         .catch(function (error) {
           console.error("API Error:", error);
+          throw error; // Ném lỗi để xử lý phía ngoài nếu cần
         });
     };
   }

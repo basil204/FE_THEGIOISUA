@@ -82,12 +82,20 @@
                               <li class="mb-3">
                                 <label for="quanSelect">Quận Huyện</label>
                                 <select id="quanSelect" class="form-control css_select" ng-model="selectedQuan"
-                                  ng-change="loadPhuong(); getQuanName(); amountShip()"
+                                  ng-change="loadPhuong(); getQuanName(); "
                                   ng-options="quan.id as quan.name for quan in quans">
                                   <option value="">Chọn Quận Huyện</option>
                                 </select>
                                 <span ng-if="quanName" class="d-block mt-1 text-secondary">Tên Quận: {{ quanName
                                   }}</span>
+                              </li>
+                              <li class="mb-3">
+                                <label for="phuongSelect">Phường Xã</label>
+                                <select id="phuongSelect" class="form-control css_select" ng-model="selectedPhuong"
+                                  ng-change="getPhuongName(); amountShip()"
+                                  ng-options="phuong.id as phuong.name for phuong in phuongs">
+                                  <option value="">Chọn Phường Xã</option>
+                                </select>
                               </li>
                               <li class="mb-3">
                                 <form>
