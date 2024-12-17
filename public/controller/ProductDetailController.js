@@ -91,12 +91,25 @@ app.controller(
 
       $scope.oderProduct = function (IDProductDetail, stockquantity) {
         if (
+          !Number.isInteger(stockquantity) || // Kiểm tra xem giá trị có phải là số nguyên không
+          stockquantity <= 0 || // Kiểm tra số lượng phải lớn hơn 0
+          stockquantity % 1 !== 0 // Kiểm tra xem giá trị có phải là số nguyên không (nghĩa là không có phần thập phân)
+        ) {
+          $scope.showNotification(
+            "Sức chứa phải là một số nguyên dương.",
+            "error"
+          );
+          return; // Dừng thực hiện nếu giá trị không hợp lệ
+        }
+        // Tiếp tục với các xử lý tiếp theo
+
+        if (
           !stockquantity ||
           $scope.productDetails.stockquantity < stockquantity
         ) {
           Swal.fire({
             icon: "error",
-            title: "Đặt Hàng Thất Bại",
+            title: "Thêm Sản Phẩm Giỏ Hàng Thất Bại !",
             text: "Vui lòng nhập đúng số lượng!",
             footer:
               "Số Lượng Còn Lại: " + ($scope.productDetails.stockquantity || 0),
@@ -123,8 +136,7 @@ app.controller(
         if (existingProductIndex !== -1) {
           // Nếu sản phẩm đã tồn tại, chỉ cập nhật số lượng
           if (
-            lstProductOder[existingProductIndex].quantity +
-            stockquantity >
+            lstProductOder[existingProductIndex].quantity + stockquantity >
             $scope.productDetails.stockquantity
           ) {
             Swal.fire({
@@ -137,13 +149,12 @@ app.controller(
             });
             return;
           }
-          lstProductOder[existingProductIndex].quantity +=
-            stockquantity;
+          lstProductOder[existingProductIndex].quantity += stockquantity;
         } else {
           // Nếu sản phẩm chưa tồn tại, thêm mới vào danh sách
           lstProductOder.push(detailProduct);
         }
-        $scope.stockquantityMilkDetail -= stockquantity
+        $scope.stockquantityMilkDetail -= stockquantity;
         // Lưu lại danh sách vào localStorage
         localStorage.setItem("lstProductOder", JSON.stringify(lstProductOder));
         Swal.fire({
