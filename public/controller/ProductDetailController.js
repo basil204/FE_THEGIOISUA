@@ -91,20 +91,9 @@ app.controller(
 
       $scope.oderProduct = function (IDProductDetail, stockquantity) {
         if (
-          !Number.isInteger(stockquantity) || // Kiểm tra xem giá trị có phải là số nguyên không
-          stockquantity <= 0 || // Kiểm tra số lượng phải lớn hơn 0
-          stockquantity % 1 !== 0 // Kiểm tra xem giá trị có phải là số nguyên không (nghĩa là không có phần thập phân)
-        ) {
-          $scope.showNotification(
-            "Sức chứa phải là một số nguyên dương.",
-            "error"
-          );
-          return; // Dừng thực hiện nếu giá trị không hợp lệ
-        }
-        // Tiếp tục với các xử lý tiếp theo
-
-        if (
           !stockquantity ||
+          isNaN(stockquantity) || // kiểm tra nếu stockquantity không phải là số
+          !Number.isInteger(Number(stockquantity)) || // kiểm tra nếu stockquantity không phải là số nguyên
           $scope.productDetails.stockquantity < stockquantity
         ) {
           Swal.fire({
