@@ -4,7 +4,7 @@ app.controller(
     // Function to fetch products based on the provided URL
     const Toast = Swal.mixin({
       toast: true,
-      position: 'top-right',
+      position: "top-right",
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true,
@@ -29,7 +29,6 @@ app.controller(
       );
     };
     $scope.getListOderProduct = function () {
-      $scope.countProductOrders();
       $scope.cartProducts =
         JSON.parse(localStorage.getItem("lstProductOder")) || [];
       $scope.totalPrice = $scope.cartProducts.reduce(function (sum, product) {
@@ -67,10 +66,35 @@ app.controller(
         }
       );
     };
-
+    $scope.getBanners = function () {
+      $http.get("http://localhost:3004/api/data").then(
+        function (response) {
+          $scope.getBanners = response.data.filter(function (item) {
+            return item.banner === "1";
+          });
+        },
+        function (error) {
+          console.error("Error fetching milk types:", error);
+        }
+      );
+    };
+    $scope.getBannerss = function () {
+      $http.get("http://localhost:3004/api/data").then(
+        function (response) {
+          $scope.getBannerss = response.data.filter(function (item) {
+            return item.banner === "2";
+          });
+        },
+        function (error) {
+          console.error("Error fetching milk types:", error);
+        }
+      );
+    };
+    $scope.getBanners();
+    $scope.getBannerss();
     // Fetch list of milk brands
     $scope.getMilkbrands = function () {
-      $http.get("http://160.30.21.47:1234/api/Milkbrand/lst").then(
+      $http.get("http://localhost:1234/api/Milkbrand/lst").then(
         function (response) {
           $scope.milkbrands = response.data;
         },
@@ -79,7 +103,28 @@ app.controller(
         }
       );
     };
-
+    $scope.getlstbestsellers = function () {
+      $http.get("http://localhost:1234/api/Product/lstbestseller").then(
+        function (response) {
+          $scope.bestsellers = response.data.content;
+        },
+        function (error) {
+          console.error("Error fetching milk brands:", error);
+        }
+      );
+    };
+    $scope.getlstnewproducts = function () {
+      $http.get("http://localhost:1234/api/Product/lstnewproduct").then(
+        function (response) {
+          $scope.newproducts = response.data.content;
+        },
+        function (error) {
+          console.error("Error fetching milk brands:", error);
+        }
+      );
+    };
+    $scope.getlstbestsellers();
+    $scope.getlstnewproducts();
     // Fetch list of target users
     $scope.getTargetusers = function () {
       $http.get("http://160.30.21.47:1234/api/Targetuser/lst").then(

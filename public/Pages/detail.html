@@ -7,6 +7,40 @@
   </div>
 
   <div class="stepper">
+     <!-- Bước 6: Chờ Duyệt Đơn -->
+     <div class="stepper__step stepper__step--pending" ng-show="getStepData(301)">
+      <div class="stepper__step-icon">
+        <i class="fas fa-hourglass-start"></i>
+      </div>
+      <div class="stepper__step-text">Chờ Duyệt Đơn</div>
+      <div class="stepper__step-date" ng-bind="getStepData(301) | date:'HH:mm dd-MM-yyyy'"></div>
+    </div>
+    <!-- Bước 8: Đơn Chờ -->
+    <div class="stepper__step stepper__step--waiting" ng-show="getStepData(338)">
+      <div class="stepper__step-icon">
+        <i class="fas fa-spinner"></i>
+      </div>
+      <div class="stepper__step-text">Đơn Chờ</div>
+      <div class="stepper__step-date" ng-bind="getStepData(338) | date:'HH:mm dd-MM-yyyy'"></div>
+    </div>
+
+    <!-- Bước 9: Chưa Thanh Toán -->
+    <div class="stepper__step stepper__step--warning" ng-show="getStepData(337)">
+      <div class="stepper__step-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <div class="stepper__step-text">Chưa Thanh Toán</div>
+      <div class="stepper__step-date" ng-bind="getStepData(337) | date:'HH:mm dd-MM-yyyy'"></div>
+    </div>
+     <!-- Bước 7: Thanh toán thành công -->
+     <div class="stepper__step stepper__step--success" ng-show="getStepData(305)">
+      <div class="stepper__step-icon">
+        <i class="fas fa-money-check-alt"></i>
+      </div>
+      <div class="stepper__step-text">Thanh toán thành công</div>
+      <div class="stepper__step-date" ng-bind="getStepData(305) | date:'HH:mm dd-MM-yyyy'"></div>
+    </div>
+
     <!-- Bước 1: Chờ lấy hàng -->
     <div class="stepper__step stepper__step--finish" ng-show="getStepData(901)">
       <div class="stepper__step-icon">
@@ -51,7 +85,10 @@
       <div class="stepper__step-text">Huỷ Đơn</div>
       <div class="stepper__step-date" ng-bind="getStepData(336) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
-  </div>
+
+   
+</div>
+
 
 
   <!-- Thông tin sản phẩm -->
