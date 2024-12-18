@@ -15,7 +15,7 @@
       <div class="stepper__step-text">Chờ lấy hàng</div>
       <div class="stepper__step-date">14:00 03-12-2024</div>
     </div>
-    
+
     <!-- Bước 2: Đã lấy hàng -->
     <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=903">
       <div class="stepper__step-icon">
@@ -24,7 +24,7 @@
       <div class="stepper__step-text">Đã lấy hàng</div>
       <div class="stepper__step-date">15:30 03-12-2024</div>
     </div>
-    
+
     <!-- Bước 3: Giao hàng -->
     <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=904">
       <div class="stepper__step-icon">
@@ -33,7 +33,7 @@
       <div class="stepper__step-text">Giao Hàng</div>
       <div class="stepper__step-date">15:30 03-12-2024</div>
     </div>
-    
+
     <!-- Bước 4: Hoàn thành -->
     <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=913">
       <div class="stepper__step-icon">
@@ -42,7 +42,7 @@
       <div class="stepper__step-text">Hoàn thành</div>
       <div class="stepper__step-date">12:30 03-12-2024</div>
     </div>
-    
+
     <!-- Bước 5: Huỷ Đơn -->
     <div class="stepper__step stepper__step--red" ng-show="invoice.trangThai==336">
       <div class="stepper__step-icon">
@@ -52,7 +52,7 @@
       <div class="stepper__step-date">12:00 03-12-2024</div>
     </div>
   </div>
-  
+
 
   <!-- Thông tin sản phẩm -->
   <div class="product-details">
@@ -127,7 +127,7 @@
       <tbody>
         <tr>
           <td class="text-muted">Tổng tiền hàng</td>
-          <td class="text-right font-weight-bold">{{invoice.tongTien + invoice.sotienGiamGia -invoice.sotienShip |
+          <td class="text-right font-weight-bold">{{invoice.tongTien |
             number:''}} VNĐ</td>
         </tr>
         <tr>
@@ -140,7 +140,8 @@
         </tr>
         <tr class="font-weight-bold">
           <td>Tổng thành tiền</td>
-          <td class="text-right text-danger font-weight-bold">{{invoice.tongTien | number:''}} VNĐ</td>
+          <td class="text-right text-danger font-weight-bold">{{invoice.tongTien - invoice.sotienGiamGia +
+            invoice.sotienShip| number:''}} VNĐ</td>
         </tr>
         <tr>
           <td class="text-muted">Phương thức thanh toán</td>
