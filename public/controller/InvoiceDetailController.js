@@ -1,9 +1,11 @@
 app.controller("InvoiceDetailController", function ($scope, $http, $routeParams, PaymentService, StatusService) {
     const invoiceCode = $routeParams.invoiceCode;
-    const apiInvoiceDetail =
+    const apiInvoiceDetailByInvoiceID =
         "http://160.30.21.47:1234/api/Invoicedetail/getInvoiceDetailByUser/";
     const cancelInvoice = "http://160.30.21.47:1234/api/Invoice/cancel/";
     const getInvoiceByInvoiceCode = "http://160.30.21.47:1234/api/Invoice/getInvoice/";
+    const getInvoiceLogByInvoiceID = "http://160.30.21.47:1234/api/InvoiceLog/getById/";
+    $scope.invoiceLogs = null;
     // Hàm lấy trạng thái từ mã trạng thái
     $scope.getStatus = function (statusCode) {
         return StatusService.getStatus(statusCode);
@@ -14,8 +16,8 @@ app.controller("InvoiceDetailController", function ($scope, $http, $routeParams,
                 .get(getInvoiceByInvoiceCode + invoiceCode)
                 .then(function (response) {
                     $scope.invoice = response.data.message;
-                    console.log($scope.invoice)
                     $scope.getInvoiceDetail();
+                    $scope.getInvoiceLog()
                     if ($scope.invoice.trangThai == 337) {
                         $scope.payment($scope.invoice.tongTien, invoiceCode)
                     }
@@ -29,7 +31,7 @@ app.controller("InvoiceDetailController", function ($scope, $http, $routeParams,
     $scope.getInvoiceDetail = function () {
         if ($scope.invoice != null) {
             $http
-                .get(apiInvoiceDetail + $scope.invoice.invoiceID)
+                .get(apiInvoiceDetailByInvoiceID + $scope.invoice.invoiceID)
                 .then(function (response) {
                     $scope.invoiceDetails = response.data.message;
                 })
@@ -39,7 +41,25 @@ app.controller("InvoiceDetailController", function ($scope, $http, $routeParams,
         }
 
     }
+    $scope.getInvoiceLog = function () {
+        if ($scope.invoice != null) {
+            $http
+                .get(getInvoiceLogByInvoiceID + $scope.invoice.invoiceID)
+                .then(function (response) {
+                    $scope.invoiceLogs = response.data.message;
+                })
+                .catch(function (error) {
+                    console.error("Error fetching invoice details:", error);
+                });
+        }
 
+    }
+    $scope.getStepData = function (status) {
+        if ($scope.invoiceLogs) {
+            const log = $scope.invoiceLogs.find(log => log.status === status);
+            return log ? log.created_at : null;
+        }
+    };
     $scope.payment = function (totalamount, invoicecode) {
         PaymentService.processPayment(
             totalamount,

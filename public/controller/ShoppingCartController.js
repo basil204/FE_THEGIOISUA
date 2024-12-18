@@ -1,15 +1,11 @@
 app.controller(
   "ShoppingCartController",
   function ($scope, $http, $rootScope, PaymentService, AddressService, LocationService, ShipService, SwalService, StatusService, InvoiceService) {
-    const token = localStorage.getItem("authToken");
-
-    // Khai báo biến
-
     $scope.userInfo = JSON.parse(localStorage.getItem("userInfo")) || null;
+    $scope.userData = null;
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
     const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
-
     const apiUser = "http://160.30.21.47:1234/api/user/";
     const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
     const apitGetInvoiceByUser =
@@ -246,21 +242,20 @@ app.controller(
     $scope.user = function () {
       if ($scope.userInfo && $scope.userInfo.id) {
         // Kiểm tra $scope.userInfo và $scope.userInfo.id tồn tại
-        return $http
+        $http
           .get(apiUser + "profile/" + $scope.userInfo.id)
           .then(function (response) {
             $scope.userData = response.data; // Lưu dữ liệu vào $scope.userData
             $scope.email = $scope.userData.email;
-            return $scope.userData; // Trả về dữ liệu sau khi tải xong
           })
           .catch(function (error) {
             console.error("Error fetching user data:", error);
           });
       } else {
         console.warn("User info is not available."); // Thông báo khi $scope.userInfo chưa có
-        return null;
       }
     };
+
     $scope.amountShip = function () {
       const data = {
         shipment: {
@@ -291,6 +286,10 @@ app.controller(
         });
     };
     $scope.loadTinh = function () {
+      if ($scope.userData) {
+        console.log($scope.userData)
+        // console.log(AddressService.splitAddress($scope.user().address))
+      }
       LocationService.getCities().then(function (response) {
         $scope.tinhs = response.data.data;
       }).catch(function (error) {
@@ -616,9 +615,8 @@ app.controller(
         }
       });
     };
-    $scope.loadTinh();
     $scope.user();
-    console.log($scope.user())
+    $scope.loadTinh();
     $scope.loadVoucher();
     $scope.sendMessage = function (url, message) {
       if ($rootScope.stompClient && $rootScope.stompClient.connected) {

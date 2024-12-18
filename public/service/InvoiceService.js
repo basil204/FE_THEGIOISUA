@@ -1,5 +1,18 @@
 app.service("InvoiceService", function ($http) {
     // Phương thức kiểm tra thông tin đầu vào
+    const apiBase = "http://160.30.21.47:1234/api/";
+
+    this.getInvoiceByCode = function (invoiceCode) {
+        return $http.get(apiBase + 'Invoice/getInvoice/' + invoiceCode);
+    };
+
+    this.getInvoiceDetailById = function (invoiceId) {
+        return $http.get(apiBase + 'Invoicedetail/getInvoiceDetailByUser/' + invoiceId);
+    };
+
+    this.getInvoiceLogById = function (invoiceId) {
+        return $http.get(apiBase + 'InvoiceLog/getById/' + invoiceId);
+    };
     this.validateInvoiceData = function ($scope) {
         // Kiểm tra số điện thoại
         if ($scope.strphoneNumber && $scope.strphoneNumber.length !== 10 || $scope.strphoneNumber == null) {

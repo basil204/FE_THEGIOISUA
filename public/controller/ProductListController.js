@@ -29,6 +29,7 @@ app.controller(
       );
     };
     $scope.getListOderProduct = function () {
+      $scope.countProductOrders();
       $scope.cartProducts =
         JSON.parse(localStorage.getItem("lstProductOder")) || [];
       $scope.totalPrice = $scope.cartProducts.reduce(function (sum, product) {

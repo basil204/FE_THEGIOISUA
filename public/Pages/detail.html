@@ -8,48 +8,48 @@
 
   <div class="stepper">
     <!-- Bước 1: Chờ lấy hàng -->
-    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=901">
+    <div class="stepper__step stepper__step--finish" ng-show="getStepData(901)">
       <div class="stepper__step-icon">
         <i class="fas fa-clock"></i>
       </div>
       <div class="stepper__step-text">Chờ lấy hàng</div>
-      <div class="stepper__step-date">14:00 03-12-2024</div>
+      <div class="stepper__step-date" ng-bind="getStepData(901) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
 
     <!-- Bước 2: Đã lấy hàng -->
-    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=903">
+    <div class="stepper__step stepper__step--finish" ng-show="getStepData(903)">
       <div class="stepper__step-icon">
         <i class="fas fa-truck"></i>
       </div>
       <div class="stepper__step-text">Đã lấy hàng</div>
-      <div class="stepper__step-date">15:30 03-12-2024</div>
+      <div class="stepper__step-date" ng-bind="getStepData(903) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
 
     <!-- Bước 3: Giao hàng -->
-    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=904">
+    <div class="stepper__step stepper__step--finish" ng-show="getStepData(904)">
       <div class="stepper__step-icon">
         <i class="fas fa-truck"></i>
       </div>
       <div class="stepper__step-text">Giao Hàng</div>
-      <div class="stepper__step-date">15:30 03-12-2024</div>
+      <div class="stepper__step-date" ng-bind="getStepData(904) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
 
     <!-- Bước 4: Hoàn thành -->
-    <div class="stepper__step stepper__step--finish" ng-show="invoice.trangThai>=913">
+    <div class="stepper__step stepper__step--finish" ng-show="getStepData(913)">
       <div class="stepper__step-icon">
         <i class="fas fa-check"></i>
       </div>
       <div class="stepper__step-text">Hoàn thành</div>
-      <div class="stepper__step-date">12:30 03-12-2024</div>
+      <div class="stepper__step-date" ng-bind="getStepData(913) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
 
     <!-- Bước 5: Huỷ Đơn -->
-    <div class="stepper__step stepper__step--red" ng-show="invoice.trangThai==336">
+    <div class="stepper__step stepper__step--red" ng-show="getStepData(336)">
       <div class="stepper__step-icon">
         <i class="fas fa-times-circle"></i>
       </div>
       <div class="stepper__step-text">Huỷ Đơn</div>
-      <div class="stepper__step-date">12:00 03-12-2024</div>
+      <div class="stepper__step-date" ng-bind="getStepData(336) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
   </div>
 

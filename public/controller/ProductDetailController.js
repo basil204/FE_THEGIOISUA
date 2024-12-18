@@ -37,7 +37,7 @@ app.controller(
           },
         })
           .then(function (response) {
-            if (
+            if (  
               response.status === 200 &&
               response.data &&
               response.data.status !== "error" &&
@@ -143,7 +143,6 @@ app.controller(
           // Nếu sản phẩm chưa tồn tại, thêm mới vào danh sách
           lstProductOder.push(detailProduct);
         }
-        $scope.stockquantityMilkDetail -= stockquantity;
         // Lưu lại danh sách vào localStorage
         localStorage.setItem("lstProductOder", JSON.stringify(lstProductOder));
         Swal.fire({
