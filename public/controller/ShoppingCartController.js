@@ -522,15 +522,14 @@ app.controller(
 
     $scope.createInvoiceAndDetails = function () {
       $scope.phoneNumber = "0" + $scope.phoneNumber;
-      console.log($scope.phoneNumber)
       const validationResult = InvoiceService.validateInvoiceData($scope);
       if (validationResult) {
         const invoiceDto = {
           invoiceCode: $scope.generateInvoiceCode(),
-          nguoiNhanHang: iname,
-          email: iemail,
-          deliveryaddress: iaddress,
-          phonenumber: iphoneNumber,
+          nguoiNhanHang: $scope.fullname,
+          email: $scope.email,
+          deliveryaddress: $scope.getAdressInput(),
+          phonenumber: $scope.phoneNumber,
           paymentmethod: $scope.selectedPaymentMethod,
           voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
           sotienGiamGia: $scope.discountmoney || 0,
