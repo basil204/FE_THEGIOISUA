@@ -550,7 +550,7 @@ app.controller(
             $http
               .post(urlInvoice, invoiceDto)
               .then((response) => {
-                if (!$scope.selectedPaymentMethod === "COD") {
+                if ($scope.selectedPaymentMethod === "COD") {
                   $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
                 } else {
                   $scope.creaetOdership(
