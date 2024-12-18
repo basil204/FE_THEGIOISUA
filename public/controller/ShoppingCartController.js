@@ -550,8 +550,16 @@ app.controller(
             $http
               .post(urlInvoice, invoiceDto)
               .then((response) => {
+                $scope.lstProductOde =
+                  localStorage.removeItem("lstProductOder");
                 if ($scope.selectedPaymentMethod === "COD") {
                   $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
+                  if ($scope.userInfo) {
+                    window.location.href =
+                      "/invoicedetail/" + invoiceDto.invoiceCode;
+                  } else {
+                    window.location.href = "/home";
+                  }
                 } else {
                   $scope.creaetOdership(
                     invoiceDto.invoiceCode,
@@ -559,14 +567,7 @@ app.controller(
                     invoiceDto.phonenumber,
                     invoiceDto.deliveryaddress
                   ).then(function (data) {
-                    $scope.lstProductOde =
-                      localStorage.removeItem("lstProductOder");
-                    if ($scope.userInfo) {
-                      window.location.href =
-                        "/invoicedetail/" + invoiceDto.invoiceCode;
-                    } else {
-                      $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode)
-                    }
+                    $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode)
                   })
                     .catch(function (error) {
                       console.error("Failed to create shipment:", error);
