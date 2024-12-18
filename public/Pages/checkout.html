@@ -312,7 +312,8 @@
                 </li>
                 <li>
                   <h4>Số Tiền Phải Thanh Toán</h4>
-                  <h4 class="price">{{(totalamount||0) | number:''}} VNĐ</h4>
+                  <h4 class="price">{{(calculateTotal() - discountmoney + selectedShip.total_fee||0) | number:''}} VNĐ
+                  </h4>
                 </li>
               </ul>
             </div>

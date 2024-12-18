@@ -14,6 +14,7 @@ app.controller("InvoiceDetailController", function ($scope, $http, $routeParams,
                 .get(getInvoiceByInvoiceCode + invoiceCode)
                 .then(function (response) {
                     $scope.invoice = response.data.message;
+                    console.log($scope.invoice)
                     $scope.getInvoiceDetail();
                     if ($scope.invoice.trangThai == 337) {
                         $scope.payment($scope.invoice.tongTien, invoiceCode)
