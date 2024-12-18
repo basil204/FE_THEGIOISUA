@@ -37,7 +37,7 @@ app.controller(
           },
         })
           .then(function (response) {
-            if (  
+            if (
               response.status === 200 &&
               response.data &&
               response.data.status !== "error" &&

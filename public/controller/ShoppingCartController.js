@@ -1,6 +1,17 @@
 app.controller(
   "ShoppingCartController",
-  function ($scope, $http, $rootScope, PaymentService, AddressService, LocationService, ShipService, SwalService, StatusService, InvoiceService) {
+  function (
+    $scope,
+    $http,
+    $rootScope,
+    PaymentService,
+    AddressService,
+    LocationService,
+    ShipService,
+    SwalService,
+    StatusService,
+    InvoiceService
+  ) {
     $scope.userInfo = JSON.parse(localStorage.getItem("userInfo")) || null;
     $scope.userData = null;
     $scope.lstProductOder =
@@ -287,35 +298,41 @@ app.controller(
     };
     $scope.loadTinh = function () {
       if ($scope.userData) {
-        console.log($scope.userData)
+        console.log($scope.userData);
         // console.log(AddressService.splitAddress($scope.user().address))
       }
-      LocationService.getCities().then(function (response) {
-        $scope.tinhs = response.data.data;
-      }).catch(function (error) {
-        console.error("Error loading cities:", error);
-      });
+      LocationService.getCities()
+        .then(function (response) {
+          $scope.tinhs = response.data.data;
+        })
+        .catch(function (error) {
+          console.error("Error loading cities:", error);
+        });
     };
 
     // Hàm xử lý địa chỉ
     $scope.loadQuan = function () {
       var idTinh = $scope.selectedTinh;
       if (idTinh) {
-        LocationService.getDistricts(idTinh).then(function (response) {
-          $scope.quans = response.data.data;
-        }).catch(function (error) {
-          console.error("Error loading districts:", error);
-        });
+        LocationService.getDistricts(idTinh)
+          .then(function (response) {
+            $scope.quans = response.data.data;
+          })
+          .catch(function (error) {
+            console.error("Error loading districts:", error);
+          });
       }
     };
     $scope.loadPhuong = function () {
       var idQuan = $scope.selectedQuan;
       if (idQuan) {
-        LocationService.getWards(idQuan).then(function (response) {
-          $scope.phuongs = response.data.data;
-        }).catch(function (error) {
-          console.error("Error loading wards:", error);
-        });
+        LocationService.getWards(idQuan)
+          .then(function (response) {
+            $scope.phuongs = response.data.data;
+          })
+          .catch(function (error) {
+            console.error("Error loading wards:", error);
+          });
       }
     };
     $scope.addPhoneNumber = function () {
@@ -412,7 +429,7 @@ app.controller(
         $scope.getPhuongName(),
         $scope.detailAddress
       );
-    }
+    };
     $scope.addAdress = function () {
       const user = {
         id: $scope.userData.id,
@@ -526,7 +543,10 @@ app.controller(
           voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
           sotienGiamGia: $scope.discountmoney || 0,
           sotienShip: $scope.selectedShip.total_fee,
-          tongTien: ($scope.calculateTotal() || 0) - ($scope.discountmoney || 0) + ($scope.selectedShip.total_fee || 0),
+          tongTien:
+            ($scope.calculateTotal() || 0) -
+            ($scope.discountmoney || 0) +
+            ($scope.selectedShip.total_fee || 0),
           invoiceDetails: $scope.lstProductOder
             .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
             .map((x) => ({
@@ -538,39 +558,37 @@ app.controller(
         };
         SwalService.showTerms().then(function (isAgreed) {
           if (isAgreed) {
-            $http
-              .post(urlInvoice, invoiceDto)
-              .then((response) => {
-                $scope.sendMessage("/app/invoice", invoiceDto.invoiceCode);
-                $scope.lstProductOde =
-                  localStorage.removeItem("lstProductOder");
-                if ($scope.selectedPaymentMethod === "COD") {
-                  $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
-                  if ($scope.userInfo) {
-                    window.location.href =
-                      "/invoicedetail/" + invoiceDto.invoiceCode;
-                  } else {
-                    window.location.href = "/home";
-                  }
+            $http.post(urlInvoice, invoiceDto).then((response) => {
+              $scope.sendMessage("/app/invoice", invoiceDto.invoiceCode);
+              $scope.lstProductOde = localStorage.removeItem("lstProductOder");
+              if ($scope.selectedPaymentMethod === "COD") {
+                $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
+                if ($scope.userInfo) {
+                  window.location.href =
+                    "/invoicedetail/" + invoiceDto.invoiceCode;
                 } else {
-                  $scope.creaetOdership(
+                  window.location.href = "/home";
+                }
+              } else {
+                $scope
+                  .creaetOdership(
                     invoiceDto.invoiceCode,
                     invoiceDto.nguoiNhanHang,
                     invoiceDto.phonenumber,
                     invoiceDto.deliveryaddress
-                  ).then(function (data) {
-                    $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode)
+                  )
+                  .then(function (data) {
+                    $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
                   })
-                    .catch(function (error) {
-                      Swal.fire({
-                        icon: "error",
-                        title: "Đặt Hàng Thất Bại",
-                        text: error.data,
-                      });
+                  .catch(function (error) {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Đặt Hàng Thất Bại",
+                      text: error.data,
                     });
-                }
-
-              })
+                  });
+              }
+            });
           }
         });
       }
@@ -660,7 +678,7 @@ app.controller(
           },
         },
       };
-      return ShipService.createShipment(data)
+      return ShipService.createShipment(data);
     };
     $scope.payment = function (totalamount, invoicecode) {
       PaymentService.processPayment(

@@ -150,12 +150,12 @@ app.controller("LoginController", function ($rootScope, $scope, $http) {
   // Logout function
   $scope.logout = function () {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "Bạn Có Muốn Đăng Xuất Không?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
         $rootScope.stompClient.disconnect();
@@ -173,6 +173,5 @@ app.controller("LoginController", function ($rootScope, $scope, $http) {
         });
       }
     });
-
   };
 });
