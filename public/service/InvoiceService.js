@@ -2,7 +2,7 @@ app.service("InvoiceService", function ($http) {
     // Phương thức kiểm tra thông tin đầu vào
     this.validateInvoiceData = function ($scope) {
         // Kiểm tra số điện thoại
-        if ($scope.phoneNumber && $scope.phoneNumber.length !== 10 || $scope.phoneNumber == null) {
+        if ($scope.strphoneNumber && $scope.strphoneNumber.length !== 10 || $scope.strphoneNumber == null) {
             return Swal.fire({
                 icon: "error",
                 title: "Có lỗi xảy ra",

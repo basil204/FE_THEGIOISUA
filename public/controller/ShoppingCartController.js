@@ -514,7 +514,7 @@ app.controller(
     };
 
     $scope.createInvoiceAndDetails = function () {
-      $scope.phoneNumber = "0" + $scope.phoneNumber;
+      $scope.strphoneNumber = "0" + $scope.phoneNumber;
       const validationResult = InvoiceService.validateInvoiceData($scope);
       if (validationResult) {
         const invoiceDto = {
@@ -522,12 +522,12 @@ app.controller(
           nguoiNhanHang: $scope.fullname,
           email: $scope.email,
           deliveryaddress: $scope.getAdressInput(),
-          phonenumber: $scope.phoneNumber,
+          phonenumber: $scope.strphoneNumber,
           paymentmethod: $scope.selectedPaymentMethod,
           voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
           sotienGiamGia: $scope.discountmoney || 0,
           sotienShip: $scope.selectedShip.total_fee,
-          tongTien: $scope.calculateTotal() - $scope.discountmoney + $scope.selectedShip.total_fee,
+          tongTien: ($scope.calculateTotal() || 0) - ($scope.discountmoney || 0) + ($scope.selectedShip.total_fee || 0),
           invoiceDetails: $scope.lstProductOder
             .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
             .map((x) => ({
@@ -539,10 +539,10 @@ app.controller(
         };
         SwalService.showTerms().then(function (isAgreed) {
           if (isAgreed) {
-            $scope.sendMessage("/app/invoice", invoiceDto.invoiceCode);
             $http
               .post(urlInvoice, invoiceDto)
               .then((response) => {
+                $scope.sendMessage("/app/invoice", invoiceDto.invoiceCode);
                 $scope.lstProductOde =
                   localStorage.removeItem("lstProductOder");
                 if ($scope.selectedPaymentMethod === "COD") {
@@ -563,7 +563,11 @@ app.controller(
                     $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode)
                   })
                     .catch(function (error) {
-                      console.error("Failed to create shipment:", error);
+                      Swal.fire({
+                        icon: "error",
+                        title: "Đặt Hàng Thất Bại",
+                        text: error.data,
+                      });
                     });
                 }
 
