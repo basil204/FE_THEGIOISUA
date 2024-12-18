@@ -1,18 +1,10 @@
 app.controller(
   "ShoppingCartController",
-  function ($scope, $location, $http, $rootScope) {
+  function ($scope, $http, $rootScope, PaymentService, AddressService, LocationService, ShipService, SwalService, StatusService) {
     const token = localStorage.getItem("authToken");
 
     // Khai báo biến
-    const tokenAddress =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImEzYWYyMzZjY2YxNzhjMzMwMTliZWRiNmY0NzVhMWQxZDMzMzE1NmE0N2U1YWFiNDA2NmFmOTE2MDc0MDdlMWNiYTY3ZDc1YjFiZWU5MDUyIn0.eyJhdWQiOiI3NyIsImp0aSI6ImEzYWYyMzZjY2YxNzhjMzMwMTliZWRiNmY0NzVhMWQxZDMzMzE1NmE0N2U1YWFiNDA2NmFmOTE2MDc0MDdlMWNiYTY3ZDc1YjFiZWU5MDUyIiwiaWF0IjoxNzMzNzcxODgxLCJuYmYiOjE3MzM3NzE4ODEsImV4cCI6MjA0OTMwNDY4MSwic3ViIjoiMzc4MCIsInNjb3BlcyI6W119.LY_gpwvPCnemap1JkpzwW6625Vd-Q_K8kc3nmJudacMj2XXsSHj_mDN-IfxwrRJiCcFHxgVyywcEIbpXuucLLIzXxCDrRKxMm4B1t4vLsN5pWf3d82FMH8Bxbtd0xRgmYSNh-XKhz1cCmOYXAhpfzvjDjY28R0vI2pGvESrYZAvnoAhwLAg7WAkQ4V5tsj0QHn4lWYQXTHgwlPDODBylxM2WikJw-OXW4dEX3JGn1ns5yF55Kgz7-vI3FXMyLwJ2uBWg_jMtJPj4SjSotkhjZwsbDNJrttNHv7Xkkeow29XnjysD7obEnCqkcy3xlYdz30X5bNzsJP7gqOy3AKPxDQeTMTAV42iGsLWfLLlQTG3gXIhixoZChq9w35K_O5OCx7PiqFADduAxtuVge0gBLH6XIdz1QBr_yUqvszmyMI0IWWtcSprbf-s8PJ4FtyhLNKeN5fidmes-mpV4Pmonk_DsuVhdPazlkmv8IO-DUbvo6CsqHnikeV_v_xPrhIsOwnsC8ISeMNQOkT_fMKEZvQzgGrL56NnJ0Av-FPVXaNNAkf6uWILsg_Ye9gWKUgb_Acr_XfVHB4GzFdtXEmsbMOCS4fWv_CHOzBmCMjHp8aWaInIBfxGzdLRjnF3hToaV7_O02illQtZa7mXLHlUz6lRTcmaP73FH1Wm3xSf1qtQ";
-    const config = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${tokenAddress}`,
-      },
-    };
+
     $scope.userInfo = JSON.parse(localStorage.getItem("userInfo")) || null;
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
@@ -22,34 +14,8 @@ app.controller(
     const apiVoucher = "http://160.30.21.47:1234/api/Voucher/";
     const apitGetInvoiceByUser =
       "http://160.30.21.47:1234/api/Invoice/getInvoicespage/";
-    $scope.selectedPaymentMethod = "";
-    $scope.newAddress = null;
-    $scope.tinhs = [];
-    $scope.quans = [];
-    $scope.phuongs = [];
-    $scope.detailAddress = "";
-    $scope.userData = null; // Khởi tạo biến để lưu dữ liệu người dùng
-    $scope.discountmoney = 0;
-    $scope.voucher = null;
-    $scope.userInvoices = null;
-    $scope.invoiceDetails = [];
-    $scope.vouchers = null;
-    $scope.statusMap = {
-      0: "Không hoạt động",
-      1: "Hoạt động",
-      336: "Huỷ Đơn",
-      913: "Hoàn thành",
-      901: "Chờ lấy hàng",
-      903: "Đã lấy hàng",
-      904: "Giao hàng",
-      301: "Chờ Duyệt Đơn",
-      337: "Chưa Thanh Toán",
-      338: "Đơn Chờ",
-      305: "Thanh toán thành công",
-    };
-    // Hàm lấy trạng thái từ mã trạng thái
     $scope.getStatus = function (statusCode) {
-      return $scope.statusMap[statusCode] || "Không xác định";
+      return StatusService.getStatus(statusCode);
     };
     $scope.selectedVoucher = function (x) {
       $scope.vouchercode = x;
@@ -67,7 +33,6 @@ app.controller(
     };
     $scope.selectedShipping = function (isSelected) {
       idrate = isSelected.id;
-      console.log(idrate);
       $scope.totalamount =
         $scope.calculateTotal() -
         $scope.discountmoney +
@@ -147,9 +112,6 @@ app.controller(
           }
         });
     };
-    const configs = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
     $scope.getInvoiceDetailByUser = function (invoice) {
       window.location.href = "/invoicedetail/" + invoice.invoiceCode;
     };
@@ -195,8 +157,7 @@ app.controller(
         // Thực hiện HTTP GET, thêm page và size vào queryString
         $http
           .get(
-            `${apitGetInvoiceByUser}${$scope.userInfo.id}?${queryString}&page=${$scope.currentPage}&size=${$scope.pageSize}`,
-            configs
+            `${apitGetInvoiceByUser}${$scope.userInfo.id}?${queryString}&page=${$scope.currentPage}&size=${$scope.pageSize}`
           )
           .then((response) => {
             if (response.status === 200) {
@@ -328,8 +289,7 @@ app.controller(
           },
         },
       };
-      $http
-        .post("https://api.goship.io/api/v2/rates", data, config)
+      ShipService.calculateShipping(data)
         .then(function (response) {
           $scope.ships = response.data.data;
         })
@@ -338,38 +298,32 @@ app.controller(
         });
     };
     $scope.loadTinh = function () {
-      $http
-        .get("https://api.goship.io/api/v2/cities", config)
-        .then(function (response) {
-          $scope.tinhs = response.data.data;
-        });
+      LocationService.getCities().then(function (response) {
+        $scope.tinhs = response.data.data;
+      }).catch(function (error) {
+        console.error("Error loading cities:", error);
+      });
     };
 
     // Hàm xử lý địa chỉ
     $scope.loadQuan = function () {
       var idTinh = $scope.selectedTinh;
       if (idTinh) {
-        $http
-          .get(
-            "https://api.goship.io/api/v2/cities/" + idTinh + "/districts",
-            config
-          )
-          .then(function (response) {
-            $scope.quans = response.data.data;
-          });
+        LocationService.getDistricts(idTinh).then(function (response) {
+          $scope.quans = response.data.data;
+        }).catch(function (error) {
+          console.error("Error loading districts:", error);
+        });
       }
     };
     $scope.loadPhuong = function () {
       var idQuan = $scope.selectedQuan;
       if (idQuan) {
-        $http
-          .get(
-            "https://api.goship.io/api/v1/wards?district_code=" + idQuan,
-            config
-          )
-          .then(function (response) {
-            $scope.phuongs = response.data.data;
-          });
+        LocationService.getWards(idQuan).then(function (response) {
+          $scope.phuongs = response.data.data;
+        }).catch(function (error) {
+          console.error("Error loading wards:", error);
+        });
       }
     };
     $scope.addPhoneNumber = function () {
@@ -460,18 +414,12 @@ app.controller(
         });
         return;
       }
-
-      $scope.newAddress =
-        $scope.getTinhName().name +
-        ", " +
-        $scope.getQuanName().name +
-        ", " +
-        $scope.getPhuongName().name;
-
-      if ($scope.detailAddress !== "") {
-        $scope.newAddress = $scope.newAddress + ", " + $scope.detailAddress;
-      }
-      return $scope.newAddress
+      return AddressService.concatAddress(
+        $scope.getTinhName(),
+        $scope.getQuanName(),
+        $scope.getPhuongName(),
+        $scope.detailAddress
+      );
     }
     $scope.addAdress = function () {
       const user = {
@@ -516,16 +464,14 @@ app.controller(
 
     // Hàm lấy tên địa chỉ
     $scope.getTinhName = function () {
-      return $scope.tinhs.find((tinh) => tinh.id === $scope.selectedTinh);
+      return LocationService.findById($scope.tinhs, $scope.selectedTinh);
     };
 
     $scope.getQuanName = function () {
-      return $scope.quans.find((quan) => quan.id === $scope.selectedQuan);
+      return LocationService.findById($scope.quans, $scope.selectedQuan);
     };
     $scope.getPhuongName = function () {
-      return $scope.phuongs.find(
-        (phuong) => phuong.id === $scope.selectedPhuong
-      );
+      return LocationService.findById($scope.phuongs, $scope.selectedPhuong);
     };
     // Hàm tạo mã hóa đơn ngẫu nhiên
     $scope.generateInvoiceCode = function () {
@@ -575,106 +521,64 @@ app.controller(
     };
 
     $scope.createInvoiceAndDetails = function () {
-      var iaddress = $scope.getAdressInput();
-      var iphoneNumber = "0" + $scope.phoneNumber;
-      if (iphoneNumber.length != 10 || $scope.phoneNumber == null) {
-        return Swal.fire({
-          icon: "error",
-          title: "Có lỗi sảy ra",
-          text: "Vui lòng nhập đúng số điện thoại!",
-        });
-      }
-      var iname = $scope.fullname;
-      if (iname == null) {
-        return Swal.fire({
-          icon: "error",
-          title: "Có lỗi sảy ra",
-          text: "Vui lòng nhập đúng tên người dùng",
-        });
-      }
-      var iemail = $scope.email;
-      if (iemail == null) {
-        return Swal.fire({
-          icon: "error",
-          title: "Có lỗi sảy ra",
-          text: "Vui lòng nhập đúng email",
-        });
-      }
-      if (!$scope.selectedPaymentMethod) {
-        return showAlert("Vui Lòng Chọn Phương Thức Thanh Toán!");
-      }
-      if (!$scope.selectedShip) {
-        return showAlert("Vui Lòng Chọn Đơn Vị Vận Chuyển");
-      }
-      const invoiceDto = {
-        invoiceCode: $scope.generateInvoiceCode(),
-        nguoiNhanHang: iname,
-        email: iemail,
-        deliveryaddress: iaddress,
-        phonenumber: iphoneNumber,
-        paymentmethod: $scope.selectedPaymentMethod,
-        voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
-        sotienGiamGia: $scope.discountmoney || 0,
-        sotienShip: $scope.selectedShip.total_fee,
-        tongTien: $scope.totalamount,
-        invoiceDetails: $scope.lstProductOder
-          .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
-          .map((x) => ({
-            quantity: x.quantity,
-            price: x.productDetails.price,
-            totalprice: x.quantity * x.productDetails.price,
-            milkDetail: { id: x.id },
-          })),
-      };
-      $scope.showTerms().then(function (isAgreed) {
-        if (isAgreed) {
-          $scope.sendMessage("/app/invoice", invoiceDto.invoiceCode);
-          $http
-            .post(urlInvoice, invoiceDto)
-            .then((response) => {
-              if ($scope.selectedPaymentMethod === "COD") {
-                $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
-              }
-              $scope.creaetOdership(
-                invoiceDto.invoiceCode,
-                invoiceDto.nguoiNhanHang,
-                invoiceDto.phonenumber,
-                invoiceDto.deliveryaddress
-              ).then(function (data) {
-                $scope.lstProductOde =
-                  localStorage.removeItem("lstProductOder");
-                if ($scope.userInfo) {
-                  window.location.href =
-                    "/invoicedetail/" + invoiceDto.invoiceCode;
+      $scope.phoneNumber = "0" + $scope.phoneNumber;
+      console.log($scope.phoneNumber)
+      const validationResult = InvoiceService.validateInvoiceData($scope);
+      if (validationResult) {
+        const invoiceDto = {
+          invoiceCode: $scope.generateInvoiceCode(),
+          nguoiNhanHang: iname,
+          email: iemail,
+          deliveryaddress: iaddress,
+          phonenumber: iphoneNumber,
+          paymentmethod: $scope.selectedPaymentMethod,
+          voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
+          sotienGiamGia: $scope.discountmoney || 0,
+          sotienShip: $scope.selectedShip.total_fee,
+          tongTien: $scope.totalamount,
+          invoiceDetails: $scope.lstProductOder
+            .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
+            .map((x) => ({
+              quantity: x.quantity,
+              price: x.productDetails.price,
+              totalprice: x.quantity * x.productDetails.price,
+              milkDetail: { id: x.id },
+            })),
+        };
+        SwalService.showTerms().then(function (isAgreed) {
+          if (isAgreed) {
+            $scope.sendMessage("/app/invoice", invoiceDto.invoiceCode);
+            $http
+              .post(urlInvoice, invoiceDto)
+              .then((response) => {
+                if (!$scope.selectedPaymentMethod === "COD") {
+                  $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
                 } else {
-                  window.location.href = "/login";
+                  $scope.creaetOdership(
+                    invoiceDto.invoiceCode,
+                    invoiceDto.nguoiNhanHang,
+                    invoiceDto.phonenumber,
+                    invoiceDto.deliveryaddress
+                  ).then(function (data) {
+                    $scope.lstProductOde =
+                      localStorage.removeItem("lstProductOder");
+                    if ($scope.userInfo) {
+                      window.location.href =
+                        "/invoicedetail/" + invoiceDto.invoiceCode;
+                    } else {
+                      $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode)
+                    }
+                  })
+                    .catch(function (error) {
+                      console.error("Failed to create shipment:", error);
+                    });
                 }
+
               })
-                .catch(function (error) {
-                  console.error("Failed to create shipment:", error);
-                });
-            })
-        }
-      });
-    };
-
-    // Hàm xử lý lỗi
-    function handleError(error) {
-      if (error.data && error.data.errors) {
-        $scope.errors = error.data.errors;
-      } else {
-        $scope.errorMessage = error.data.error || "Lỗi không xác định";
+          }
+        });
       }
-    }
-
-    // Hàm hiển thị thông báo
-    function showAlert(message, icon) {
-      Swal.fire({
-        icon: icon,
-        title: "Oops...",
-        text: message,
-      });
-    }
+    };
 
     // Hàm xử lý thanh toán
     $scope.buttonThanhToan = function () {
@@ -715,63 +619,9 @@ app.controller(
         }
       });
     };
-
-    // Theo dõi thay đổi của phương thức thanh toán
-    $scope.$watch("selectedPaymentMethod", function (newValue) {
-      $scope.selectedPaymentMethod = newValue;
-    });
-    $scope.showTerms = function () {
-      return Swal.fire({
-        title: "Điều Khoản và Điều Kiện",
-        html: `
-          <h6>Điều Khoản 1: Cung Cấp Thông Tin Chính Xác</h6>
-          <p>
-          Người dùng cam kết cung cấp thông tin đầy đủ và chính xác bao gồm họ tên, địa chỉ nhận hàng, số điện thoại và thông tin thanh toán. 
-          Nếu thông tin không chính xác hoặc không đầy đủ, hệ thống có quyền từ chối xử lý đơn hàng.
-          </p>
-
-          <h6>Điều Khoản 2: Thanh Toán Và Xác Nhận</h6>
-          <p>
-          Hóa đơn sẽ chỉ được tạo sau khi người dùng hoàn tất thanh toán qua phương thức đã chọn. 
-          Trong trường hợp thanh toán thất bại, đơn hàng sẽ không được xử lý và hệ thống sẽ thông báo qua email hoặc số điện thoại cung cấp.
-          </p>
-
-          <h6>Điều Khoản 3: Thời Gian Hiệu Lực Của Hóa Đơn</h6>
-          <p>
-          Hóa đơn có hiệu lực trong vòng 24 giờ kể từ khi được tạo. Sau thời gian này, nếu không có khiếu nại từ phía người dùng, hóa đơn sẽ được xem là hợp lệ và không thể chỉnh sửa hoặc hủy bỏ.
-          </p>
-
-          <h6>Điều Khoản 4: Trách Nhiệm Kiểm Tra Thông Tin</h6>
-          <p>
-          Người dùng chịu trách nhiệm kiểm tra thông tin đơn hàng, bao gồm sản phẩm, số lượng và tổng tiền trước khi xác nhận. 
-          Hệ thống sẽ không chịu trách nhiệm đối với sai sót do người dùng nhập sai thông tin.
-          </p>
-
-          <label>
-            <input type="checkbox" id="termsCheckbox">
-            Tôi đã đọc và đồng ý với các Điều Khoản liên quan đến việc tạo và xử lý hóa đơn.
-          </label>
-        `,
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonText: "Chấp Nhận",
-        cancelButtonText: "Đóng",
-        preConfirm: function () {
-          if (!document.getElementById("termsCheckbox").checked) {
-            Swal.showValidationMessage("Vui lòng đồng ý với điều khoản");
-            return false;
-          }
-          return true;
-        },
-      }).then(function (result) {
-        // Kết quả khi người dùng nhấn "Chấp Nhận"
-        return result.isConfirmed;
-      });
-    };
-
-    // Gọi hàm loadTinh khi khởi tạo controller
     $scope.loadTinh();
     $scope.user();
+    console.log($scope.user())
     $scope.loadVoucher();
     $scope.sendMessage = function (url, message) {
       if ($rootScope.stompClient && $rootScope.stompClient.connected) {
@@ -815,16 +665,21 @@ app.controller(
           },
         },
       };
-      return $http
-        .post("https://api.goship.io/api/v2/shipments", data, config)
-        .then(function (response) {
-          // Có thể xử lý thêm tại đây nếu cần
-          return response.data; // Trả về dữ liệu từ response
-        })
-        .catch(function (error) {
-          console.error("API Error:", error);
-          throw error; // Ném lỗi để xử lý phía ngoài nếu cần
-        });
+      return ShipService.createShipment(data)
+    };
+    $scope.payment = function (totalamount, invoicecode) {
+      PaymentService.processPayment(
+        totalamount,
+        invoicecode,
+        function () {
+          // Thành công
+          window.location.href = "/home";
+        },
+        function (error) {
+          // Xử lý lỗi nếu cần
+          console.error("Lỗi khi thanh toán:", error);
+        }
+      );
     };
   }
 );

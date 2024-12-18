@@ -1,4 +1,4 @@
-app.controller("LoginController", function ($scope, $http) {
+app.controller("LoginController", function ($rootScope, $scope, $http) {
   // Check login status
   $scope.isLoggedIn = !!localStorage.getItem("authToken");
 
@@ -158,6 +158,7 @@ app.controller("LoginController", function ($scope, $http) {
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
+        $rootScope.stompClient.disconnect();
         localStorage.removeItem("authToken"); // Remove token from localStorage
         localStorage.removeItem("userInfo"); // Remove user info
         $scope.isLoggedIn = false; // Update login status

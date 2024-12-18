@@ -138,7 +138,7 @@
                             <div class="custom-form-check form-check mb-0">
                               <label class="form-check-label" for="cash">
                                 <input class="form-check-input mt-0" type="radio" name="paymentMethod" id="cash"
-                                  ng-model="selectedPaymentMethod" value="COD" checked />
+                                  ng-model="selectedPaymentMethod" ng-value="'COD'" checked />
                                 Thanh Toán Khi Nhận Hàng (COD)
                               </label>
                             </div>
@@ -193,7 +193,7 @@
                             <div class="custom-form-check form-check mb-0">
                               <label class="form-check-label" for="banking">
                                 <input class="form-check-input mt-0" type="radio" name="paymentMethod" id="banking"
-                                  ng-model="selectedPaymentMethod" value="NetBanking" />
+                                  ng-model="selectedPaymentMethod" ng-value="'NetBanking'" />
                                 Ngân Hàng Trực Tuyến
                               </label>
                             </div>
@@ -300,11 +300,11 @@
               <ul>
                 <li>
                   <h4>Tổng Tiền</h4>
-                  <h4 class="price">{{calculateTotal() | number:''}} VNĐ</h4>
+                  <h4 class="price">{{(calculateTotal()||0) | number:''}} VNĐ</h4>
                 </li>
                 <li>
                   <h4>Giảm</h4>
-                  <h4 class="price">{{discountmoney | number:''}} VNĐ</h4>
+                  <h4 class="price">{{(discountmoney||0) | number:''}} VNĐ</h4>
                 </li>
                 <li>
                   <h4>Phí Vận Chuyển</h4>
@@ -312,7 +312,7 @@
                 </li>
                 <li>
                   <h4>Số Tiền Phải Thanh Toán</h4>
-                  <h4 class="price">{{totalamount | number:''}} VNĐ</h4>
+                  <h4 class="price">{{(totalamount||0) | number:''}} VNĐ</h4>
                 </li>
               </ul>
             </div>

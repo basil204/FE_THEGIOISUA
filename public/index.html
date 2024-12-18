@@ -43,7 +43,7 @@
     <span></span>
     <span></span>
     <span></span>
-    <span></span> 
+    <span></span>
   </div>
 
   <!-- Header and Footer -->
@@ -80,14 +80,17 @@
   <script src="controller/LoginController.js"></script>
   <script src="controller/VerifyAccount.js"></script>
   <script src="controller/InvoiceDetailController.js"></script>
+  <script src="service/ProductService.js"></script>
+  <script src="service/PaymentService.js"></script>
+  <script src="service/AddressService.js"></script>
+  <script src="service/LocationService.js"></script>
+  <script src="service/ShipService.js"></script>
+  <script src="service/SwalService.js"></script>
+  <script src="service/InvoiceService.js"></script>
+  <script src="service/StatusService.js"></script>
 
   <script src="../assets/js/script.js"></script>
   <script src="../assets/js/nav-tab.js"></script>
-
-  <!-- Theme Setting (optional) -->
-  <!-- <script src="../assets/js/theme-setting.js"></script> -->
-
-  <!-- Check User Location -->
   <script>
     $(document).ready(function () {
       $.getJSON("https://api.ipify.org?format=json", function (ipData) {
@@ -108,38 +111,6 @@
       });
     });
   </script>
-
-  <!-- Chat Widget -->
-  <!-- <script defer src="https://cdn.customgpt.ai/js/chat.js"></script>
-    <script defer>
-        (function() {
-            function init() {
-                CustomGPT.init({
-                    p_id: '47521',
-                    p_key: 'a20393f329b7bb54426c84f987303b35'
-                });
-            }
-            document.readyState === 'complete' ? init() : window.addEventListener('load', init);
-        })();
-        function checkLoginUrl() {
-            // Check if the current URL is '/login'
-            if (window.location.pathname === '/login') {
-                // Perform logout actions
-                localStorage.removeItem("authToken"); // Remove token from localStorage
-                localStorage.removeItem("userInfo");   // Remove user info
-        
-                // Update login status
-                $scope.isLoggedIn = false;
-        
-                // Redirect to the login page or show the login form as needed
-                window.location.href = '/login'; // Optional redirect to enforce login page
-            }
-        }
-        
-        // Call the function on page load
-        window.onload = checkLoginUrl;
-        
-    </script> -->
 </body>
 
 </html>
