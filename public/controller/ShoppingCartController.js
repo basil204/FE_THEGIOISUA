@@ -1,6 +1,6 @@
 app.controller(
   "ShoppingCartController",
-  function ($scope, $http, $rootScope, PaymentService, AddressService, LocationService, ShipService, SwalService, StatusService) {
+  function ($scope, $http, $rootScope, PaymentService, AddressService, LocationService, ShipService, SwalService, StatusService, InvoiceService) {
     const token = localStorage.getItem("authToken");
 
     // Khai báo biến
