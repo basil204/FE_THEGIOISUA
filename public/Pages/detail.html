@@ -127,7 +127,8 @@
       <tbody>
         <tr>
           <td class="text-muted">Tổng tiền hàng</td>
-          <td class="text-right font-weight-bold">{{invoice.tongTien |
+          <td class="text-right font-weight-bold">{{invoice.tongTien + invoice.sotienGiamGia -
+            invoice.sotienShip |
             number:''}} VNĐ</td>
         </tr>
         <tr>
@@ -140,8 +141,7 @@
         </tr>
         <tr class="font-weight-bold">
           <td>Tổng thành tiền</td>
-          <td class="text-right text-danger font-weight-bold">{{invoice.tongTien - invoice.sotienGiamGia +
-            invoice.sotienShip| number:''}} VNĐ</td>
+          <td class="text-right text-danger font-weight-bold">{{invoice.tongTien| number:''}} VNĐ</td>
         </tr>
         <tr>
           <td class="text-muted">Phương thức thanh toán</td>
