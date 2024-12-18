@@ -128,6 +128,43 @@
             </div>
           </div>
         </div>
+        <div class="pagination-controls d-flex justify-content-center align-items-center my-3">
+          <button
+            class="btn mx-1 px-3"
+            ng-disabled="currentPage === 0"
+            ng-click="goToFirstPage()"
+          >
+            <i class="fas fa-angle-double-left"></i> 
+          </button>
+          <button
+            class="btn mx-1 px-3"
+            ng-disabled="currentPage === 0"
+            ng-click="previousPage()"
+          >
+            <i class="fas fa-angle-left"></i> 
+          </button>
+          <span class="mx-2 fw-bold">
+            Page {{ currentPage + 1 }} of {{ pageInfo.totalPages }}
+          </span>
+          <button
+            class="btn mx-1 px-3"
+            ng-disabled="currentPage === pageInfo.totalPages - 1"
+            ng-click="nextPage()"
+          >
+             <i class="fas fa-angle-right"></i>
+          </button>
+          <button
+            class="btn mx-1 px-3"
+            ng-disabled="currentPage === pageInfo.totalPages - 1"
+            ng-click="goToLastPage()"
+          >
+             <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+        
+        
+      
+        
       </div>
     </div>
 </div>
