@@ -356,7 +356,7 @@ app.controller(
           }
         })
         .catch(function (error) {
-          if (error.data && error.data.status === "error") {
+          if (error.data && error.status === 400) {
             // Nếu có lỗi và trả về status là "error", hiển thị thông báo lỗi cụ thể
             const errorMessage = error.data.errors;
 
@@ -392,7 +392,7 @@ app.controller(
           }
         })
         .catch(function (error) {
-          if (error.data && error.data.status === "error") {
+          if (error.data && error.status === 400) {
             // Nếu có lỗi và trả về status là "error", hiển thị thông báo lỗi cụ thể
             const errorMessage = error.data.errors;
 
@@ -447,7 +447,7 @@ app.controller(
           }
         })
         .catch(function (error) {
-          if (error.data && error.data.status === "error") {
+          if (error.data && error.status === 400) {
             // Nếu có lỗi và trả về status là "error", hiển thị thông báo lỗi cụ thể
             const errorMessage = error.data.errors;
 
