@@ -67,7 +67,7 @@ app.controller(
       );
     };
     $scope.getBanners = function () {
-      $http.get("http://160.30.21.47:3004/api/data").then(
+      $http.get("http://160.30.21.47:3000/api/data").then(
         function (response) {
           $scope.getBanners = response.data.filter(function (item) {
             return item.banner === "1";
@@ -79,7 +79,7 @@ app.controller(
       );
     };
     $scope.getBannerss = function () {
-      $http.get("http://160.30.21.47:3004/api/data").then(
+      $http.get("http://160.30.21.47:3000/api/data").then(
         function (response) {
           $scope.getBannerss = response.data.filter(function (item) {
             return item.banner === "2";
