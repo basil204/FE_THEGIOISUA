@@ -358,9 +358,7 @@ app.controller(
         .catch(function (error) {
           if (error.data && error.data.status === "error") {
             // Nếu có lỗi và trả về status là "error", hiển thị thông báo lỗi cụ thể
-            const errorMessage = error.data.errors
-              .map((err) => `${err.field}: ${err.message}`)
-              .join("\n");
+            const errorMessage = error.data.errors;
 
             Swal.fire({
               icon: "error",
@@ -396,9 +394,7 @@ app.controller(
         .catch(function (error) {
           if (error.data && error.data.status === "error") {
             // Nếu có lỗi và trả về status là "error", hiển thị thông báo lỗi cụ thể
-            const errorMessage = error.data.errors
-              .map((err) => `${err.field}: ${err.message}`)
-              .join("\n");
+            const errorMessage = error.data.errors;
 
             Swal.fire({
               icon: "error",
@@ -453,9 +449,7 @@ app.controller(
         .catch(function (error) {
           if (error.data && error.data.status === "error") {
             // Nếu có lỗi và trả về status là "error", hiển thị thông báo lỗi cụ thể
-            const errorMessage = error.data.errors
-              .map((err) => `${err.field}: ${err.message}`)
-              .join("\n");
+            const errorMessage = error.data.errors;
 
             Swal.fire({
               icon: "error",
