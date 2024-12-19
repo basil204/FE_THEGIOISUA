@@ -258,11 +258,13 @@ app.controller(
           .then(function (response) {
             $scope.userData = response.data; // Lưu dữ liệu vào $scope.userData
             $scope.email = $scope.userData.email;
-            $scope.fullname = $scope.userData.fullName
-            $scope.phoneNumber = Number($scope.userData.phoneNumber)
-            addresssplit = AddressService.splitAddress($scope.userData.address)
-            $scope.selectedTinh = $scope.tinhs.find(tinh => tinh.name === addresssplit[0]).id;
-            $scope.loadQuan()
+            $scope.fullname = $scope.userData.fullName;
+            $scope.phoneNumber = Number($scope.userData.phoneNumber);
+            addresssplit = AddressService.splitAddress($scope.userData.address);
+            $scope.selectedTinh = $scope.tinhs.find(
+              (tinh) => tinh.name === addresssplit[0]
+            ).id;
+            $scope.loadQuan();
           })
           .catch(function (error) {
             console.error("Error fetching user data:", error);
@@ -314,15 +316,16 @@ app.controller(
 
     // Hàm xử lý địa chỉ
     $scope.loadQuan = function () {
-
       var idTinh = $scope.selectedTinh;
       if (idTinh) {
         LocationService.getDistricts(idTinh)
           .then(function (response) {
             $scope.quans = response.data.data;
             if (addresssplit) {
-              $scope.selectedQuan = $scope.quans.find(quan => quan.name === addresssplit[1]).id;
-              $scope.loadPhuong()
+              $scope.selectedQuan = $scope.quans.find(
+                (quan) => quan.name === addresssplit[1]
+              ).id;
+              $scope.loadPhuong();
             }
           })
           .catch(function (error) {
@@ -337,11 +340,12 @@ app.controller(
           .then(function (response) {
             $scope.phuongs = response.data.data;
             if (addresssplit) {
-              $scope.selectedPhuong = $scope.phuongs.find(phuong => phuong.name === addresssplit[2]).id;
-              $scope.detailAddress = addresssplit[3]
-              $scope.amountShip()
+              $scope.selectedPhuong = $scope.phuongs.find(
+                (phuong) => phuong.name === addresssplit[2]
+              ).id;
+              $scope.detailAddress = addresssplit[3];
+              $scope.amountShip();
             }
-
           })
           .catch(function (error) {
             console.error("Error loading wards:", error);
@@ -423,7 +427,8 @@ app.controller(
       if (
         !$scope.getTinhName() ||
         !$scope.getQuanName() ||
-        !$scope.getPhuongName()
+        !$scope.getPhuongName() ||
+        !$scope.detailAddress
       ) {
         Swal.fire({
           icon: "error",
@@ -432,6 +437,7 @@ app.controller(
         });
         return;
       }
+
       return AddressService.concatAddress(
         $scope.getTinhName(),
         $scope.getQuanName(),
