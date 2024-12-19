@@ -8,13 +8,25 @@
 
   <div class="stepper">
      <!-- Bước 6: Chờ Duyệt Đơn -->
-     <div class="stepper__step stepper__step--success" ng-show="getStepData(301)">
+     <style>
+      .spinner {
+        animation: spin 1s infinite linear;
+      }
+    
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    
+    <div class="stepper__step stepper__step--success" ng-show="getStepData(301)">
       <div class="stepper__step-icon">
-        <i class="fas fa-hourglass-start"></i>
+        <i class="fas fa-hourglass-start spinner"></i> <!-- Add the spinner class here -->
       </div>
       <div class="stepper__step-text">Chờ Duyệt Đơn</div>
       <div class="stepper__step-date" ng-bind="getStepData(301) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
+    
     <!-- Bước 8: Đơn Chờ -->
     <div class="stepper__step stepper__step--success" ng-show="getStepData(338)">
       <div class="stepper__step-icon">
@@ -44,38 +56,63 @@
     <!-- Bước 1: Chờ lấy hàng -->
     <div class="stepper__step stepper__step--finish" ng-show="getStepData(901)">
       <div class="stepper__step-icon">
-        <i class="fas fa-clock"></i>
+        <i class="fas fa-box"></i> <!-- Change to the box icon -->
       </div>
       <div class="stepper__step-text">Chờ lấy hàng</div>
       <div class="stepper__step-date" ng-bind="getStepData(901) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
+    
 
     <!-- Bước 2: Đã lấy hàng -->
     <div class="stepper__step stepper__step--finish" ng-show="getStepData(903)">
       <div class="stepper__step-icon">
-        <i class="fas fa-truck"></i>
+        <i class="fas fa-hands"></i> <!-- Icon representing hands holding something -->
       </div>
       <div class="stepper__step-text">Đã lấy hàng</div>
       <div class="stepper__step-date" ng-bind="getStepData(903) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
+    
 
-    <!-- Bước 3: Giao hàng -->
+    <style>
+      .move-truck {
+        animation: moveTruck 2s linear infinite;
+      }
+    
+      @keyframes moveTruck {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(200px); } /* Adjust the 200px to control the distance */
+      }
+    </style>
+    
     <div class="stepper__step stepper__step--finish" ng-show="getStepData(904)">
       <div class="stepper__step-icon">
-        <i class="fas fa-truck"></i>
+        <i class="fas fa-truck move-truck"></i> <!-- Add the 'move-truck' class here for animation -->
       </div>
       <div class="stepper__step-text">Giao Hàng</div>
       <div class="stepper__step-date" ng-bind="getStepData(904) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
-
+    
+  
+    <style>
+      .slide-in {
+        animation: slideIn 1s ease-out forwards;
+      }
+    
+      @keyframes slideIn {
+        0% { transform: translateX(-100%); opacity: 0; }
+        100% { transform: translateX(0); opacity: 1; }
+      }
+    </style>
+    
     <!-- Bước 4: Hoàn thành -->
     <div class="stepper__step stepper__step--finish" ng-show="getStepData(913)">
       <div class="stepper__step-icon">
-        <i class="fas fa-check"></i>
+        <i class="fas fa-check slide-in"></i> <!-- Add slide-in class for animation -->
       </div>
       <div class="stepper__step-text">Hoàn thành</div>
       <div class="stepper__step-date" ng-bind="getStepData(913) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
+    
 
     <!-- Bước 5: Huỷ Đơn -->
     <div class="stepper__step stepper__step--red" ng-show="getStepData(336)">
