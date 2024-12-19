@@ -215,10 +215,11 @@ app.controller(
       selectedItems.forEach(function (item) {
         const price = Number(item.productDetails.price);
         const quantity = Number(item.quantity);
+        if (quantity < 1 || isNaN(quantity)) {
+          item.quantity = 1;
+        }
         if (!isNaN(price) && !isNaN(quantity)) {
           total += price * quantity;
-        } else {
-          console.error("Giá hoặc số lượng không hợp lệ:", item);
         }
       });
       return total;
@@ -516,10 +517,11 @@ app.controller(
       return invoiceCode;
     };
     $scope.updateQuantity = function (product, change) {
-      if (product.quantity + change >= 1) {
-        product.quantity += change; // Cập nhật số lượng
-        $scope.updateTotal(product); // Cập nhật lại tổng sau khi thay đổi số lượng
+      product.quantity += change; // Cập nhật số lượng
+      if (product.quantity < 1) {
+        product.quantity = 1;
       }
+      $scope.updateTotal(product); // Cập nhật lại tổng sau khi thay đổi số lượng
     };
 
     // Cập nhật tổng tiền khi số lượng thay đổi
@@ -533,14 +535,19 @@ app.controller(
           title: "Đặt Hàng Thất Bại",
           text: "Vui lòng nhập đúng số lượng!",
           footer: "Số Lượng Còn Lại: " + product.productDetails.stockquantity,
+          showConfirmButton: false,  // Ẩn nút "OK"
+          timer: 1500,  // Thiết lập thời gian chờ là 1 giây (1000 ms)
+          timerProgressBar: true  // Hiển thị thanh tiến trình
+        }).then(() => {
+          window.location.reload();  // Reload trang sau khi thời gian chờ kết thúc
         });
-        product.quantity = 1;
-        return;
+      } else {
+        localStorage.setItem(
+          "lstProductOder",
+          JSON.stringify($scope.lstProductOder)
+        );
       }
-      localStorage.setItem(
-        "lstProductOder",
-        JSON.stringify($scope.lstProductOder)
-      );
+
     };
 
     $scope.createInvoiceAndDetails = function () {
