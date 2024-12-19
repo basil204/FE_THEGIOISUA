@@ -212,9 +212,8 @@ app.controller(
     $scope.viewDetail = function (product) {
       ProductService.clearProduct();
       ProductService.setProduct(product);
-      $location
-        .path("/product-detail")
-        .search({ productURL: product.productURL });
+      const productUrl = product.productURL || product.productUrl; // Kiểm tra cả hai
+      $location.path("/product-detail").search({ productURL: productUrl });
     };
 
     // Count ordered products
