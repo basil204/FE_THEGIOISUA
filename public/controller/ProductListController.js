@@ -1,7 +1,15 @@
 app.controller(
   "ProductListController",
   function ($scope, $http, $location, ProductService) {
-    // Function to fetch products based on the provided URL
+    // Initialization
+    $scope.currentPage = 0;
+    $scope.pageSize = 6;
+    $scope.isLogin = false;
+    $scope.userName = "My Account";
+    $scope.cartProducts = [];
+    $scope.totalPrice = 0;
+
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const Toast = Swal.mixin({
       toast: true,
       position: "top-right",
@@ -9,16 +17,19 @@ app.controller(
       timer: 3000,
       timerProgressBar: true,
     });
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    $scope.isLogin = false; // Giá trị mặc định
-    $scope.userName = "My Account";
+
+    // Check login status
     $scope.checkLogin = function () {
-      if (userInfo != null) {
+      if (userInfo) {
         $scope.isLogin = true;
         $scope.userName = userInfo.sub;
       }
     };
-    $scope.getdataproduct = function (url) {
+
+    $scope.checkLogin();
+
+    // Fetch products data
+    $scope.getProducts = function (url) {
       $http.get(url).then(
         function (response) {
           $scope.products = response.data.message.content;
@@ -28,35 +39,38 @@ app.controller(
         }
       );
     };
-    $scope.getListOderProduct = function () {
+
+    // Load cart products and calculate total price
+    $scope.loadCartProducts = function () {
       $scope.cartProducts =
         JSON.parse(localStorage.getItem("lstProductOder")) || [];
-      $scope.totalPrice = $scope.cartProducts.reduce(function (sum, product) {
-        return sum + product.quantity * product.productDetails.price;
-      }, 0);
+      $scope.totalPrice = $scope.cartProducts.reduce(
+        (sum, product) => sum + product.quantity * product.productDetails.price,
+        0
+      );
     };
 
-    // Calculate total price
+    $scope.loadCartProducts();
 
-    // Function to remove a product from the cart
+    // Remove product from cart
     $scope.removeProduct = function (product) {
       const index = $scope.cartProducts.indexOf(product);
       if (index > -1) {
         $scope.cartProducts.splice(index, 1);
-        // Update localStorage after removing the product
         localStorage.setItem(
           "lstProductOder",
           JSON.stringify($scope.cartProducts)
         );
-
-        // Recalculate total price
-        $scope.totalPrice = $scope.cartProducts.reduce(function (sum, product) {
-          return sum + product.quantity * product.productDetails.price;
-        }, 0);
+        $scope.totalPrice = $scope.cartProducts.reduce(
+          (sum, product) =>
+            sum + product.quantity * product.productDetails.price,
+          0
+        );
       }
     };
-    // Fetch list of milk types
-    $scope.getMilktaste = function () {
+
+    // Fetch initial data
+    $scope.getDropdownData = function () {
       $http.get("http://160.30.21.47:1234/api/Milktype/lst").then(
         function (response) {
           $scope.milktypes = response.data;
@@ -65,35 +79,7 @@ app.controller(
           console.error("Error fetching milk types:", error);
         }
       );
-    };
-    $scope.getBanners = function () {
-      $http.get("http://160.30.21.47:3004/api/data").then(
-        function (response) {
-          $scope.getBanners = response.data.filter(function (item) {
-            return item.banner === "1";
-          });
-        },
-        function (error) {
-          console.error("Error fetching milk types:", error);
-        }
-      );
-    };
-    $scope.getBannerss = function () {
-      $http.get("http://160.30.21.47:3004/api/data").then(
-        function (response) {
-          $scope.getBannerss = response.data.filter(function (item) {
-            return item.banner === "2";
-          });
-        },
-        function (error) {
-          console.error("Error fetching milk types:", error);
-        }
-      );
-    };
-    $scope.getBanners();
-    $scope.getBannerss();
-    // Fetch list of milk brands
-    $scope.getMilkbrands = function () {
+
       $http.get("http://160.30.21.47:1234/api/Milkbrand/lst").then(
         function (response) {
           $scope.milkbrands = response.data;
@@ -102,31 +88,7 @@ app.controller(
           console.error("Error fetching milk brands:", error);
         }
       );
-    };
-    $scope.getlstbestsellers = function () {
-      $http.get("http://160.30.21.47:1234/api/Product/lstbestseller").then(
-        function (response) {
-          $scope.bestsellers = response.data.content;
-        },
-        function (error) {
-          console.error("Error fetching milk brands:", error);
-        }
-      );
-    };
-    $scope.getlstnewproducts = function () {
-      $http.get("http://160.30.21.47:1234/api/Product/lstnewproduct").then(
-        function (response) {
-          $scope.newproducts = response.data.content;
-        },
-        function (error) {
-          console.error("Error fetching milk brands:", error);
-        }
-      );
-    };
-    $scope.getlstbestsellers();
-    $scope.getlstnewproducts();
-    // Fetch list of target users
-    $scope.getTargetusers = function () {
+
       $http.get("http://160.30.21.47:1234/api/Targetuser/lst").then(
         function (response) {
           $scope.targetusers = response.data;
@@ -136,64 +98,130 @@ app.controller(
         }
       );
     };
-    // Filtering functions with routing to products page
-    $scope.filterByType = function (typeId) {
-      $location.path("/home").search({ type: typeId });
+
+    $scope.getDropdownData();
+
+    // Fetch banner data
+    $scope.getBanners = function () {
+      $http.get("http://160.30.21.47:3000/api/data").then(
+        function (response) {
+          $scope.banner1 = response.data.filter((item) => item.banner === "1");
+          $scope.banner2 = response.data.filter((item) => item.banner === "2");
+        },
+        function (error) {
+          console.error("Error fetching banners:", error);
+        }
+      );
     };
 
-    $scope.filterByBrand = function (brandId) {
-      $location.path("/home").search({ brand: brandId });
+    $scope.getBanners();
+
+    // Fetch product lists
+    $scope.getBestSellers = function () {
+      $http.get("http://160.30.21.47:1234/api/Product/lstbestseller").then(
+        function (response) {
+          $scope.bestsellers = response.data.content;
+        },
+        function (error) {
+          console.error("Error fetching best sellers:", error);
+        }
+      );
     };
 
-    $scope.filterByTargetUser = function (targetUserId) {
-      $location.path("/home").search({ target: targetUserId });
+    $scope.getNewProducts = function () {
+      $http.get("http://160.30.21.47:1234/api/Product/lstnewproduct").then(
+        function (response) {
+          $scope.newproducts = response.data.content;
+        },
+        function (error) {
+          console.error("Error fetching new products:", error);
+        }
+      );
     };
-    $scope.filterProductWithSearch = function () {
-      $location.path("/home").search({ key: $scope.searchTerm });
-    };
-    // Fetch initial data for dropdowns
-    $scope.getMilktaste();
-    $scope.getTargetusers();
-    $scope.getMilkbrands();
 
-    // Check URL parameters and filter products accordingly
-    $scope.checkFilter = function () {
-      var params = $location.search();
-      if (params.type) {
-        $scope.getdataproduct(
-          `http://160.30.21.47:1234/api/Product/page/TypeMilk/${params.type}`
+    $scope.getBestSellers();
+    $scope.getNewProducts();
+
+    // Pagination controls
+    $scope.changePage = function (page) {
+      $scope.currentPage = page;
+      $scope.loadPagedProducts();
+    };
+
+    $scope.loadPagedProducts = function () {
+      $http
+        .get(
+          `http://160.30.21.47:1234/api/Product/page?page=${$scope.currentPage}&size=${$scope.pageSize}`
+        )
+        .then(
+          function (response) {
+            $scope.products = response.data.message.content;
+            $scope.pageInfo = response.data.message.page;
+          },
+          function (error) {
+            console.error("Error fetching products:", error);
+          }
         );
-      } else if (params.brand) {
-        $scope.getdataproduct(
-          `http://160.30.21.47:1234/api/Product/page/BrandMilk/${params.brand}`
-        );
-      } else if (params.target) {
-        $scope.getdataproduct(
-          `http://160.30.21.47:1234/api/Product/page/TargetUser/${params.target}`
-        );
-      } else if (params.key) {
-        $scope.getdataproduct(
-          `http://160.30.21.47:1234/api/Product/page/getPageProductWithSearch/${params.key}`
-        );
-      } else {
-        $scope.getdataproduct("http://160.30.21.47:1234/api/Product/page");
+    };
+    $scope.nextPage = function () {
+      if ($scope.currentPage < $scope.pageInfo.totalPages - 1) {
+        $scope.currentPage++;
+        $scope.loadPagedProducts();
       }
     };
+
+    $scope.previousPage = function () {
+      if ($scope.currentPage > 0) {
+        $scope.currentPage--;
+        $scope.loadPagedProducts();
+      }
+    };
+
+    $scope.goToFirstPage = function () {
+      $scope.currentPage = 0;
+      $scope.loadPagedProducts();
+    };
+
+    $scope.goToLastPage = function () {
+      $scope.currentPage = $scope.pageInfo.totalPages - 1;
+      $scope.loadPagedProducts();
+    };
+    $scope.loadPagedProducts();
+
+    // Filter products by type, brand, or target user
+    $scope.applyFilters = function () {
+      const params = $location.search();
+      let url = "http://160.30.21.47:1234/api/Product/page";
+
+      if (params.type) {
+        url = `${url}/TypeMilk/${params.type}`;
+      } else if (params.brand) {
+        url = `${url}/BrandMilk/${params.brand}`;
+      } else if (params.target) {
+        url = `${url}/TargetUser/${params.target}`;
+      } else if (params.key) {
+        url = `${url}/getPageProductWithSearch/${params.key}`;
+      }
+
+      $scope.getProducts(url);
+    };
+
+    $scope.applyFilters();
+
+    // View product details
     $scope.viewDetail = function (product) {
-      // Lưu sản phẩm vào ProductService
       ProductService.clearProduct();
       ProductService.setProduct(product);
-
-      // Điều hướng đến trang chi tiết sản phẩm với chỉ url
       $location
         .path("/product-detail")
         .search({ productURL: product.productURL });
     };
+
+    // Count ordered products
     $scope.countProductOrders = function () {
       $scope.count = ProductService.countProductOrders();
     };
-    // Call checkFilter when the controller is initialized
-    $scope.checkFilter();
+
     $scope.countProductOrders();
   }
 );
