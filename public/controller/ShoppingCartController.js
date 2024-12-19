@@ -260,6 +260,7 @@ app.controller(
             $scope.email = $scope.userData.email;
             $scope.fullname = $scope.userData.fullName;
             $scope.phoneNumber = Number($scope.userData.phoneNumber);
+            $scope.phonenumber = Number($scope.userData.phoneNumber);
             addresssplit = AddressService.splitAddress($scope.userData.address);
             $scope.selectedTinh = $scope.tinhs.find(
               (tinh) => tinh.name === addresssplit[0]
