@@ -12,7 +12,7 @@
               <!-- Sử dụng ng-repeat để lặp qua danh sách ảnh -->
               <div
                 class="carousel-item"
-                ng-repeat="image in getBanners"
+                ng-repeat="image in banner1"
                 ng-class="{'active': $index === 0}"
               >
                 <img
@@ -175,7 +175,7 @@
       <div class="carousel-inner">
         <div 
           class="carousel-item" 
-          ng-repeat="image in getBannerss" 
+          ng-repeat="image in banner2" 
           ng-class="{'active': $index === 0}">
           <img
             ng-src="{{image.url}}"
@@ -211,7 +211,7 @@
           type="button"
           data-bs-target="#middleBannerCarousel"
           data-bs-slide-to="{{$index}}"
-          ng-repeat="image in getBannerss"
+          ng-repeat="image in banner2"
           ng-class="{'active': $index === 0}"
           aria-label="Slide {{$index + 1}}"
         ></button>

@@ -8,7 +8,7 @@
 
   <div class="stepper">
      <!-- Bước 6: Chờ Duyệt Đơn -->
-     <div class="stepper__step stepper__step--pending" ng-show="getStepData(301)">
+     <div class="stepper__step stepper__step--success" ng-show="getStepData(301)">
       <div class="stepper__step-icon">
         <i class="fas fa-hourglass-start"></i>
       </div>
@@ -16,7 +16,7 @@
       <div class="stepper__step-date" ng-bind="getStepData(301) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
     <!-- Bước 8: Đơn Chờ -->
-    <div class="stepper__step stepper__step--waiting" ng-show="getStepData(338)">
+    <div class="stepper__step stepper__step--success" ng-show="getStepData(338)">
       <div class="stepper__step-icon">
         <i class="fas fa-spinner"></i>
       </div>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Bước 9: Chưa Thanh Toán -->
-    <div class="stepper__step stepper__step--warning" ng-show="getStepData(337)">
+    <div class="stepper__step stepper__step--success" ng-show="getStepData(337)">
       <div class="stepper__step-icon">
         <i class="fas fa-exclamation-circle"></i>
       </div>
