@@ -145,12 +145,15 @@ app.controller(
         }
         // Lưu lại danh sách vào localStorage
         localStorage.setItem("lstProductOder", JSON.stringify(lstProductOder));
+
         Swal.fire({
           position: "center", // Đặt vị trí thông báo ở giữa
           icon: "success",
           title: "Sản phẩm đã được thêm vào giỏ hàng!",
           showConfirmButton: false,
           timer: 1500,
+        }).then(() => {
+          location.reload();
         });
       };
     } else {
