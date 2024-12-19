@@ -94,20 +94,20 @@
     
   
     <style>
-      .slide-in {
-        animation: slideIn 1s ease-out forwards;
+      .shrink-grow {
+        animation: shrinkGrow 1s ease-in-out infinite;
       }
     
-      @keyframes slideIn {
-        0% { transform: translateX(-100%); opacity: 0; }
-        100% { transform: translateX(0); opacity: 1; }
+      @keyframes shrinkGrow {
+        0%, 100% { transform: scale(1); } /* Normal size */
+        50% { transform: scale(0.8); } /* Shrinks to 80% of original size */
       }
     </style>
     
     <!-- Bước 4: Hoàn thành -->
     <div class="stepper__step stepper__step--finish" ng-show="getStepData(913)">
       <div class="stepper__step-icon">
-        <i class="fas fa-check slide-in"></i> <!-- Add slide-in class for animation -->
+        <i class="fas fa-check shrink-grow"></i> <!-- Add the 'shrink-grow' class for the pulsing effect -->
       </div>
       <div class="stepper__step-text">Hoàn thành</div>
       <div class="stepper__step-date" ng-bind="getStepData(913) | date:'HH:mm dd-MM-yyyy'"></div>
