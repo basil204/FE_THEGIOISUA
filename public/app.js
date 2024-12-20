@@ -27,6 +27,10 @@ app.config(function ($routeProvider, $locationProvider, $httpProvider) {
       templateUrl: "Pages/newpass.html",
       controller: "NewpassController",
     })
+    .when("/find", {
+      templateUrl: "Pages/find.html",
+      controller: "NewpassController",
+    })
     .when("/cart", {
       templateUrl: "Pages/cart.html",
       controller: "ShoppingCartController",

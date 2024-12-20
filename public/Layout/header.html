@@ -46,7 +46,8 @@
                         class="form-control"
                         id="exampleFormControlInput1"
                         ng-model="searchTerm"
-                        placeholder="Tìm kiếm sản phẩm, giao tận nhà..."
+                        placeholder="Tìm kiếm sản phẩm..."
+                        ng-keypress="handleKeyPress($event)"
                       />
                       <button
                         class="btn search-button"
@@ -55,6 +56,7 @@
                         <i class="iconly-Search icli"></i>
                       </button>
                     </div>
+
                     <div class="location-box-2">
                       <button
                         class="btn location-button"

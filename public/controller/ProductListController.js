@@ -1,15 +1,16 @@
 app.controller(
   "ProductListController",
-  function ($scope, $http, $location, ProductService) {
-    // Initialization
-    $scope.currentPage = 0;
-    $scope.pageSize = 6;
+  function ($scope, $http, $location, $routeParams, ProductService) {
+    // Khởi tạo các biến
     $scope.isLogin = false;
     $scope.userName = "My Account";
     $scope.cartProducts = [];
     $scope.totalPrice = 0;
+    $scope.products = [];
+    $scope.currentPage = 1;
 
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
     const Toast = Swal.mixin({
       toast: true,
       position: "top-right",
@@ -18,21 +19,24 @@ app.controller(
       timerProgressBar: true,
     });
 
-    // Check login status
+    // Kiểm tra trạng thái đăng nhập
     $scope.checkLogin = function () {
       if (userInfo) {
         $scope.isLogin = true;
         $scope.userName = userInfo.sub;
       }
     };
-
     $scope.checkLogin();
 
-    // Fetch products data
-    $scope.getProducts = function (url) {
+    // Lấy dữ liệu sản phẩm từ API
+    $scope.getdataproduct = function (url, hasParams) {
       $http.get(url).then(
         function (response) {
-          $scope.products = response.data.message;
+          if (hasParams) {
+            $scope.products = response.data.message.content || [];
+          } else {
+            $scope.products = response.data.message || [];
+          }
         },
         function (error) {
           console.error("Error fetching products:", error);
@@ -40,19 +44,60 @@ app.controller(
       );
     };
 
-    // Load cart products and calculate total price
+    $scope.getdataproducts = function () {
+      $scope.getdataproduct(`http://160.30.21.47:1234/api/Product/page`, false);
+    };
+
+    $scope.loadProductsByFilter = function () {
+      const params = $routeParams;
+
+      if (params.type) {
+        $scope.getdataproduct(
+          `http://160.30.21.47:1234/api/Product/page/TypeMilk/${params.type}`,
+          true
+        );
+      } else if (params.brand) {
+        $scope.getdataproduct(
+          `http://160.30.21.47:1234/api/Product/page/BrandMilk/${params.brand}`,
+          true
+        );
+      } else if (params.target) {
+        $scope.getdataproduct(
+          `http://160.30.21.47:1234/api/Product/page/TargetUser/${params.target}`,
+          true
+        );
+      } else {
+        $scope.getdataproducts();
+      }
+    };
+
+    // Gọi hàm load sản phẩm theo URL khi controller được khởi tạo
+    $scope.loadProductsByFilter();
+
+    // Điều hướng bộ lọc
+    $scope.filterByType = function (typeId) {
+      $location.path("/find").search({ type: typeId });
+    };
+    $scope.filterByBrand = function (brandId) {
+      $location.path("/find").search({ brand: brandId });
+    };
+    $scope.filterByTargetUser = function (targetId) {
+      $location.path("/find").search({ target: targetId });
+    };
+
+    // Quản lý giỏ hàng
     $scope.loadCartProducts = function () {
       $scope.cartProducts =
         JSON.parse(localStorage.getItem("lstProductOder")) || [];
-      $scope.totalPrice = $scope.cartProducts.reduce(
-        (sum, product) => sum + product.quantity * product.productDetails.price,
-        0
-      );
+      $scope.calculateTotalPrice();
     };
 
-    $scope.loadCartProducts();
+    $scope.calculateTotalPrice = function () {
+      $scope.totalPrice = $scope.cartProducts.reduce((sum, product) => {
+        return sum + product.quantity * product.productDetails.price;
+      }, 0);
+    };
 
-    // Remove product from cart
     $scope.removeProduct = function (product) {
       const index = $scope.cartProducts.indexOf(product);
       if (index > -1) {
@@ -61,127 +106,64 @@ app.controller(
           "lstProductOder",
           JSON.stringify($scope.cartProducts)
         );
-        $scope.totalPrice = $scope.cartProducts.reduce(
-          (sum, product) =>
-            sum + product.quantity * product.productDetails.price,
-          0
-        );
+        $scope.calculateTotalPrice();
       }
     };
 
-    // Fetch initial data
+    $scope.loadCartProducts();
+
+    // Lấy dữ liệu dropdown (Loại, Hãng, Đối tượng)
     $scope.getDropdownData = function () {
       $http.get("http://160.30.21.47:1234/api/Milktype/lst").then(
-        function (response) {
-          $scope.milktypes = response.data;
-        },
-        function (error) {
-          console.error("Error fetching milk types:", error);
-        }
+        (response) => ($scope.milktypes = response.data),
+        (error) => console.error("Error fetching milk types:", error)
       );
 
       $http.get("http://160.30.21.47:1234/api/Milkbrand/lst").then(
-        function (response) {
-          $scope.milkbrands = response.data;
-        },
-        function (error) {
-          console.error("Error fetching milk brands:", error);
-        }
+        (response) => ($scope.milkbrands = response.data),
+        (error) => console.error("Error fetching milk brands:", error)
       );
 
       $http.get("http://160.30.21.47:1234/api/Targetuser/lst").then(
-        function (response) {
-          $scope.targetusers = response.data;
-        },
-        function (error) {
-          console.error("Error fetching target users:", error);
-        }
+        (response) => ($scope.targetusers = response.data),
+        (error) => console.error("Error fetching target users:", error)
       );
     };
 
     $scope.getDropdownData();
 
-    // Fetch banner data
+    // Lấy danh sách banner
     $scope.getBanners = function () {
       $http.get("http://160.30.21.47:3000/api/data").then(
-        function (response) {
+        (response) => {
           $scope.banner1 = response.data.filter((item) => item.banner === "1");
           $scope.banner2 = response.data.filter((item) => item.banner === "2");
         },
-        function (error) {
-          console.error("Error fetching banners:", error);
-        }
+        (error) => console.error("Error fetching banners:", error)
       );
     };
 
     $scope.getBanners();
 
-    // Fetch product lists
+    // Lấy danh sách sản phẩm nổi bật và sản phẩm mới
     $scope.getBestSellers = function () {
       $http.get("http://160.30.21.47:1234/api/Product/lstbestseller").then(
-        function (response) {
-          $scope.bestsellers = response.data.content;
-        },
-        function (error) {
-          console.error("Error fetching best sellers:", error);
-        }
+        (response) => ($scope.bestsellers = response.data.content || []),
+        (error) => console.error("Error fetching best sellers:", error)
       );
     };
 
     $scope.getNewProducts = function () {
       $http.get("http://160.30.21.47:1234/api/Product/lstnewproduct").then(
-        function (response) {
-          $scope.newproducts = response.data.content;
-        },
-        function (error) {
-          console.error("Error fetching new products:", error);
-        }
+        (response) => ($scope.newproducts = response.data.content || []),
+        (error) => console.error("Error fetching new products:", error)
       );
     };
 
     $scope.getBestSellers();
     $scope.getNewProducts();
 
-    // Pagination controls
-    $scope.changePage = function (page) {
-      $scope.currentPage = page;
-      $scope.loadPagedProducts();
-    };
-
-    $scope.loadPagedProducts = function () {
-      $http.get(`http://160.30.21.47:1234/api/Product/page`).then(
-        function (response) {
-          $scope.products = response.data.message;
-          $scope.pageInfo = response.data.message;
-        },
-        function (error) {
-          console.error("Error fetching products:", error);
-        }
-      );
-    };
-    $scope.loadPagedProducts();
-
-    // Filter products by type, brand, or target user
-    $scope.applyFilters = function () {
-      const params = $location.search();
-      let url = "http://160.30.21.47:1234/api/Product/page";
-
-      if (params.type) {
-        url = `${url}/TypeMilk/${params.type}`;
-      } else if (params.brand) {
-        url = `${url}/BrandMilk/${params.brand}`;
-      } else if (params.target) {
-        url = `${url}/TargetUser/${params.target}`;
-      } else if (params.key) {
-        url = `${url}/getPageProductWithSearch/${params.key}`;
-      }
-
-      $scope.getProducts(url);
-    };
-
-    $scope.applyFilters();
-
-    // View product details
+    // Xem chi tiết sản phẩm
     $scope.viewDetail = function (product) {
       ProductService.clearProduct();
       ProductService.setProduct(product);
@@ -189,9 +171,12 @@ app.controller(
       $location.path("/product-detail").search({ productURL: productUrl });
     };
 
-    // Count ordered products
+    // Đếm số lượng sản phẩm trong giỏ hàng
     $scope.countProductOrders = function () {
-      $scope.count = ProductService.countProductOrders();
+      $scope.count = $scope.cartProducts.reduce(
+        (count, product) => count + product.quantity,
+        0
+      );
     };
 
     $scope.countProductOrders();
