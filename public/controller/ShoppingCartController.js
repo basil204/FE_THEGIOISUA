@@ -627,8 +627,6 @@ app.controller(
         });
         return;
       }
-      console.log(address);
-      return
       $scope.strphoneNumber = "0" + $scope.phoneNumber;
       const invoiceDto = {
         invoiceCode: $scope.generateInvoiceCode(),
