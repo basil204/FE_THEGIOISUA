@@ -14,6 +14,7 @@ app.controller(
   ) {
     $scope.userInfo = JSON.parse(localStorage.getItem("userInfo")) || null;
     let addresssplit = null;
+    let idrate = null
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
     const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
@@ -261,7 +262,6 @@ app.controller(
             $scope.email = $scope.userData.email;
             $scope.fullname = $scope.userData.fullName;
             $scope.phoneNumber = Number($scope.userData.phoneNumber);
-            $scope.phonenumber = Number($scope.userData.phoneNumber);
             addresssplit = AddressService.splitAddress($scope.userData.address);
             $scope.selectedTinh = $scope.tinhs.find(
               (tinh) => tinh.name === addresssplit[0]
@@ -581,7 +581,13 @@ app.controller(
           if (isAgreed) {
             $http.post(urlInvoice, invoiceDto).then((response) => {
               $scope.sendMessage("/app/invoice", invoiceDto.invoiceCode);
-              $scope.lstProductOde = localStorage.removeItem("lstProductOder");
+              $scope.lstProductOder = $scope.lstProductOder.filter(
+                (product) => !product.selected
+              );
+              localStorage.setItem(
+                "lstProductOder",
+                JSON.stringify($scope.lstProductOder)
+              );
               if ($scope.selectedPaymentMethod === "COD") {
                 $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
                 if ($scope.userInfo) {
