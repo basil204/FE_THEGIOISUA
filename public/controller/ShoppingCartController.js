@@ -216,11 +216,10 @@ app.controller(
       selectedItems.forEach(function (item) {
         const price = Number(item.productDetails.price);
         const quantity = Number(item.quantity);
-        if (quantity < 1 || isNaN(quantity)) {
-          item.quantity = 1;
-        }
         if (!isNaN(price) && !isNaN(quantity)) {
           total += price * quantity;
+        } else {
+          console.error("Giá hoặc số lượng không hợp lệ:", item);
         }
       });
       return total;
@@ -517,11 +516,10 @@ app.controller(
       return invoiceCode;
     };
     $scope.updateQuantity = function (product, change) {
-      product.quantity += change; // Cập nhật số lượng
-      if (product.quantity < 1) {
-        product.quantity = 1;
+      if (product.quantity + change >= 1) {
+        product.quantity += change; // Cập nhật số lượng
+        $scope.updateTotal(product); // Cập nhật lại tổng sau khi thay đổi số lượng
       }
-      $scope.updateTotal(product); // Cập nhật lại tổng sau khi thay đổi số lượng
     };
 
     // Cập nhật tổng tiền khi số lượng thay đổi
@@ -535,22 +533,88 @@ app.controller(
           title: "Đặt Hàng Thất Bại",
           text: "Vui lòng nhập đúng số lượng!",
           footer: "Số Lượng Còn Lại: " + product.productDetails.stockquantity,
-          showConfirmButton: false,  // Ẩn nút "OK"
-          timer: 1500,  // Thiết lập thời gian chờ là 1 giây (1000 ms)
-          timerProgressBar: true  // Hiển thị thanh tiến trình
-        }).then(() => {
-          window.location.reload();  // Reload trang sau khi thời gian chờ kết thúc
         });
-      } else {
-        localStorage.setItem(
-          "lstProductOder",
-          JSON.stringify($scope.lstProductOder)
-        );
+        product.quantity = 1;
+        return;
       }
-
+      localStorage.setItem(
+        "lstProductOder",
+        JSON.stringify($scope.lstProductOder)
+      );
     };
 
     $scope.createInvoiceAndDetails = function () {
+      if (!$scope.fullname || $scope.fullname.trim().length === 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Tên Người nhận không được để trống",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#d33",
+        });
+        return;
+      }
+
+      // Kiểm tra độ dài của tên (tối thiểu 5 ký tự và tối đa 100 ký tự)
+      if (
+        $scope.fullname.trim().length < 5 ||
+        $scope.fullname.trim().length > 100
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Tên Người nhận phải có độ dài từ 5 đến 100 ký tự",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#d33",
+        });
+        return;
+      }
+      const nameRegex = /^[A-Za-zÀ-ỹà-ỹ\s]+$/u;
+      if (!nameRegex.test($scope.fullname.trim())) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Tên Người nhận chỉ được chứa ký tự chữ cái và dấu cách",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#d33",
+        });
+        return;
+      }
+      if (!$scope.phoneNumber || !/^\d{9,11}$/.test($scope.phoneNumber)) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Số điện thoại phải 10 chữ số và không được để trống",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#d33",
+        });
+        return;
+      }
+
+      // Validate email (nếu email là bắt buộc)
+      if ($scope.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($scope.email)) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Email không đúng định dạng",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#d33",
+        });
+        return;
+      }
+      const selectedProducts = $scope.lstProductOder.filter(
+        (x) => x.selected === true
+      );
+      if (selectedProducts.length === 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Vui lòng chọn ít nhất một sản phẩm để đặt hàng",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#d33",
+        });
+        return;
+      }
       $scope.strphoneNumber = "0" + $scope.phoneNumber;
       const validationResult = InvoiceService.validateInvoiceData($scope);
       if (validationResult) {
