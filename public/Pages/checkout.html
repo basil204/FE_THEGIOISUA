@@ -281,7 +281,7 @@
                 <h6 class="text-content mb-2">Phiếu giảm giá</h6>
                 <select class="form-select mt-2" ng-model="selectedVoucherCode"
                   ng-change="selectedVoucher(selectedVoucherCode)">
-                  <option value="" disabled selected>Chọn mã giảm giá</option>
+                  <option value="" selected>Chọn mã giảm giá</option>
                   <option value="{{x.vouchercode}}" ng-repeat="x in vouchers"
                     ng-disabled="calculateTotal() < x.minamount"
                     ng-bind="x.vouchercode + ' - Giảm ' + x.discountpercentage + '% - Tối Đa: ' + (x.maxamount | number:0) + ' VNĐ'">
