@@ -299,6 +299,7 @@ app.controller(
       ShipService.calculateShipping(data)
         .then(function (response) {
           $scope.ships = response.data.data;
+          $scope.selectedShip = $scope.ships[0]
         })
         .catch(function (error) {
           console.error("API Error:", error);
@@ -615,74 +616,84 @@ app.controller(
         });
         return;
       }
-      $scope.strphoneNumber = "0" + $scope.phoneNumber;
-      const validationResult = InvoiceService.validateInvoiceData($scope);
-      if (validationResult) {
-        const invoiceDto = {
-          invoiceCode: $scope.generateInvoiceCode(),
-          nguoiNhanHang: $scope.fullname,
-          email: $scope.email,
-          deliveryaddress: $scope.getAdressInput(),
-          phonenumber: $scope.strphoneNumber,
-          paymentmethod: $scope.selectedPaymentMethod,
-          voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
-          sotienGiamGia: $scope.discountmoney || 0,
-          sotienShip: $scope.selectedShip.total_fee,
-          tongTien:
-            ($scope.calculateTotal() || 0) -
-            ($scope.discountmoney || 0) +
-            ($scope.selectedShip.total_fee || 0),
-          invoiceDetails: $scope.lstProductOder
-            .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
-            .map((x) => ({
-              quantity: x.quantity,
-              price: x.productDetails.price,
-              totalprice: x.quantity * x.productDetails.price,
-              milkDetail: { id: x.id },
-            })),
-        };
-        SwalService.showTerms().then(function (isAgreed) {
-          if (isAgreed) {
-            $http.post(urlInvoice, invoiceDto).then((response) => {
-              $scope.sendMessage("/app/invoice", invoiceDto.invoiceCode);
-              $scope.lstProductOder = $scope.lstProductOder.filter(
-                (product) => !product.selected
-              );
-              localStorage.setItem(
-                "lstProductOder",
-                JSON.stringify($scope.lstProductOder)
-              );
-              if ($scope.selectedPaymentMethod === "COD") {
-                $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
-                if ($scope.userInfo) {
-                  window.location.href =
-                    "/invoicedetail/" + invoiceDto.invoiceCode;
-                } else {
-                  window.location.href = "/home";
-                }
-              } else {
-                $scope
-                  .creaetOdership(
-                    invoiceDto.invoiceCode,
-                    invoiceDto.nguoiNhanHang,
-                    invoiceDto.phonenumber,
-                    invoiceDto.deliveryaddress
-                  )
-                  .then(function (data) {
-                    $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
-                  })
-                  .catch(function (error) {
-                    Swal.fire({
-                      icon: "error",
-                      title: "Đặt Hàng Thất Bại",
-                      text: error.data,
-                    });
-                  });
-              }
-            });
-          }
+      let address = $scope.getAdressInput();
+      if (!address) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Vui lòng Thêm Địa Chỉ",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#d33",
         });
+        return;
       }
+      console.log(address);
+      return
+      $scope.strphoneNumber = "0" + $scope.phoneNumber;
+      const invoiceDto = {
+        invoiceCode: $scope.generateInvoiceCode(),
+        nguoiNhanHang: $scope.fullname,
+        email: $scope.email,
+        deliveryaddress: address,
+        phonenumber: $scope.strphoneNumber,
+        paymentmethod: $scope.selectedPaymentMethod,
+        voucherCode: $scope.voucher ? $scope.voucher.Vouchercode : null,
+        sotienGiamGia: $scope.discountmoney || 0,
+        sotienShip: $scope.selectedShip.total_fee,
+        tongTien:
+          ($scope.calculateTotal() || 0) -
+          ($scope.discountmoney || 0) +
+          ($scope.selectedShip.total_fee || 0),
+        invoiceDetails: $scope.lstProductOder
+          .filter((x) => x.selected === true) // Lọc các sản phẩm được chọn
+          .map((x) => ({
+            quantity: x.quantity,
+            price: x.productDetails.price,
+            totalprice: x.quantity * x.productDetails.price,
+            milkDetail: { id: x.id },
+          })),
+      };
+      SwalService.showTerms().then(function (isAgreed) {
+        if (isAgreed) {
+          $http.post(urlInvoice, invoiceDto).then((response) => {
+            $scope.sendMessage("/app/invoice", invoiceDto.invoiceCode);
+            $scope.lstProductOder = $scope.lstProductOder.filter(
+              (product) => !product.selected
+            );
+            localStorage.setItem(
+              "lstProductOder",
+              JSON.stringify($scope.lstProductOder)
+            );
+            if ($scope.selectedPaymentMethod === "COD") {
+              $scope.sendMessage("/app/cod", invoiceDto.invoiceCode);
+              if ($scope.userInfo) {
+                window.location.href =
+                  "/invoicedetail/" + invoiceDto.invoiceCode;
+              } else {
+                window.location.href = "/home";
+              }
+            } else {
+              $scope
+                .creaetOdership(
+                  invoiceDto.invoiceCode,
+                  invoiceDto.nguoiNhanHang,
+                  invoiceDto.phonenumber,
+                  invoiceDto.deliveryaddress
+                )
+                .then(function (data) {
+                  $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
+                })
+                .catch(function (error) {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Đặt Hàng Thất Bại",
+                    text: error.data,
+                  });
+                });
+            }
+          });
+        }
+      });
     };
 
     // Hàm xử lý thanh toán

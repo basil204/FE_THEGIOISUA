@@ -16,55 +16,49 @@ app.service("InvoiceService", function ($http) {
     return $http.get(apiBase + "InvoiceLog/getById/" + invoiceId);
   };
   this.validateInvoiceData = function ($scope) {
-    // Kiểm tra số điện thoại
-    if (
-      ($scope.strphoneNumber && $scope.strphoneNumber.length !== 10) ||
-      $scope.strphoneNumber == null
-    ) {
-      return Swal.fire({
+    if ($scope.phoneNumber == null || $scope.phoneNumber.length !== 9) {
+      Swal.fire({
         icon: "error",
         title: "Có lỗi xảy ra",
         text: "Vui lòng nhập đúng số điện thoại!",
       });
-    }
-
-    // Kiểm tra tên người dùng
-    if ($scope.fullname == null) {
-      return Swal.fire({
+    } else if ($scope.strphoneNumber == null || $scope.strphoneNumber.length !== 10) {
+      Swal.fire({
+        icon: "error",
+        title: "Có lỗi xảy ra",
+        text: "Vui lòng nhập đúng số điện thoại!",
+      });
+    } else if ($scope.fullname == null) {
+      Swal.fire({
         icon: "error",
         title: "Có lỗi xảy ra",
         text: "Vui lòng nhập đúng tên người dùng",
       });
-    }
-
-    // Kiểm tra email
-    if ($scope.email == null) {
-      return Swal.fire({
+    } else if ($scope.email == null) {
+      Swal.fire({
         icon: "error",
         title: "Có lỗi xảy ra",
         text: "Vui lòng nhập đúng email",
       });
-    }
-
-    // Kiểm tra phương thức thanh toán
-    if (!$scope.selectedPaymentMethod) {
-      return Swal.fire({
+    } else if (!$scope.selectedPaymentMethod) {
+      Swal.fire({
         icon: "error",
         title: "Có lỗi xảy ra",
         text: "Vui Lòng Chọn Phương Thức Thanh Toán",
       });
-    }
-
-    // Kiểm tra đơn vị vận chuyển
-    if (!$scope.selectedShip) {
-      return Swal.fire({
+    } else if (!$scope.selectedShip) {
+      Swal.fire({
         icon: "error",
         title: "Có lỗi xảy ra",
         text: "Vui Lòng Chọn Đơn Vị Vận Chuyển",
       });
+    } else {
+      // Nếu tất cả điều kiện hợp lệ
+      return true;
     }
 
-    // Nếu tất cả điều kiện hợp lệ, trả về true
-    return true;
+    // Nếu bất kỳ điều kiện nào không hợp lệ, trả về false
+    return false;
   };
+
 });

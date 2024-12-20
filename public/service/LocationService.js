@@ -10,7 +10,9 @@ app.service('LocationService', function ($http) {
         },
     };
     this.findById = function (items, id) {
-        return items.find(item => item.id === id);
+        if (items) {
+            return items.find(item => item.id === id);
+        }
     };
     this.getCities = function () {
         return $http.get(baseUrl + "v2/cities", config);
