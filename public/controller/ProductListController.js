@@ -32,7 +32,7 @@ app.controller(
     $scope.getProducts = function (url) {
       $http.get(url).then(
         function (response) {
-          $scope.products = response.data.message.content;
+          $scope.products = response.data.message;
         },
         function (error) {
           console.error("Error fetching products:", error);
@@ -149,42 +149,15 @@ app.controller(
     };
 
     $scope.loadPagedProducts = function () {
-      $http
-        .get(
-          `http://160.30.21.47:1234/api/Product/page?page=${$scope.currentPage}&size=${$scope.pageSize}`
-        )
-        .then(
-          function (response) {
-            $scope.products = response.data.message.content;
-            $scope.pageInfo = response.data.message.page;
-          },
-          function (error) {
-            console.error("Error fetching products:", error);
-          }
-        );
-    };
-    $scope.nextPage = function () {
-      if ($scope.currentPage < $scope.pageInfo.totalPages - 1) {
-        $scope.currentPage++;
-        $scope.loadPagedProducts();
-      }
-    };
-
-    $scope.previousPage = function () {
-      if ($scope.currentPage > 0) {
-        $scope.currentPage--;
-        $scope.loadPagedProducts();
-      }
-    };
-
-    $scope.goToFirstPage = function () {
-      $scope.currentPage = 0;
-      $scope.loadPagedProducts();
-    };
-
-    $scope.goToLastPage = function () {
-      $scope.currentPage = $scope.pageInfo.totalPages - 1;
-      $scope.loadPagedProducts();
+      $http.get(`http://160.30.21.47:1234/api/Product/page`).then(
+        function (response) {
+          $scope.products = response.data.message;
+          $scope.pageInfo = response.data.message;
+        },
+        function (error) {
+          console.error("Error fetching products:", error);
+        }
+      );
     };
     $scope.loadPagedProducts();
 

@@ -15,6 +15,12 @@
                 ng-repeat="image in banner1"
                 ng-class="{'active': $index === 0}"
               >
+              <img
+                ng-src="{{image.url}}"
+                class="img-fluid bg-img d-block w-100"
+                alt="{{image.alt}}"
+              />
+            </div>
                 <img
                   ng-src="{{image.url}}"
                   class="img-fluid bg-img d-block w-100"
@@ -50,7 +56,211 @@
   <section class="product-section">
     <div class="container-fluid-lg">
       <div class="title title-flex-2">
-        <h2>Sản phẩm của chúng tôi</h2>
+        <h2>Sản phẩm bán chạy</h2>
+        <ul class="nav nav-tabs tab-style-color-2 tab-style-color" id="myTab">
+          <li class="nav-item"></li>
+        </ul>
+      </div>
+  
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="all" role="tabpanel">
+          <div class="row g-8">
+            <div class="col-xxl-2 col-lg-3 col-md-4 col-6 wow fadeInUp" ng-repeat="newproduct in bestsellers">
+              <div class="product-box-4">
+                <div class="bestseller-badge">Bestseller</div>
+
+                <div class="product-image">
+                  <!-- Nhãn Bestseller -->
+                  
+  
+                  <div class="label-flex">
+                    <button class="btn p-0 wishlist btn-wishlist notifi-wishlist">
+                      <!-- <i class="iconly-Heart icli"></i> -->
+                    </button>
+                  </div>
+                  <a ng-click="viewDetail(product)">
+                    <img
+                      ng-src="{{ newproduct.imgUrl }}"
+                      alt="{{newproduct.productName}}"
+                      class="img-fluid"
+                    />
+                  </a>
+  
+                  <ul class="option">
+                    <li data-bs-toggle="tooltip" data-bs-placement="top" title="Quick View">
+                      <a ng-click="viewDetail(newproduct)" data-bs-toggle="modal" data-bs-target="#view">
+                        <i class="iconly-Show icli"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+  
+                <div class="product-detail">
+                  <a ng-click="viewDetail(newproduct)">
+                    <h5 class="name">
+                      {{newproduct.productName }}
+                    </h5>
+                    <h5 class="name">{{newproduct.milkbrandname}}</h5>
+                  </a>
+  
+                  <div class="price-qty">
+                    <h5 class="price theme-color">
+                      {{newproduct.minPrice | currency:"₫":0}} - {{newproduct.maxPrice | currency:"₫":0}}
+                    </h5>
+                    <button
+                      ng-click="viewDetail(product)"
+                      class="btn theme-bg-color fw-bold text-white d-flex align-items-center justify-content-center p-2 rounded-circle shadow-sm hover-shadow-lg transition-all"
+                      style="font-size: 14px; height: 40px; width: 40px;">
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+  .bestseller-badge {
+  position: absolute;
+  top: 70px; /* Sát lề trên */
+  left: 0; /* Sát lề trái */
+  background-color: #ff6347; /* Màu nổi bật */
+  color: #fff; /* Màu chữ */
+  padding: 5px 10px; /* Kích thước padding */
+  font-size: 12px; /* Kích thước chữ */
+  font-weight: bold; /* Chữ đậm */
+  text-transform: uppercase; /* Viết hoa */
+  z-index: 10; /* Lớp trên cùng */
+  transform: rotate(-45deg); /* Xoay góc nhãn */
+  transform-origin: top left; /* Điểm xoay ở góc trên trái */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Hiệu ứng bóng */
+}
+
+</style>
+<section class="middle-banner-section">
+  <div class="container-fluid-lg">
+    <div id="middleBannerCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div 
+          class="carousel-item" 
+          ng-repeat="image in banner2" 
+          ng-class="{'active': $index === 0}">
+          <img
+            ng-src="{{image.url}}"
+            class="img-fluid bg-img d-block w-100"
+            alt="{{image.alt}}"
+          />
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#middleBannerCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#middleBannerCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+
+      <!-- Indicators -->
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#middleBannerCarousel"
+          data-bs-slide-to="{{$index}}"
+          ng-repeat="image in banner2"
+          ng-class="{'active': $index === 0}"
+          aria-label="Slide {{$index + 1}}"
+        ></button>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="product-section">
+  <div class="container-fluid-lg">
+    <div class="title title-flex-2">
+      <h2>Sản phẩm mới</h2>
+      <ul class="nav nav-tabs tab-style-color-2 tab-style-color" id="myTab">
+        <li class="nav-item">
+
+        </li>
+      </ul>
+    </div>
+
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="all" role="tabpanel">
+        <div class="row g-8">
+          <div class="col-xxl-2 col-lg-3 col-md-4 col-6 wow fadeInUp" ng-repeat="newproduct in newproducts">
+            <div class="product-box-4">
+              <div class="product-image">
+                <div class="label-flex">
+                  <button class="btn p-0 wishlist btn-wishlist notifi-wishlist">
+                    <!-- <i class="iconly-Heart icli"></i> -->
+                  </button>
+                </div>
+
+                <a ng-click="viewDetail(product)">
+                  <img ng-src="{{ newproduct.imgUrl }}" alt="{{newproduct.milktypename}}" class="img-fluid" />
+                </a>
+
+                <ul class="option">
+                  <li data-bs-toggle="tooltip" data-bs-placement="top" title="Quick View">
+                    <a ng-click="viewDetail(newproduct)" data-bs-toggle="modal" data-bs-target="#view">
+                      <i class="iconly-Show icli"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="product-detail">
+        
+                <a ng-click="viewDetail(newproduct)">
+                  <h5 class="name">
+                    {{newproduct.milktypename + " - " + newproduct.milkbrandname}}
+                  </h5>
+                  <h5 class="name">{{newproduct.milkbrandname}}</h5>
+                </a>
+
+
+                <div class="price-qty">
+                  <h5 class="price theme-color">
+                    {{newproduct.minPrice | currency:"₫":0}} - {{newproduct.maxPrice | currency:"₫":0}}
+                  </h5>
+                  <button ng-click="viewDetail(product)"
+                    class="btn theme-bg-color fw-bold text-white d-flex align-items-center justify-content-center p-2 rounded-circle shadow-sm hover-shadow-lg transition-all"
+                    style="font-size: 14px; height: 40px; width: 40px;">
+                    <!-- Biểu tượng giỏ hàng -->
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+ <section class="product-section">
+    <div class="container-fluid-lg">
+      <div class="title title-flex-2">
+        <h2>Tất Cả Sản Phẩm</h2>
         <ul class="nav nav-tabs tab-style-color-2 tab-style-color" id="myTab">
           <li class="nav-item">
 
@@ -118,193 +328,16 @@
                       style="font-size: 14px; height: 40px; width: 40px;">
                       <!-- Biểu tượng giỏ hàng -->
                       <i class="fas fa-shopping-cart"></i>
-                    </button>
-
+                  </button>
                   </div>
-
-
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="pagination-controls d-flex justify-content-center align-items-center my-3">
-          <button
-            class="btn mx-1 px-3"
-            ng-disabled="currentPage === 0"
-            ng-click="goToFirstPage()"
-          >
-            <i class="fas fa-angle-double-left"></i> 
-          </button>
-          <button
-            class="btn mx-1 px-3"
-            ng-disabled="currentPage === 0"
-            ng-click="previousPage()"
-          >
-            <i class="fas fa-angle-left"></i> 
-          </button>
-          <span class="mx-2 fw-bold">
-            Page {{ currentPage + 1 }} of {{ pageInfo.totalPages }}
-          </span>
-          <button
-            class="btn mx-1 px-3"
-            ng-disabled="currentPage === pageInfo.totalPages - 1"
-            ng-click="nextPage()"
-          >
-             <i class="fas fa-angle-right"></i>
-          </button>
-          <button
-            class="btn mx-1 px-3"
-            ng-disabled="currentPage === pageInfo.totalPages - 1"
-            ng-click="goToLastPage()"
-          >
-             <i class="fas fa-angle-double-right"></i>
-          </button>
-        </div>
-        
-        
-      
-        
       </div>
     </div>
 </div>
 </section>
-<section class="middle-banner-section">
-  <div class="container-fluid-lg">
-    <div id="middleBannerCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div 
-          class="carousel-item" 
-          ng-repeat="image in banner2" 
-          ng-class="{'active': $index === 0}">
-          <img
-            ng-src="{{image.url}}"
-            class="img-fluid bg-img d-block w-100"
-            alt="{{image.alt}}"
-          />
-        </div>
-      </div>
-
-      <!-- Controls -->
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#middleBannerCarousel"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#middleBannerCarousel"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-
-      <!-- Indicators -->
-      <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#middleBannerCarousel"
-          data-bs-slide-to="{{$index}}"
-          ng-repeat="image in banner2"
-          ng-class="{'active': $index === 0}"
-          aria-label="Slide {{$index + 1}}"
-        ></button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="product-section-2">
-        <div class="container-fluid-lg">
-            <div class="row gy-sm-5 gy-4">
-                <div class="col-xxl-6 col-md-6">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="title title-border d-block">
-                                <h3>Sản phẩm mới</h3>
-                            </div>
-
-                            <div class="product-category-1 arrow-slider-2" ng-repeat="newproduct in newproducts">
-                              <div>
-                                  <div class="row gy-sm-4 gy-3">
-                                      <div class="col-12">
-                                          <div class="product-box-4 wow fadeInUp">
-                                              <a ng-click="viewDetail(newproduct)" class="product-image">
-                                                  <img  ng-src="{{newproduct.imgUrl}}" class="img-fluid"
-                                                      alt="">
-                                              </a>
-                                              <div class="product-details">
-
-                                                  <a ng-click="viewDetail(newproduct)">
-                                                      <h4 class="name">{{newproduct.productname}}</h4>
-                                                  </a>
-                                                  <ul class="option">
-                                                      <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                          title="Add to Cart">
-                                                          <a ng-click="viewDetail(newproduct)">
-                                                              <i class="iconly-Buy icli"></i>
-                                                          </a>
-                                                      </li>
-                                                      
-
-                                                  </ul>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xxl-6 col-md-6">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="title title-border d-block">
-                                <h3>Sản phẩm bán chạy</h3>
-                            </div>
-
-                            <div class="product-category-1 arrow-slider-2" ng-repeat="bestseller in bestsellers">
-                                <div>
-                                    <div class="row gy-sm-4 gy-3">
-                                        <div class="col-12">
-                                            <div class="product-box-4 wow fadeInUp">
-                                                <a ng-click="viewDetail(bestseller)" class="product-image">
-                                                    <img  ng-src="{{bestseller.imgUrl}}" class="img-fluid"
-                                                        alt="">
-                                                </a>
-                                                <div class="product-details">
-
-                                                    <a ng-click="viewDetail(bestseller)">
-                                                        <h4 class="name">{{bestseller.productName}}</h4>
-                                                    </a>
-                                                    <ul class="option">
-                                                        <li data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Add to Cart">
-                                                            <a ng-click="viewDetail(bestseller)">
-                                                                <i class="iconly-Buy icli"></i>
-                                                            </a>
-                                                        </li>
-                                                        
-
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    </section>
-
 </div>
+<div style="margin: 35px; padding: 10px;"></div>
