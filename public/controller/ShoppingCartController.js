@@ -27,7 +27,12 @@ app.controller(
     };
     $scope.selectedVoucher = function (x) {
       $scope.vouchercode = x;
-      $scope.checkvoucher();
+      if ($scope.vouchercode) {
+        $scope.checkvoucher();
+      } else {
+        $scope.discountmoney = 0
+      }
+
     };
     $scope.loadVoucher = function () {
       $http
