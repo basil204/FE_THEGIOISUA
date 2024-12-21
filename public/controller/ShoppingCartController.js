@@ -14,7 +14,6 @@ app.controller(
   ) {
     $scope.userInfo = JSON.parse(localStorage.getItem("userInfo")) || null;
     let addresssplit = null;
-    let idrate = null
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
     const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
@@ -43,9 +42,6 @@ app.controller(
         .catch(function (error) {
           console.error("Có lỗi khi tải thông tin voucher:", error.data);
         });
-    };
-    $scope.selectedShipping = function (isSelected) {
-      idrate = isSelected.id;
     };
     $scope.removeSelectedProducts = function () {
       swal
@@ -684,6 +680,7 @@ app.controller(
                   invoiceDto.deliveryaddress
                 )
                 .then(function (data) {
+                  console.log(data)
                   $scope.payment(invoiceDto.tongTien, invoiceDto.invoiceCode);
                 })
                 .catch(function (error) {
@@ -750,7 +747,7 @@ app.controller(
     $scope.creaetOdership = function (invoiceCode, name, phone, address) {
       data = {
         shipment: {
-          rate: idrate, // Giá vận chuyển
+          rate: $scope.selectedShip.id, // Giá vận chuyển
           order_id: invoiceCode, // Mã đơn hàng
           address_from: {
             // Địa chỉ người gửi (cố định)
@@ -782,6 +779,7 @@ app.controller(
           },
         },
       };
+      console.log(data)
       return ShipService.createShipment(data);
     };
     $scope.payment = function (totalamount, invoicecode) {

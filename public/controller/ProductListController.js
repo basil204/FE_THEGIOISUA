@@ -167,7 +167,8 @@ app.controller(
     $scope.viewDetail = function (product) {
       ProductService.clearProduct();
       ProductService.setProduct(product);
-      const productUrl = product.productURL || product.productUrl; // Kiểm tra cả hai
+      console.log(product)
+      const productUrl = product.productUrl; // Kiểm tra cả hai
       $location.path("/product-detail").search({ productURL: productUrl });
     };
 
