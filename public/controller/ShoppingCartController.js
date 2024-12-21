@@ -14,6 +14,7 @@ app.controller(
   ) {
     $scope.userInfo = JSON.parse(localStorage.getItem("userInfo")) || null;
     let addresssplit = null;
+    $scope.selectedPaymentMethod = 'COD';
     $scope.lstProductOder =
       JSON.parse(localStorage.getItem("lstProductOder")) || [];
     const urlInvoice = "http://160.30.21.47:1234/api/Invoice/add";
