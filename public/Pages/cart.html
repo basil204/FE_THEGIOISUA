@@ -162,22 +162,33 @@
                     <ul class="summery-total">
                         <li class="list-total border-top-0">
                             <h4>Tổng cộng (VNĐ)</h4>
-                            <h4 class="price theme-color">{{calculateTotal() | number:''}} VNĐ</h4>
+                            <h4 class="price theme-color">
+                                {{ calculateTotal() > 0 ? (calculateTotal() | number:'') + ' VNĐ' : 'Chưa chọn sản phẩm' }}
+                            </h4>
                         </li>
                     </ul>
-
+                    
                     <div class="button-group cart-button">
                         <ul>
                             <li>
-                                <button ng-click="buttonThanhToan()" class="btn btn-animation proceed-btn fw-bold">Thanh
-                                    Toán</button>
+                                <button 
+                                    ng-click="buttonThanhToan()" 
+                                    class="btn btn-animation proceed-btn fw-bold"
+                                    ng-disabled="calculateTotal() <= 0">
+                                    Thanh Toán
+                                </button>
                             </li>
-
+                    
                             <li>
-                                <button onclick="location.href = 'index.html';"
+                                <button 
+                                    onclick="location.href = 'index.html';"
                                     class="btn btn-light shopping-button text-dark">
-                                    <i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
+                                    <i class="fa-solid fa-arrow-left-long"></i>Quay Lại
+                                </button>
                             </li>
+                        </ul>
+                    </div>
+                    
                         </ul>
                     </div>
                 </div>

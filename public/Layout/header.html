@@ -129,7 +129,7 @@
                         </a>
                         <!-- Phần chi tiết tài khoản người dùng -->
                         <div class="delivery-detail">
-                          <p class="m-0">Hello,</p>
+                          <p class="m-0">Xin chào,</p>
                           <p class="m-0">{{userName}}</p>
                         </div>
                       </li>
@@ -150,7 +150,6 @@
                           <i class="iconly-Heart icli"></i>
                         </a>
                       </li>
-
                       <li
                         class="onhover-dropdown"
                         ng-mouseenter="getListOderProduct()"
@@ -185,7 +184,7 @@
                                   </a>
                                   <h6>
                                     <span>{{product.quantity}} x</span>
-                                    {{product.productDetails.price| number:''}}
+                                    {{product.productDetails.price | number:''}}
                                     VNĐ
                                   </h6>
                                   <button
@@ -199,25 +198,39 @@
                             </li>
                           </ul>
 
-                          <div class="price-box">
+                          <div
+                            class="price-box"
+                            ng-if="cartProducts.length > 0"
+                          >
                             <h5>Price :</h5>
                             <h4 class="theme-color fw-bold">
-                              {{totalPrice| number:''}} VNĐ
+                              {{totalPrice | number:''}} VNĐ
                             </h4>
                           </div>
 
                           <div class="button-group">
                             <a href="/cart" class="btn btn-sm cart-button"
-                              >View Cart</a
+                              >Xem giỏ hàng</a
                             >
+                            <!-- Disable or hide the checkout button if cart is empty -->
                             <a
                               href="/checkout"
                               class="btn btn-sm cart-button theme-bg-color text-white"
-                              >Checkout</a
+                              ng-class="{'disabled': cartProducts.length === 0}"
+                              ng-if="cartProducts.length > 0"
                             >
+                              Thanh toán
+                            </a>
+                            <span
+                              class="text-muted"
+                              ng-if="cartProducts.length === 0"
+                            >
+                              Giỏ hàng của bạn đang trống.
+                            </span>
                           </div>
                         </div>
                       </li>
+
                       <li
                         class="onhover-dropdown right-side"
                         id="user-icon-dropdown"
@@ -233,7 +246,7 @@
                           </div>
                           <!-- Phần chi tiết tài khoản người dùng -->
                           <div class="delivery-detail">
-                            <h6 class="m-0">Hello,</h6>
+                            <h6 class="m-0">Xin chào,</h6>
                             <h5 class="m-0">{{userName}}</h5>
                           </div>
                         </div>
@@ -246,13 +259,13 @@
                         >
                           <ul class="user-box-name">
                             <li class="product-box-contain" ng-hide="isLogin">
-                              <a href="/login">Log In</a>
+                              <a href="/login">Đăng nhập</a>
                             </li>
                             <li class="product-box-contain" ng-hide="isLogin">
-                              <a href="/sign-up">Register</a>
+                              <a href="/sign-up">Đăng ký</a>
                             </li>
                             <li class="product-box-contain" ng-hide="isLogin">
-                              <a href="/forgot">Forgot Password</a>
+                              <a href="/forgot">Quên mật khẩu</a>
                             </li>
                             <li
                               class="product-box-contain"
@@ -368,14 +381,14 @@
         <li>
           <a href="index.html">
             <i class="iconly-Home icli"></i>
-            <span>Home</span>
+            <span>Trang chủ</span>
           </a>
         </li>
 
         <li>
           <a ng-href="/cart">
             <i class="iconly-Bag-2 icli fly-cate"></i>
-            <span>Cart</span>
+            <span>Giỏ hàng</span>
           </a>
         </li>
       </ul>
