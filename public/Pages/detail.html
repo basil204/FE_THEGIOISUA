@@ -4,21 +4,27 @@
     <p>Mã đơn hàng: <strong>{{ invoice.invoiceCode }}</strong></p>
     <p>Ngày tạo: <strong>{{ invoice.ngayTao }}</strong></p>
     <p>Trạng thái: <strong>{{ getStatus(invoice.trangThai) }}</strong></p>
+    <p ng-show="description">Mô Tả: <strong>{{ description }}</strong></p>
   </div>
 
   <div class="stepper">
-     <!-- Bước 6: Chờ Duyệt Đơn -->
-     <style>
+    <!-- Bước 6: Chờ Duyệt Đơn -->
+    <style>
       .spinner {
         animation: spin 1s infinite linear;
       }
-    
+
       @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
       }
     </style>
-    
+
     <div class="stepper__step stepper__step--success" ng-show="getStepData(301)">
       <div class="stepper__step-icon">
         <i class="fas fa-hourglass-start spinner"></i> <!-- Add the spinner class here -->
@@ -26,7 +32,7 @@
       <div class="stepper__step-text">Chờ Duyệt Đơn</div>
       <div class="stepper__step-date" ng-bind="getStepData(301) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
-    
+
     <!-- Bước 8: Đơn Chờ -->
     <div class="stepper__step stepper__step--success" ng-show="getStepData(338)">
       <div class="stepper__step-icon">
@@ -44,8 +50,8 @@
       <div class="stepper__step-text">Chưa Thanh Toán</div>
       <div class="stepper__step-date" ng-bind="getStepData(337) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
-     <!-- Bước 7: Thanh toán thành công -->
-     <div class="stepper__step stepper__step--success" ng-show="getStepData(305)">
+    <!-- Bước 7: Thanh toán thành công -->
+    <div class="stepper__step stepper__step--success" ng-show="getStepData(305)">
       <div class="stepper__step-icon">
         <i class="fas fa-money-check-alt"></i>
       </div>
@@ -61,7 +67,7 @@
       <div class="stepper__step-text">Chờ lấy hàng</div>
       <div class="stepper__step-date" ng-bind="getStepData(901) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
-    
+
 
     <!-- Bước 2: Đã lấy hàng -->
     <div class="stepper__step stepper__step--finish" ng-show="getStepData(903)">
@@ -71,19 +77,26 @@
       <div class="stepper__step-text">Đã lấy hàng</div>
       <div class="stepper__step-date" ng-bind="getStepData(903) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
-    
+
 
     <style>
       .move-truck {
         animation: moveTruck 2s linear infinite;
       }
-    
+
       @keyframes moveTruck {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(200px); } /* Adjust the 200px to control the distance */
+        0% {
+          transform: translateX(0);
+        }
+
+        100% {
+          transform: translateX(200px);
+        }
+
+        /* Adjust the 200px to control the distance */
       }
     </style>
-    
+
     <div class="stepper__step stepper__step--finish" ng-show="getStepData(904)">
       <div class="stepper__step-icon">
         <i class="fas fa-truck move-truck"></i> <!-- Add the 'move-truck' class here for animation -->
@@ -91,19 +104,29 @@
       <div class="stepper__step-text">Giao Hàng</div>
       <div class="stepper__step-date" ng-bind="getStepData(904) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
-    
-  
+
+
     <style>
       .shrink-grow {
         animation: shrinkGrow 1s ease-in-out infinite;
       }
-    
+
       @keyframes shrinkGrow {
-        0%, 100% { transform: scale(1); } /* Normal size */
-        50% { transform: scale(0.8); } /* Shrinks to 80% of original size */
+
+        0%,
+        100% {
+          transform: scale(1);
+        }
+
+        /* Normal size */
+        50% {
+          transform: scale(0.8);
+        }
+
+        /* Shrinks to 80% of original size */
       }
     </style>
-    
+
     <!-- Bước 4: Hoàn thành -->
     <div class="stepper__step stepper__step--finish" ng-show="getStepData(913)">
       <div class="stepper__step-icon">
@@ -112,7 +135,7 @@
       <div class="stepper__step-text">Hoàn thành</div>
       <div class="stepper__step-date" ng-bind="getStepData(913) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
-    
+
 
     <!-- Bước 5: Huỷ Đơn -->
     <div class="stepper__step stepper__step--red" ng-show="getStepData(336)">
@@ -123,8 +146,8 @@
       <div class="stepper__step-date" ng-bind="getStepData(336) | date:'HH:mm dd-MM-yyyy'"></div>
     </div>
 
-   
-</div>
+
+  </div>
 
 
 

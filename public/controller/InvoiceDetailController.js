@@ -49,6 +49,7 @@ app.controller(
           .get(getInvoiceLogByInvoiceID + $scope.invoice.invoiceID)
           .then(function (response) {
             $scope.invoiceLogs = response.data.message;
+            $scope.description = $scope.invoiceLogs.find((log) => log.status === 336).description;
           })
           .catch(function (error) {
             console.error("Error fetching invoice details:", error);
